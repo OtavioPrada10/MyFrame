@@ -1,0 +1,95 @@
+@font-face {
+    font-family: Century;
+    src: url('GOTHIC.ttf');
+}
+
+body {
+    font-family: Century;
+    background: rgb(51, 51, 51);
+    color: #fff;
+    padding: 0px;
+    margin: 0PX;
+
+}
+
+.navSuperior {
+    background-color: rgb(31, 30, 30);
+    width: 90%;
+    height: 3rem;
+    box-shadow: -5px -10px 30px rgba(153, 0, 0, 0), 6px 9px 15px rgb(1, 39, 83);
+    float: right;
+}
+
+.navLateral {
+    width: 10%;
+    float: left;
+    background-color: rgb(31, 30, 30);
+    box-shadow: -5px -10px 30px rgba(153, 0, 0, 0), 6px 9px 15px rgb(1, 39, 83);
+    border-bottom-left-radius: 2%;
+    border-bottom-right-radius: 2%;
+    height: 30rem;
+}
+
+.pagina {    
+    width: 80%;
+    overflow-x: auto;
+    height: 100%;
+    font-size: 20px;
+    display: inline-block;
+    margin: 1rem;
+    
+}
+.container {
+    text-align: center;
+}
+
+.linha {
+    width: auto;
+    padding: 5px;
+    height: 110px;
+    display: table;
+}
+
+.tile {
+    height: 100px;
+    width: 100px;
+    float: left;
+    margin: 0 5px 0 0;
+    padding: 2px;
+}
+
+.tileLargo {
+    width: 210px;
+    
+    
+}
+
+
+.amarelo {
+    background: rgb(1, 50, 105);
+}
+
+.vermelho {
+    background: rgb(1, 50, 105);
+}
+
+.azul {
+    background: rgb(1, 72, 105);
+}
+
+.verde {
+    background: rgb(4, 82, 170);
+}
+
+.selecionado {
+    background-color: #483D8B;
+}
+
+a:visited, a:link {
+    color: #fff;
+}
+
+a:hover{
+    font-size: 23px;
+    
+}
