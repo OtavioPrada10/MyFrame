@@ -1,52 +1,69 @@
 @font-face {
-    font-family: Century;
-    src: url('GOTHIC.ttf');
+  font-family: Century;
+  src: url("GOTHIC.ttf");
 }
 
-.navbar{
-    padding: 1rem 2rem 1rem 1rem;
+body {
+  --var-cor-fundo-1: #0d1b2a;
+  --var-cor-fundo-2: #1b263b;
+  --var-cor-fundo-3: #415a77;
+  --var-cor-fundo-4: #778da9;
+  --var-cor-fundo-5: #e0e1dd;
+
+  background: var(--var-cor-fundo-1);
 }
 
-.offcanvas{
-    --bs-offcanvas-color: #000000;
+.navbar {
+  padding: 1rem 2rem 1rem 1rem;
 }
 
-.linha {
-    width: auto;
-    padding: 5px;
-    height: 110px;
-    display: table;
+.offcanvas {
+  --bs-offcanvas-color: #000000;
 }
 
-.tile {
-    height: 100px;
-    width: 100px;
-    float: left;
-    margin: 0 5px 0 0;
-    padding: 2px;
+.card-area {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr repeat(5, 13rem 1.5rem) 1fr;
+  justify-content: center;
+  height: 22rem;
+
+  & .card-link {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+
+    & .card {
+      width: 100%;
+      height: 100%;
+
+      & .card-content {
+        display: grid;
+        grid-template-rows: 2fr 7rem auto 2fr;
+        justify-content: center;
+        height: 100%;
+
+        &::before {
+          content: "";
+          display: flex;
+          width: 6rem;
+          height: 5.9rem;
+          background: var(--var-cor-fundo-2);
+          border-radius: 100%;
+          margin-left: 0.9rem;
+          grid-row: 2;
+        }
+        & .card-icon {
+            position: absolute;
+            left: 4.7rem;
+            top: 6rem;        
+        }
+        & .card-text {
+          grid-row: 3;
+          color: var(--var-cor-fundo-3);
+          font-weight: bold;
+        }
+      }
+    }
+  }
 }
-
-.tileLargo {
-    width: 210px;
-    
-    
-}
-
-
-.amarelo {
-    background: rgb(1, 50, 105);
-}
-
-.vermelho {
-    background: rgb(1, 50, 105);
-}
-
-.azul {
-    background: rgb(1, 72, 105);
-}
-
-.verde {
-    background: rgb(4, 82, 170);
-}
-
-

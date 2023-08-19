@@ -1,57 +1,57 @@
 /*!
- * Biblioteca JavaScript jQuery v3.7.0
+ * jQuery JavaScript Library v3.7.0
  * https://jquery.com/
  *
- * Copyright OpenJS Foundation e outros colaboradores
- * Lançado sob a licença MIT
+ * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
  * https://jquery.org/license
  *
- * Data: 2023-05-11T18:29Z
+ * Date: 2023-05-11T18:29Z
  */
-(função(global, fábrica) {
+( function( global, factory ) {
 
-	"use estrito";
+	"use strict";
 
-	if ( tipo de módulo === "objeto" && tipo de módulo.exports === "objeto" ) {
+	if ( typeof module === "object" && typeof module.exports === "object" ) {
 
-		// Para ambientes CommonJS e do tipo CommonJS, onde uma `janela` adequada
-		// está presente, execute a fábrica e obtenha jQuery.
-		// Para ambientes que não possuem `window` com `document`
-		// (como Node.js), exponha uma fábrica como module.exports.
-		// Isso acentua a necessidade da criação de uma `janela` real.
-		// por exemplo var jQuery = require("jquery")(window);
-		// Veja ticket trac-14549 para mais informações.
+		// For CommonJS and CommonJS-like environments where a proper `window`
+		// is present, execute the factory and get jQuery.
+		// For environments that do not have a `window` with a `document`
+		// (such as Node.js), expose a factory as module.exports.
+		// This accentuates the need for the creation of a real `window`.
+		// e.g. var jQuery = require("jquery")(window);
+		// See ticket trac-14549 for more info.
 		module.exports = global.document ?
-			fábrica (global, verdadeiro):
+			factory( global, true ) :
 			function( w ) {
-				if (!w.documento) {
-					throw new Error("jQuery requer uma janela com um documento");
+				if ( !w.document ) {
+					throw new Error( "jQuery requires a window with a document" );
 				}
-				retornar fábrica( w );
+				return factory( w );
 			};
-	} outro {
-		fábrica (global);
+	} else {
+		factory( global );
 	}
 
-// Passe isso se a janela ainda não estiver definida
+// Pass this if window is not defined yet
 } )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
 
 // Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
-// lança exceções quando código não estrito (por exemplo, ASP.NET 4.5) acessa o modo estrito
-// argumentos.callee.caller (trac-13335). Mas a partir do jQuery 3.0 (2016), o modo estrito deve ser comum
-// o suficiente para que todas essas tentativas sejam protegidas em um bloco try.
-"use estrito";
+// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
+// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
+// enough that all such attempts are guarded in a try block.
+"use strict";
 
 var arr = [];
 
 var getProto = Object.getPrototypeOf;
 
-var fatia = arr.fatia;
+var slice = arr.slice;
 
-var flat = arr.flat ? function(matriz) {
-	return arr.flat.call(array);
-} : função( matriz ) {
-	return arr.concat.apply([], array);
+var flat = arr.flat ? function( array ) {
+	return arr.flat.call( array );
+} : function( array ) {
+	return arr.concat.apply( [], array );
 };
 
 
@@ -59,7 +59,7 @@ var push = arr.push;
 
 var indexOf = arr.indexOf;
 
-var classe2tipo = {};
+var class2type = {};
 
 var toString = class2type.toString;
 
@@ -69,19 +69,19 @@ var fnToString = hasOwn.toString;
 
 var ObjectFunctionString = fnToString.call( Object );
 
-var suporte = {};
+var support = {};
 
 var isFunction = function isFunction( obj ) {
 
-		// Suporte: Chrome <=57, Firefox <=52
-		// Em alguns navegadores, typeof retorna "função" para elementos HTML <object>
-		// (ou seja, `typeof document.createElement( "object" ) === "function"`).
-		// Não queremos classificar *qualquer* nó DOM como uma função.
-		// Suporte: QtWeb <=3.8.5, WebKit <=534.34, ferramenta wkhtmltopdf <=0.12.5
-		// Além disso, para WebKit antigo, typeof retorna "função" para coleções HTML
-		// (por exemplo, `typeof document.getElementsByTagName("div") === "function"`). (gh-4756)
-		return typeof obj === "função" && typeof obj.nodeType !== "número" &&
-			typeof obj.item !== "função";
+		// Support: Chrome <=57, Firefox <=52
+		// In some browsers, typeof returns "function" for HTML <object> elements
+		// (i.e., `typeof document.createElement( "object" ) === "function"`).
+		// We don't want to classify *any* DOM node as a function.
+		// Support: QtWeb <=3.8.5, WebKit <=534.34, wkhtmltopdf tool <=0.12.5
+		// Plus for old WebKit, typeof returns "function" for HTML collections
+		// (e.g., `typeof document.getElementsByTagName("div") === "function"`). (gh-4756)
+		return typeof obj === "function" && typeof obj.nodeType !== "number" &&
+			typeof obj.item !== "function";
 	};
 
 
@@ -90,38 +90,38 @@ var isWindow = function isWindow( obj ) {
 	};
 
 
-var documento = janela.documento;
+var document = window.document;
 
 
 
-	var preservadoScriptAttributes = {
-		tipo: verdadeiro,
-		src: verdadeiro,
-		nonce: verdadeiro,
+	var preservedScriptAttributes = {
+		type: true,
+		src: true,
+		nonce: true,
 		noModule: true
 	};
 
-	função DOMEval( código, nó, doc ) {
-		documento = documento || documento;
+	function DOMEval( code, node, doc ) {
+		doc = doc || document;
 
 		var i, val,
 			script = doc.createElement( "script" );
 
-		script.text = código;
-		if (nó) {
-			for (i em preserveScriptAttributes) {
+		script.text = code;
+		if ( node ) {
+			for ( i in preservedScriptAttributes ) {
 
-				// Suporte: Firefox 64+, Edge 18+
-				// Alguns navegadores não suportam a propriedade "nonce" em scripts.
-				// Por outro lado, apenas usar `getAttribute` não é suficiente, pois
-				// o atributo `nonce` é redefinido para uma string vazia sempre que
-				// torna-se conectado ao contexto de navegação.
-				// Veja https://github.com/whatwg/html/issues/2369
-				// Consulte https://html.spec.whatwg.org/#nonce-attributes
-				// A verificação `node.getAttribute` foi adicionada para fins de
-				// `jQuery.globalEval` para que possa falsificar um nó não contendo
-				// por meio de um objeto.
-				val = nó[i] || node.getAttribute && node.getAttribute( i );
+				// Support: Firefox 64+, Edge 18+
+				// Some browsers don't support the "nonce" property on scripts.
+				// On the other hand, just using `getAttribute` is not enough as
+				// the `nonce` attribute is reset to an empty string whenever it
+				// becomes browsing-context connected.
+				// See https://github.com/whatwg/html/issues/2369
+				// See https://html.spec.whatwg.org/#nonce-attributes
+				// The `node.getAttribute` check was added for the sake of
+				// `jQuery.globalEval` so that it can fake a nonce-containing node
+				// via an object.
+				val = node[ i ] || node.getAttribute && node.getAttribute( i );
 				if ( val ) {
 					script.setAttribute( i, val );
 				}
@@ -136,102 +136,102 @@ function toType( obj ) {
 		return obj + "";
 	}
 
-	// Suporte: Android <=2.3 apenas (regExp funcional)
-	return typeof obj === "objeto" || typeof obj === "função" ?
-		class2type[ toString.call( obj ) ] || "objeto":
-		tipo de obj;
+	// Support: Android <=2.3 only (functionish RegExp)
+	return typeof obj === "object" || typeof obj === "function" ?
+		class2type[ toString.call( obj ) ] || "object" :
+		typeof obj;
 }
-/* Símbolo global */
-// Definir esse global em .eslintrc.json criaria o perigo de usar o global
-// desprotegido em outro lugar, parece mais seguro definir global apenas para este módulo
+/* global Symbol */
+// Defining this global in .eslintrc.json would create a danger of using the global
+// unguarded in another place, it seems safer to define global only for this module
 
 
 
-var versão = "3.7.0",
+var version = "3.7.0",
 
-	rhtmlSufixo = /HTML$/i,
+	rhtmlSuffix = /HTML$/i,
 
-	// Definir uma cópia local do jQuery
-	jQuery = function(seletor, contexto) {
+	// Define a local copy of jQuery
+	jQuery = function( selector, context ) {
 
-		// O objeto jQuery é na verdade apenas o construtor init 'aprimorado'
-		// Precisa de init se o jQuery for chamado (apenas permite que o erro seja lançado se não for incluído)
-		return new jQuery.fn.init( seletor, contexto );
+		// The jQuery object is actually just the init constructor 'enhanced'
+		// Need init if jQuery is called (just allow error to be thrown if not included)
+		return new jQuery.fn.init( selector, context );
 	};
 
 jQuery.fn = jQuery.prototype = {
 
-	// A versão atual do jQuery sendo usada
-	jquery: versão,
+	// The current version of jQuery being used
+	jquery: version,
 
-	construtor: jQuery,
+	constructor: jQuery,
 
-	// O comprimento padrão de um objeto jQuery é 0
-	comprimento: 0,
+	// The default length of a jQuery object is 0
+	length: 0,
 
 	toArray: function() {
 		return slice.call( this );
 	},
 
-	// Obtém o N-ésimo elemento no conjunto de elementos correspondentes OU
-	// Obtém todo o elemento correspondente definido como um array limpo
-	obter: function( num ) {
+	// Get the Nth element in the matched element set OR
+	// Get the whole matched element set as a clean array
+	get: function( num ) {
 
-		// Retorna todos os elementos em um array limpo
+		// Return all the elements in a clean array
 		if ( num == null ) {
 			return slice.call( this );
 		}
 
-		// Retorna apenas um elemento do conjunto
-		retorna num < 0 ? this[ num + this.length ] : this[ num ];
+		// Return just the one element from the set
+		return num < 0 ? this[ num + this.length ] : this[ num ];
 	},
 
-	// Pega um array de elementos e coloca na pilha
-	// (retornando o novo conjunto de elementos correspondentes)
-	pushStack: function(elems) {
+	// Take an array of elements and push it onto the stack
+	// (returning the new matched element set)
+	pushStack: function( elems ) {
 
-		// Construir um novo conjunto de elementos correspondentes jQuery
+		// Build a new jQuery matched element set
 		var ret = jQuery.merge( this.constructor(), elems );
 
-		// Adiciona o objeto antigo na pilha (como referência)
+		// Add the old object onto the stack (as a reference)
 		ret.prevObject = this;
 
-		// Retorna o conjunto de elementos recém-formado
-		retorno ret;
+		// Return the newly-formed element set
+		return ret;
 	},
 
-	// Executa um retorno de chamada para cada elemento no conjunto correspondente.
-	cada: função( retorno de chamada ) {
+	// Execute a callback for every element in the matched set.
+	each: function( callback ) {
 		return jQuery.each( this, callback );
 	},
 
 	map: function( callback ) {
 		return this.pushStack( jQuery.map( this, function( elem, i ) {
-			return callback.call(elem, i, elem);
+			return callback.call( elem, i, elem );
 		} ) );
 	},
 
-	fatia: function() {
+	slice: function() {
 		return this.pushStack( slice.apply( this, arguments ) );
 	},
 
-	primeiro: function() {
+	first: function() {
 		return this.eq( 0 );
 	},
 
-	último: function() {
+	last: function() {
 		return this.eq( -1 );
 	},
 
-	função par() {
+	even: function() {
 		return this.pushStack( jQuery.grep( this, function( _elem, i ) {
-			retorno ( i + 1 ) % 2;
+			return ( i + 1 ) % 2;
 		} ) );
 	},
 
-	Função estranha() {
+	odd: function() {
 		return this.pushStack( jQuery.grep( this, function( _elem, i ) {
-			retornar i % 2;
+			return i % 2;
 		} ) );
 	},
 
@@ -241,175 +241,175 @@ jQuery.fn = jQuery.prototype = {
 		return this.pushStack( j >= 0 && j < len ? [ this[ j ] ] : [] );
 	},
 
-	fim: função() {
-		return this.prevObject || this.construtor();
+	end: function() {
+		return this.prevObject || this.constructor();
 	},
 
-	// Apenas para uso interno.
-	// Comporta-se como um método de Array, não como um método jQuery.
-	empurre empurre,
+	// For internal use only.
+	// Behaves like an Array's method, not like a jQuery method.
+	push: push,
 	sort: arr.sort,
-	emenda: arr.splice
+	splice: arr.splice
 };
 
 jQuery.extend = jQuery.fn.extend = function() {
-	var opções, nome, origem, cópia, copyIsArray, clone,
-		alvo = argumentos[ 0 ] || {},
-		eu = 1,
-		comprimento = argumentos.comprimento,
-		profundo = falso;
+	var options, name, src, copy, copyIsArray, clone,
+		target = arguments[ 0 ] || {},
+		i = 1,
+		length = arguments.length,
+		deep = false;
 
-	// Lida com uma situação de cópia profunda
-	if (tipo de alvo === "booleano" ) {
-		profundo = alvo;
+	// Handle a deep copy situation
+	if ( typeof target === "boolean" ) {
+		deep = target;
 
-		// Ignora o booleano e o alvo
-		alvo = argumentos[i] || {};
+		// Skip the boolean and the target
+		target = arguments[ i ] || {};
 		i++;
 	}
 
-	// Trata caso quando o alvo é uma string ou algo assim (possível em deep copy)
+	// Handle case when target is a string or something (possible in deep copy)
 	if ( typeof target !== "object" && !isFunction( target ) ) {
-		destino = {};
+		target = {};
 	}
 
-	// Estende o próprio jQuery se apenas um argumento for passado
-	if ( i === comprimento ) {
-		alvo = este;
-		eu--;
+	// Extend jQuery itself if only one argument is passed
+	if ( i === length ) {
+		target = this;
+		i--;
 	}
 
-	for ( ; i < comprimento; i++ ) {
+	for ( ; i < length; i++ ) {
 
-		// Só lida com valores não nulos/indefinidos
-		if (( opções = argumentos[ i ] ) != nulo ) {
+		// Only deal with non-null/undefined values
+		if ( ( options = arguments[ i ] ) != null ) {
 
-			// Estende o objeto base
-			for (nome nas opções) {
-				copiar = opções[nome];
+			// Extend the base object
+			for ( name in options ) {
+				copy = options[ name ];
 
-				// Impede a poluição do Object.prototype
-				// Prevenir loop sem fim
-				if ( nome === "__proto__" || destino === copiar ) {
-					continuar;
+				// Prevent Object.prototype pollution
+				// Prevent never-ending loop
+				if ( name === "__proto__" || target === copy ) {
+					continue;
 				}
 
-				// Recurse se estivermos mesclando objetos simples ou arrays
+				// Recurse if we're merging plain objects or arrays
 				if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
-					(copyIsArray = Array.isArray(cópia)))) {
-					src = destino[nome];
+					( copyIsArray = Array.isArray( copy ) ) ) ) {
+					src = target[ name ];
 
-					// Garanta o tipo adequado para o valor de origem
+					// Ensure proper type for the source value
 					if ( copyIsArray && !Array.isArray( src ) ) {
 						clone = [];
-					} else if (!copyIsArray && !jQuery.isPlainObject(src)) {
+					} else if ( !copyIsArray && !jQuery.isPlainObject( src ) ) {
 						clone = {};
-					} outro {
+					} else {
 						clone = src;
 					}
 					copyIsArray = false;
 
-					// Nunca mova objetos originais, clone-os
-					target[ nome ] = jQuery.extend( deep, clone, copy );
+					// Never move original objects, clone them
+					target[ name ] = jQuery.extend( deep, clone, copy );
 
-				// Não traz valores indefinidos
-				} else if (copiar!== indefinido) {
-					alvo[nome] = copiar;
+				// Don't bring in undefined values
+				} else if ( copy !== undefined ) {
+					target[ name ] = copy;
 				}
 			}
 		}
 	}
 
-	// Retorna o objeto modificado
-	destino de retorno;
+	// Return the modified object
+	return target;
 };
 
 jQuery.extend( {
 
-	// Único para cada cópia do jQuery na página
+	// Unique for each copy of jQuery on the page
 	expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
 
-	// Supõe que o jQuery está pronto sem o módulo pronto
-	isReady: verdadeiro,
+	// Assume jQuery is ready without the ready module
+	isReady: true,
 
-	erro: function(mensagem) {
-		lançar novo erro (msg);
+	error: function( msg ) {
+		throw new Error( msg );
 	},
 
-	noop: função() {},
+	noop: function() {},
 
 	isPlainObject: function( obj ) {
 		var proto, Ctor;
 
-		// Detecta negativos óbvios
-		// Use toString em vez de jQuery.type para capturar objetos de host
-		if (!obj || toString.call(obj) !== "[objeto Objeto]" ) {
-			retorna falso;
+		// Detect obvious negatives
+		// Use toString instead of jQuery.type to catch host objects
+		if ( !obj || toString.call( obj ) !== "[object Object]" ) {
+			return false;
 		}
 
-		proto = getProto(obj);
+		proto = getProto( obj );
 
-		// Objetos sem protótipo (por exemplo, `Object.create( null )`) são simples
+		// Objects with no prototype (e.g., `Object.create( null )`) are plain
 		if ( !proto ) {
-			retornar verdadeiro;
+			return true;
 		}
 
-		// Objetos com protótipo são simples se forem construídos por uma função Object global
-		Ctor = hasOwn.call( proto, "construtor" ) && proto.constructor;
-		return typeof Ctor === "função" && fnToString.call( Ctor ) === ObjectFunctionString;
+		// Objects with prototype are plain iff they were constructed by a global Object function
+		Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
+		return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
 	},
 
 	isEmptyObject: function( obj ) {
-		var nome;
+		var name;
 
-		for (nome em obj) {
-			retorna falso;
+		for ( name in obj ) {
+			return false;
 		}
-		retornar verdadeiro;
+		return true;
 	},
 
-	// Avalia um script em um contexto fornecido; cai de volta para o global
-	// se não especificado.
-	globalEval: function( código, opções, doc ) {
-		DOMEval( código, { nonce: opções && opções.nonce }, doc );
+	// Evaluates a script in a provided context; falls back to the global one
+	// if not specified.
+	globalEval: function( code, options, doc ) {
+		DOMEval( code, { nonce: options && options.nonce }, doc );
 	},
 
-	cada: function( obj, callback ) {
-		var comprimento, i = 0;
+	each: function( obj, callback ) {
+		var length, i = 0;
 
-		if (isArrayLike(obj)) {
-			comprimento = obj.comprimento;
-			for ( ; i < comprimento; i++ ) {
+		if ( isArrayLike( obj ) ) {
+			length = obj.length;
+			for ( ; i < length; i++ ) {
 				if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-					quebrar;
+					break;
 				}
 			}
-		} outro {
-			for ( i em obj ) {
+		} else {
+			for ( i in obj ) {
 				if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-					quebrar;
+					break;
 				}
 			}
 		}
 
-		retornar obj;
+		return obj;
 	},
 
 
-	// Recupera o valor de texto de um array de nodos DOM
-	texto: function(elem) {
-		nó var,
+	// Retrieve the text value of an array of DOM nodes
+	text: function( elem ) {
+		var node,
 			ret = "",
-			eu = 0,
+			i = 0,
 			nodeType = elem.nodeType;
 
-		if (!nodeType) {
+		if ( !nodeType ) {
 
-			// Se não houver nodeType, espera-se que seja um array
-			while ((nó = elem[i++])) {
+			// If no nodeType, this is expected to be an array
+			while ( ( node = elem[ i++ ] ) ) {
 
-				// Não percorre nós de comentário
-				ret += jQuery.text( nó );
+				// Do not traverse comment nodes
+				ret += jQuery.text( node );
 			}
 		} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
 			return elem.textContent;
@@ -417,148 +417,148 @@ jQuery.extend( {
 			return elem.nodeValue;
 		}
 
-		// Não inclua comentários ou nós de instruções de processamento
+		// Do not include comment or processing instruction nodes
 
-		retorno ret;
+		return ret;
 	},
 
-	// os resultados são apenas para uso interno
-	makeArray: function( arr, resultados ) {
-		var ret = resultados || [];
+	// results is for internal usage only
+	makeArray: function( arr, results ) {
+		var ret = results || [];
 
-		if ( arr != nulo ) {
+		if ( arr != null ) {
 			if ( isArrayLike( Object( arr ) ) ) {
 				jQuery.merge( ret,
 					typeof arr === "string" ?
-						[arr]: arr
+						[ arr ] : arr
 				);
-			} outro {
+			} else {
 				push.call( ret, arr );
 			}
 		}
 
-		retorno ret;
+		return ret;
 	},
 
-	inArray: function(elem, arr, i) {
+	inArray: function( elem, arr, i ) {
 		return arr == null ? -1 : indexOf.call( arr, elem, i );
 	},
 
-	isXMLDoc: function(elem) {
+	isXMLDoc: function( elem ) {
 		var namespace = elem && elem.namespaceURI,
 			docElem = elem && ( elem.ownerDocument || elem ).documentElement;
 
-		// Assume HTML quando documentElement ainda não existe, como dentro
-		// fragmentos de documento.
+		// Assume HTML when documentElement doesn't yet exist, such as inside
+		// document fragments.
 		return !rhtmlSuffix.test( namespace || docElem && docElem.nodeName || "HTML" );
 	},
 
-	// Suporte: Android <=4.0 apenas, PhantomJS 1 apenas
-	// push.apply(_, arraylike) lança no antigo WebKit
-	mesclar: função (primeiro, segundo) {
-		var len = +segundo.comprimento,
+	// Support: Android <=4.0 only, PhantomJS 1 only
+	// push.apply(_, arraylike) throws on ancient WebKit
+	merge: function( first, second ) {
+		var len = +second.length,
 			j = 0,
-			i = primeiro.comprimento;
+			i = first.length;
 
 		for ( ; j < len; j++ ) {
-			primeiro[i++] = segundo[j];
+			first[ i++ ] = second[ j ];
 		}
 
-		primeiro.comprimento = i;
+		first.length = i;
 
-		retorne primeiro;
+		return first;
 	},
 
-	grep: function(elems, callback, inverter) {
+	grep: function( elems, callback, invert ) {
 		var callbackInverse,
-			partidas = [],
-			eu = 0,
-			comprimento = elementos.comprimento,
+			matches = [],
+			i = 0,
+			length = elems.length,
 			callbackExpect = !invert;
 
-		// Percorre o array, salvando apenas os itens
-		// que passa a função do validador
-		for ( ; i < comprimento; i++ ) {
-			callbackInverse = !callback(elems[ i ], i );
+		// Go through the array, only saving the items
+		// that pass the validator function
+		for ( ; i < length; i++ ) {
+			callbackInverse = !callback( elems[ i ], i );
 			if ( callbackInverse !== callbackExpect ) {
-				matchs.push(elems[ i ] );
+				matches.push( elems[ i ] );
 			}
 		}
 
-		partidas de retorno;
+		return matches;
 	},
 
-	// arg é apenas para uso interno
-	map: function(elems, callback, arg) {
-		var comprimento, valor,
-			eu = 0,
+	// arg is for internal usage only
+	map: function( elems, callback, arg ) {
+		var length, value,
+			i = 0,
 			ret = [];
 
-		// Percorre o array, traduzindo cada um dos itens para seus novos valores
-		if (isArrayLike(elems)) {
-			comprimento = elems.comprimento;
-			for ( ; i < comprimento; i++ ) {
-				value = callback(elems[ i ], i, arg );
+		// Go through the array, translating each of the items to their new values
+		if ( isArrayLike( elems ) ) {
+			length = elems.length;
+			for ( ; i < length; i++ ) {
+				value = callback( elems[ i ], i, arg );
 
-				if ( valor != nulo ) {
-					ret.push( valor );
+				if ( value != null ) {
+					ret.push( value );
 				}
 			}
 
-		// Percorre todas as chaves do objeto,
-		} outro {
-			for ( i em elementos ) {
-				value = callback(elems[ i ], i, arg );
+		// Go through every key on the object,
+		} else {
+			for ( i in elems ) {
+				value = callback( elems[ i ], i, arg );
 
-				if ( valor != nulo ) {
-					ret.push( valor );
+				if ( value != null ) {
+					ret.push( value );
 				}
 			}
 		}
 
-		// Achata quaisquer arrays aninhados
-		retornar plano( ret );
+		// Flatten any nested arrays
+		return flat( ret );
 	},
 
-	// Um ​​contador GUID global para objetos
-	guia: 1,
+	// A global GUID counter for objects
+	guid: 1,
 
-	// jQuery.support não é usado no Core, mas outros projetos anexam seus
-	// propriedades para ele, então ele precisa existir.
-	suporte: suporte
+	// jQuery.support is not used in Core but other projects attach their
+	// properties to it so it needs to exist.
+	support: support
 } );
 
-if (tipo de Símbolo === "função" ) {
+if ( typeof Symbol === "function" ) {
 	jQuery.fn[ Symbol.iterator ] = arr[ Symbol.iterator ];
 }
 
-// Preenche o mapa class2type
+// Populate the class2type map
 jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ),
-	function( _i, nome ) {
-		class2type[ "[objeto " + nome + "]" ] = nome.toLowerCase();
+	function( _i, name ) {
+		class2type[ "[object " + name + "]" ] = name.toLowerCase();
 	} );
 
 function isArrayLike( obj ) {
 
-	// Suporte: somente iOS 8.2 real (não reproduzível no simulador)
-	// verificação `in` usada para evitar erro JIT (gh-2145)
-	// hasOwn não é usado aqui devido a falsos negativos
-	// referente ao tamanho da lista de nós no IE
-	var length = !!obj && "comprimento" in obj && obj.length,
-		tipo = toType(obj);
+	// Support: real iOS 8.2 only (not reproducible in simulator)
+	// `in` check used to prevent JIT error (gh-2145)
+	// hasOwn isn't used here due to false negatives
+	// regarding Nodelist length in IE
+	var length = !!obj && "length" in obj && obj.length,
+		type = toType( obj );
 
 	if ( isFunction( obj ) || isWindow( obj ) ) {
-		retorna falso;
+		return false;
 	}
 
-	tipo de retorno === "array" || comprimento === 0 ||
+	return type === "array" || length === 0 ||
 		typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 }
 
 
-function nodeName(elem, name) {
+function nodeName( elem, name ) {
 
-	return elem.nodeName && elem.nodeName.toLowerCase() === nome.toLowerCase();
+	return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 
 }
 var pop = arr.pop;
@@ -567,30 +567,30 @@ var pop = arr.pop;
 var sort = arr.sort;
 
 
-var emenda = arr. emenda;
+var splice = arr.splice;
 
 
 var whitespace = "[\\x20\\t\\r\\n\\f]";
 
 
 var rtrimCSS = new RegExp(
-	"^" + espaço em branco + "+|((?:^|[^\\\\])(?:\\\\.)*)" + espaço em branco + "+$",
+	"^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
 	"g"
 );
 
 
 
 
-// Nota: um elemento não contém a si mesmo
+// Note: an element does not contain itself
 jQuery.contains = function( a, b ) {
 	var bup = b && b.parentNode;
 
-	retornar um === bup || !!( bup && bup.nodeType === 1 && (
+	return a === bup || !!( bup && bup.nodeType === 1 && (
 
-		// Suporte: IE 9 - 11+
-		// IE não tem `contém` em SVG.
-		a.contém ?
-			a.contém( bup ):
+		// Support: IE 9 - 11+
+		// IE doesn't have `contains` on SVG.
+		a.contains ?
+			a.contains( bup ) :
 			a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
 	) );
 };
@@ -598,330 +598,330 @@ jQuery.contains = function( a, b ) {
 
 
 
-// Serialização de string/identificador CSS
+// CSS string/identifier serialization
 // https://drafts.csswg.org/cssom/#common-serializing-idioms
 var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
 
 function fcssescape( ch, asCodePoint ) {
-	if (asCodePoint) {
+	if ( asCodePoint ) {
 
-		// U+0000 NULL torna-se U+FFFD SUBSTITUIÇÃO CARACTER
+		// U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
 		if ( ch === "\0" ) {
-			retornar "\uFFFD";
+			return "\uFFFD";
 		}
 
-		// Caracteres de controle e (dependendo da posição) números são escapados como pontos de código
+		// Control characters and (dependent upon position) numbers get escaped as code points
 		return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
 	}
 
-	// Outros caracteres ASCII potencialmente especiais recebem escape de barra invertida
+	// Other potentially-special ASCII characters get backslash-escaped
 	return "\\" + ch;
 }
 
-jQuery.escapeSelector = function(sel) {
+jQuery.escapeSelector = function( sel ) {
 	return ( sel + "" ).replace( rcssescape, fcssescape );
 };
 
 
 
 
-var preferidoDoc = documento,
+var preferredDoc = document,
 	pushNative = push;
 
-( função() {
+( function() {
 
-var eu,
+var i,
 	Expr,
-	contexto mais externo,
+	outermostContext,
 	sortInput,
-	temDuplicado,
+	hasDuplicate,
 	push = pushNative,
 
-	// vars de documento local
-	documento,
+	// Local document vars
+	document,
 	documentElement,
 	documentIsHTML,
 	rbuggyQSA,
-	partidas,
+	matches,
 
-	// Dados específicos da instância
-	expando = jQuery.expandindo,
+	// Instance-specific data
+	expando = jQuery.expando,
 	dirruns = 0,
-	feito = 0,
-	classeCache = criarCache(),
-	tokenCache = criarCache(),
-	compiladorCache = criarCache(),
+	done = 0,
+	classCache = createCache(),
+	tokenCache = createCache(),
+	compilerCache = createCache(),
 	nonnativeSelectorCache = createCache(),
 	sortOrder = function( a, b ) {
-		se (a === b) {
-			hasDuplicate = verdadeiro;
+		if ( a === b ) {
+			hasDuplicate = true;
 		}
-		retornar 0;
+		return 0;
 	},
 
-	booleans = "marcado|selecionado|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|" +
-		"loop|múltiplo|aberto|readonly|required|scoped",
+	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|" +
+		"loop|multiple|open|readonly|required|scoped",
 
-	// Expressões regulares
+	// Regular expressions
 
 	// https://www.w3.org/TR/css-syntax-3/#ident-token-diagram
-	identificador = "(?:\\\\[\\da-fA-F]{1,6}" + espaço em branco +
+	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace +
 		"?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
 
-	// Seletores de atributos: https://www.w3.org/TR/selectors/#attribute-selectors
-	atributos = "\\[" + espaço em branco + "*(" + identificador + ")(?:" + espaço em branco +
+	// Attribute selectors: https://www.w3.org/TR/selectors/#attribute-selectors
+	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
 
-		// Operador (captura 2)
-		"*([*^$|!~]?=)" + espaço em branco +
+		// Operator (capture 2)
+		"*([*^$|!~]?=)" + whitespace +
 
-		// "Os valores dos atributos devem ser identificadores CSS [captura 5] ou strings [captura 3 ou captura 4]"
-		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"] )*)\"|(" + identificador + "))|)" +
-		espaço em branco + "*\\]",
+		// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
+		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" +
+		whitespace + "*\\]",
 
-	pseudos = ":(" + identificador + ")(?:\\((" +
+	pseudos = ":(" + identifier + ")(?:\\((" +
 
-		// Para reduzir o número de seletores que precisam ser tokenizados no preFilter, prefira argumentos:
-		// 1. citado (captura 3; captura 4 ou captura 5)
-		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*) \"|" +
+		// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
+		// 1. quoted (capture 3; capture 4 or capture 5)
+		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
 
-		// 2. simples (captura 6)
-		"((?:\\\\.|[^\\\\()[\\]]|" + atributos + ")*)|" +
+		// 2. simple (capture 6)
+		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
 
-		// 3. qualquer outra coisa (captura 2)
+		// 3. anything else (capture 2)
 		".*" +
 		")\\)|)",
 
-	// Espaço em branco à esquerda e à direita sem escape, capturando alguns caracteres sem espaço em branco que precedem o último
-	rwhitespace = new RegExp(whitespace + "+", "g" ),
+	// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
+	rwhitespace = new RegExp( whitespace + "+", "g" ),
 
-	rcomma = new RegExp( "^" + espaço em branco + "*," + espaço em branco + "*" ),
-	rleadingCombinator = new RegExp( "^" + espaço em branco + "*([>+~]|" + espaço em branco + ")" +
-		espaço em branco + "*" ),
-	rdescend = new RegExp(espaço em branco + "|>" ),
+	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
+	rleadingCombinator = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" +
+		whitespace + "*" ),
+	rdescend = new RegExp( whitespace + "|>" ),
 
 	rpseudo = new RegExp( pseudos ),
-	ridentifier = new RegExp( "^" + identificador + "$" ),
+	ridentifier = new RegExp( "^" + identifier + "$" ),
 
 	matchExpr = {
-		ID: novo RegExp( "^#(" + identificador + ")" ),
-		CLASSE: new RegExp( "^\\.(" + identificador + ")" ),
-		TAG: novo RegExp( "^(" + identificador + "|[*])" ),
-		ATTR: novo RegExp( "^" + atributos ),
-		PSEUDO: novo RegExp( "^" + pseudos ),
-		FILHO: novo RegExp(
-			"^:(somente|primeiro|último|enésimo|enésimo-último)-(filho|do-tipo)(?:\\(" +
-				espaço em branco + "*(par|ímpar|(([+-]|)(\\d*)n|)" + espaço em branco + "*(?:([+-]|)" +
-				espaço em branco + "*(\\d+)|))" + espaço em branco + "*\\)|)", "i" ),
-		bool: new RegExp( "^(?:" + booleanos + ")$", "i" ),
+		ID: new RegExp( "^#(" + identifier + ")" ),
+		CLASS: new RegExp( "^\\.(" + identifier + ")" ),
+		TAG: new RegExp( "^(" + identifier + "|[*])" ),
+		ATTR: new RegExp( "^" + attributes ),
+		PSEUDO: new RegExp( "^" + pseudos ),
+		CHILD: new RegExp(
+			"^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" +
+				whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" +
+				whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
+		bool: new RegExp( "^(?:" + booleans + ")$", "i" ),
 
-		// Para uso em bibliotecas implementando .is()
-		// Usamos isso para correspondência de PDV em `select`
-		needContext: new RegExp( "^" + espaço em branco +
-			"*[>+~]|:(par|ímpar|eq|gt|lt|nth|primeiro|último)(?:\\(" + espaço em branco +
-			"*((?:-\\d)?\\d*)" + espaço em branco + "*\\)|)(?=[^-]|$)", "i" )
+		// For use in libraries implementing .is()
+		// We use this for POS matching in `select`
+		needsContext: new RegExp( "^" + whitespace +
+			"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace +
+			"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
 	rinputs = /^(?:input|select|textarea|button)$/i,
-	cabeçalho = /^h\d$/i,
+	rheader = /^h\d$/i,
 
-	// Seletores de ID ou TAG ou CLASS facilmente analisáveis/recuperáveis
+	// Easily-parseable/retrievable ID or TAG or CLASS selectors
 	rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
 
 	rsibling = /[+~]/,
 
-	// CSS escapa
+	// CSS escapes
 	// https://www.w3.org/TR/CSS21/syndata.html#escaped-characters
-	runescape = new RegExp( "\\\\[\\da-fA-F]{1,6}" + espaço em branco +
+	runescape = new RegExp( "\\\\[\\da-fA-F]{1,6}" + whitespace +
 		"?|\\\\([^\\r\\n\\f])", "g" ),
 	funescape = function( escape, nonHex ) {
 		var high = "0x" + escape.slice( 1 ) - 0x10000;
 
-		if ( não Hex ) {
+		if ( nonHex ) {
 
-			// Retira o prefixo da barra invertida de uma sequência de escape não hexadecimal
+			// Strip the backslash prefix from a non-hex escape sequence
 			return nonHex;
 		}
 
-		// Substitui uma sequência de escape hexadecimal pelo ponto de código Unicode codificado
-		// Suporte: IE <=11+
-		// Para valores fora do Basic Multilingual Plane (BMP), construa manualmente um
-		// par substituto
-		retornar alto < 0 ?
-			String.fromCharCode(alto + 0x10000):
-			String.fromCharCode( alto >> 10 | 0xD800, alto & 0x3FF | 0xDC00 );
+		// Replace a hexadecimal escape sequence with the encoded Unicode code point
+		// Support: IE <=11+
+		// For values outside the Basic Multilingual Plane (BMP), manually construct a
+		// surrogate pair
+		return high < 0 ?
+			String.fromCharCode( high + 0x10000 ) :
+			String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
 	},
 
-	// Usado para iframes; veja `setDocument`.
-	// Suporte: IE 9 - 11+, Edge 12 - 18+
-	// A remoção do wrapper da função causa uma "Permissão negada"
-	// erro no IE/Edge.
-	descarregarHandler = function() {
-		setDocumento();
+	// Used for iframes; see `setDocument`.
+	// Support: IE 9 - 11+, Edge 12 - 18+
+	// Removing the function wrapper causes a "Permission Denied"
+	// error in IE/Edge.
+	unloadHandler = function() {
+		setDocument();
 	},
 
 	inDisabledFieldset = addCombinator(
-		function(elem){
+		function( elem ) {
 			return elem.disabled === true && nodeName( elem, "fieldset" );
 		},
-		{ dir: "parentNode", próximo: "legenda" }
+		{ dir: "parentNode", next: "legend" }
 	);
 
-// Suporte: IE <=9 apenas
-// Acessando document.activeElement pode lançar inesperadamente
+// Support: IE <=9 only
+// Accessing document.activeElement can throw unexpectedly
 // https://bugs.jquery.com/ticket/13393
 function safeActiveElement() {
-	tentar {
+	try {
 		return document.activeElement;
-	} pegar (err) { }
+	} catch ( err ) { }
 }
 
-// Otimize para push.apply( _, NodeList )
-tentar {
+// Optimize for push.apply( _, NodeList )
+try {
 	push.apply(
-		(arr = slice.call(preferredDoc.childNodes)),
-		preferidoDoc.childNodes
+		( arr = slice.call( preferredDoc.childNodes ) ),
+		preferredDoc.childNodes
 	);
 
-	// Suporte: Android <=4.0
-	// Detecta push.apply com falha silenciosa
+	// Support: Android <=4.0
+	// Detect silently failing push.apply
 	// eslint-disable-next-line no-unused-expressions
-	arr[preferredDoc.childNodes.length ].nodeType;
-} pegar ( e ) {
-	empurre = {
-		aplicar: function(alvo, els) {
-			pushNative.apply(alvo, slice.call(els));
+	arr[ preferredDoc.childNodes.length ].nodeType;
+} catch ( e ) {
+	push = {
+		apply: function( target, els ) {
+			pushNative.apply( target, slice.call( els ) );
 		},
-		chamada: function(alvo) {
-			pushNative.apply(alvo, slice.call(argumentos, 1));
+		call: function( target ) {
+			pushNative.apply( target, slice.call( arguments, 1 ) );
 		}
 	};
 }
 
-function find(seletor, contexto, resultados, semente) {
+function find( selector, context, results, seed ) {
 	var m, i, elem, nid, match, groups, newSelector,
-		newContext = contexto && context.ownerDocument,
+		newContext = context && context.ownerDocument,
 
-		// nodeType padrão é 9, já que o padrão do contexto é document
-		nodeType = contexto ? context.nodeType : 9;
+		// nodeType defaults to 9, since context defaults to document
+		nodeType = context ? context.nodeType : 9;
 
-	resultados = resultados || [];
+	results = results || [];
 
-	// Retorno antecipado de chamadas com seletor ou contexto inválido
-	if ( seletor de tipo !== "string" || !seletor ||
+	// Return early from calls with invalid selector or context
+	if ( typeof selector !== "string" || !selector ||
 		nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ) {
 
-		resultados de retorno;
+		return results;
 	}
 
-	// Tenta encontrar atalhos para operações (ao contrário de filtros) em documentos HTML
-	if (!semente) {
-		setDocumento(contexto);
-		contexto = contexto || documento;
+	// Try to shortcut find operations (as opposed to filters) in HTML documents
+	if ( !seed ) {
+		setDocument( context );
+		context = context || document;
 
 		if ( documentIsHTML ) {
 
-			// Se o seletor for suficientemente simples, tente usar um método DOM "get*By*"
-			// (exceto o contexto DocumentFragment, onde os métodos não existem)
+			// If the selector is sufficiently simple, try using a "get*By*" DOM method
+			// (excepting DocumentFragment context, where the methods don't exist)
 			if ( nodeType !== 11 && ( match = rquickExpr.exec( selector ) ) ) {
 
-				// seletor de id
-				if ((m = match[1])) {
+				// ID selector
+				if ( ( m = match[ 1 ] ) ) {
 
-					// Contexto do documento
-					if ( tipo de nó === 9 ) {
-						if ((elem = context.getElementById(m))) {
+					// Document context
+					if ( nodeType === 9 ) {
+						if ( ( elem = context.getElementById( m ) ) ) {
 
-							// Suporte: somente IE 9
-							// getElementById pode corresponder elementos por nome em vez de ID
-							if (elem.id === m) {
-								push.call( resultados, elem );
-								resultados de retorno;
+							// Support: IE 9 only
+							// getElementById can match elements by name instead of ID
+							if ( elem.id === m ) {
+								push.call( results, elem );
+								return results;
 							}
-						} outro {
-							resultados de retorno;
+						} else {
+							return results;
 						}
 
-					// Contexto do elemento
-					} outro {
+					// Element context
+					} else {
 
-						// Suporte: somente IE 9
-						// getElementById pode corresponder elementos por nome em vez de ID
+						// Support: IE 9 only
+						// getElementById can match elements by name instead of ID
 						if ( newContext && ( elem = newContext.getElementById( m ) ) &&
-							find.contains( contexto, elemento ) &&
+							find.contains( context, elem ) &&
 							elem.id === m ) {
 
-							push.call( resultados, elem );
-							resultados de retorno;
+							push.call( results, elem );
+							return results;
 						}
 					}
 
-				// Seletor de tipo
-				} else if (combinar[ 2 ] ) {
-					push.apply(resultados, context.getElementsByTagName(seletor));
-					resultados de retorno;
+				// Type selector
+				} else if ( match[ 2 ] ) {
+					push.apply( results, context.getElementsByTagName( selector ) );
+					return results;
 
-				// seletor de classe
+				// Class selector
 				} else if ( ( m = match[ 3 ] ) && context.getElementsByClassName ) {
-					push.apply( resultados, context.getElementsByClassName( m ) );
-					resultados de retorno;
+					push.apply( results, context.getElementsByClassName( m ) );
+					return results;
 				}
 			}
 
-			// Tira proveito de querySelectorAll
-			if (!nonnativeSelectorCache[ seletor + " " ] &&
-				( !rbuggyQSA || !rbuggyQSA.test( seletor ) ) ) {
+			// Take advantage of querySelectorAll
+			if ( !nonnativeSelectorCache[ selector + " " ] &&
+				( !rbuggyQSA || !rbuggyQSA.test( selector ) ) ) {
 
-				novoSeletor = seletor;
-				novoContexto = contexto;
+				newSelector = selector;
+				newContext = context;
 
-				// qSA considera elementos fora de uma raiz de escopo ao avaliar filho ou
-				// combinadores descendentes, o que não é o que queremos.
-				// Nesses casos, contornamos o comportamento prefixando cada seletor no
-				// lista com um seletor de ID referenciando o contexto do escopo.
-				// A técnica também deve ser usada quando um combinador principal é usado
-				// como tais seletores não são reconhecidos por querySelectorAll.
-				// Obrigado a Andrew Dupont por esta técnica.
-				if ( tipo de nó === 1 &&
-					( rdescend.test( seletor ) || rleadingCombinator.test( seletor ) ) ) {
+				// qSA considers elements outside a scoping root when evaluating child or
+				// descendant combinators, which is not what we want.
+				// In such cases, we work around the behavior by prefixing every selector in the
+				// list with an ID selector referencing the scope context.
+				// The technique has to be used as well when a leading combinator is used
+				// as such selectors are not recognized by querySelectorAll.
+				// Thanks to Andrew Dupont for this technique.
+				if ( nodeType === 1 &&
+					( rdescend.test( selector ) || rleadingCombinator.test( selector ) ) ) {
 
-					// Expandir contexto para seletores irmãos
+					// Expand context for sibling selectors
 					newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
-						contexto;
+						context;
 
-					// Podemos usar :scope ao invés do ID hack se o navegador
-					// suporta & se não estivermos mudando o contexto.
-					// Suporte: IE 11+, Edge 17 - 18+
-					// IE/Edge às vezes lança um erro "Permissão negada" quando
-					// comparação estrita de dois documentos; comparações rasas funcionam.
+					// We can use :scope instead of the ID hack if the browser
+					// supports it & if we're not changing the context.
+					// Support: IE 11+, Edge 17 - 18+
+					// IE/Edge sometimes throw a "Permission denied" error when
+					// strict-comparing two documents; shallow comparisons work.
 					// eslint-disable-next-line eqeqeq
-					if ( newContext != contexto || !support.scope ) {
+					if ( newContext != context || !support.scope ) {
 
-						// Captura o ID de contexto, definindo-o primeiro se necessário
-						if ((nid = context.getAttribute("id"))) {
-							nid = jQuery.escapeSelector(nid);
-						} outro {
+						// Capture the context ID, setting it first if necessary
+						if ( ( nid = context.getAttribute( "id" ) ) ) {
+							nid = jQuery.escapeSelector( nid );
+						} else {
 							context.setAttribute( "id", ( nid = expando ) );
 						}
 					}
 
-					// Prefixa cada seletor na lista
-					grupos = tokenize(seletor);
-					i = grupos.comprimento;
-					enquanto eu-- ) {
-						grupos[ i ] = ( nid ? "#" + nid: ":scope" ) + " " +
-							toSelector(grupos[i]);
+					// Prefix every selector in the list
+					groups = tokenize( selector );
+					i = groups.length;
+					while ( i-- ) {
+						groups[ i ] = ( nid ? "#" + nid : ":scope" ) + " " +
+							toSelector( groups[ i ] );
 					}
 					newSelector = groups.join( "," );
 				}
 
-				tentar {
-					push.apply(resultados,
+				try {
+					push.apply( results,
 						newContext.querySelectorAll( newSelector )
 					);
-					resultados de retorno;
-				} catch (qsaError) {
-					nonnativeSelectorCache(seletor, true );
-				} finalmente {
+					return results;
+				} catch ( qsaError ) {
+					nonnativeSelectorCache( selector, true );
+				} finally {
 					if ( nid === expando ) {
 						context.removeAttribute( "id" );
 					}
@@ -930,157 +930,157 @@ function find(seletor, contexto, resultados, semente) {
 		}
 	}
 
-	// Todos os outros
-	return select( selector.replace( rtrimCSS, "$1" ), contexto, resultados, semente );
+	// All others
+	return select( selector.replace( rtrimCSS, "$1" ), context, results, seed );
 }
 
 /**
- * Crie caches de valor-chave de tamanho limitado
- * @returns {function(string, object)} Retorna os dados do objeto após armazená-lo em si mesmo com
- * nome da propriedade a string (com sufixo de espaço) e (se o cache for maior que Expr.cacheLength)
- * excluindo a entrada mais antiga
+ * Create key-value caches of limited size
+ * @returns {function(string, object)} Returns the Object data after storing it on itself with
+ *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
+ *	deleting the oldest entry
  */
-função criarCache() {
-	var chaves = [];
+function createCache() {
+	var keys = [];
 
-	função cache(chave, valor) {
+	function cache( key, value ) {
 
-		// Use (tecla + " ") para evitar colisão com as propriedades do protótipo nativo
-		// (consulte https://github.com/jquery/sizzle/issues/157)
+		// Use (key + " ") to avoid collision with native prototype properties
+		// (see https://github.com/jquery/sizzle/issues/157)
 		if ( keys.push( key + " " ) > Expr.cacheLength ) {
 
-			// Apenas mantém as entradas mais recentes
-			excluir cache[ keys.shift() ];
+			// Only keep the most recent entries
+			delete cache[ keys.shift() ];
 		}
-		return (cache[chave + ""] = valor);
+		return ( cache[ key + " " ] = value );
 	}
-	cache de retorno;
+	return cache;
 }
 
 /**
- * Marque uma função para uso especial pelo módulo seletor jQuery
- * @param {Function} fn A função a ser marcada
+ * Mark a function for special use by jQuery selector module
+ * @param {Function} fn The function to mark
  */
-função marcaFunção( fn ) {
-	fn[ expandido ] = verdadeiro;
-	retornar fn;
+function markFunction( fn ) {
+	fn[ expando ] = true;
+	return fn;
 }
 
 /**
- * Teste de suporte usando um elemento
- * @param {Function} fn Passou o elemento criado e retorna um resultado booleano
+ * Support testing using an element
+ * @param {Function} fn Passed the created element and returns a boolean result
  */
-função assert( fn ) {
+function assert( fn ) {
 	var el = document.createElement( "fieldset" );
 
-	tentar {
-		retornar !!fn(el);
-	} pegar ( e ) {
-		retorna falso;
-	} finalmente {
+	try {
+		return !!fn( el );
+	} catch ( e ) {
+		return false;
+	} finally {
 
-		// Remove de seu pai por padrão
-		if (el.parentNode) {
+		// Remove from its parent by default
+		if ( el.parentNode ) {
 			el.parentNode.removeChild( el );
 		}
 
-		// libera memoria no IE
-		el = nulo;
+		// release memory in IE
+		el = null;
 	}
 }
 
 /**
- * Retorna uma função para usar em pseudos para tipos de entrada
- * @param {String} tipo
+ * Returns a function to use in pseudos for input types
+ * @param {String} type
  */
-function createInputPseudo( tipo ) {
-	return função(elem){
+function createInputPseudo( type ) {
+	return function( elem ) {
 		return nodeName( elem, "input" ) && elem.type === type;
 	};
 }
 
 /**
- * Retorna uma função para usar em pseudos para botões
- * @param {String} tipo
+ * Returns a function to use in pseudos for buttons
+ * @param {String} type
  */
-function createButtonPseudo( tipo ) {
-	return função(elem){
-		return ( nodeName(elem, "entrada") || nodeName(elem, "botão") ) &&
+function createButtonPseudo( type ) {
+	return function( elem ) {
+		return ( nodeName( elem, "input" ) || nodeName( elem, "button" ) ) &&
 			elem.type === type;
 	};
 }
 
 /**
- * Retorna uma função para usar em pseudos para :enabled/:disabled
- * @param {Boolean} desativado verdadeiro para :desativado; falso para: ativado
+ * Returns a function to use in pseudos for :enabled/:disabled
+ * @param {Boolean} disabled true for :disabled; false for :enabled
  */
-function createDisabledPseudo(desativado) {
+function createDisabledPseudo( disabled ) {
 
-	// Conhecido :disabled falsos positivos: fieldset[disabled] > legend:nth-of-type(n+2) :can-disable
-	return função(elem){
+	// Known :disabled false positives: fieldset[disabled] > legend:nth-of-type(n+2) :can-disable
+	return function( elem ) {
 
-		// Somente certos elementos podem corresponder a :enabled ou :disabled
+		// Only certain elements can match :enabled or :disabled
 		// https://html.spec.whatwg.org/multipage/scripting.html#selector-enabled
 		// https://html.spec.whatwg.org/multipage/scripting.html#selector-disabled
-		if ( "formulário" no elemento) {
+		if ( "form" in elem ) {
 
-			// Verifique se há deficiência herdada em elementos não desativados relevantes:
-			// * elementos associados a formulários listados em um fieldset desabilitado
-			// https://html.spec.whatwg.org/multipage/forms.html#category-listed
-			// https://html.spec.whatwg.org/multipage/forms.html#concept-fe-disabled
-			// * elementos de opção em um optgroup desabilitado
-			// https://html.spec.whatwg.org/multipage/forms.html#concept-option-disabled
-			// Todos esses elementos possuem uma propriedade "form".
+			// Check for inherited disabledness on relevant non-disabled elements:
+			// * listed form-associated elements in a disabled fieldset
+			//   https://html.spec.whatwg.org/multipage/forms.html#category-listed
+			//   https://html.spec.whatwg.org/multipage/forms.html#concept-fe-disabled
+			// * option elements in a disabled optgroup
+			//   https://html.spec.whatwg.org/multipage/forms.html#concept-option-disabled
+			// All such elements have a "form" property.
 			if ( elem.parentNode && elem.disabled === false ) {
 
-				// Elementos de opção adiam para um optgroup pai, se presente
-				if ( "rótulo" no elemento) {
-					if ( "rótulo" em elem.parentNode ) {
-						return elem.parentNode.disabled === desativado;
-					} outro {
-						return elem.disabled === desativado;
+				// Option elements defer to a parent optgroup if present
+				if ( "label" in elem ) {
+					if ( "label" in elem.parentNode ) {
+						return elem.parentNode.disabled === disabled;
+					} else {
+						return elem.disabled === disabled;
 					}
 				}
 
-				// Suporte: IE 6 - 11+
-				// Use a propriedade de atalho isDisabled para verificar os ancestrais do conjunto de campos desabilitados
-				return elem.isDisabled === desativado ||
+				// Support: IE 6 - 11+
+				// Use the isDisabled shortcut property to check for disabled fieldset ancestors
+				return elem.isDisabled === disabled ||
 
-					// Onde não houver isDisabled, verifique manualmente
+					// Where there is no isDisabled, check manually
 					elem.isDisabled !== !disabled &&
-						inDisabledFieldset(elem) === desabilitado;
+						inDisabledFieldset( elem ) === disabled;
 			}
 
-			return elem.disabled === desativado;
+			return elem.disabled === disabled;
 
-		// Tente eliminar os elementos que não podem ser desabilitados antes de confiar na propriedade desabilitada.
-		// Algumas vítimas são pegas em nossa rede (label, legend, menu, track), mas não deveria
-		// mesmo existe neles, muito menos tem um valor booleano.
-		} else if ( "rótulo" em elem ) {
-			return elem.disabled === desativado;
+		// Try to winnow out elements that can't be disabled before trusting the disabled property.
+		// Some victims get caught in our net (label, legend, menu, track), but it shouldn't
+		// even exist on them, let alone have a boolean value.
+		} else if ( "label" in elem ) {
+			return elem.disabled === disabled;
 		}
 
-		// Os elementos restantes não são nem :enabled nem :disabled
-		retorna falso;
+		// Remaining elements are neither :enabled nor :disabled
+		return false;
 	};
 }
 
 /**
- * Retorna uma função para usar em pseudos para posicionais
- * @param {Função} fn
+ * Returns a function to use in pseudos for positionals
+ * @param {Function} fn
  */
-função criarPosicionalPseudo( fn ) {
-	return markFunction( function( argumento ) {
-		argumento = +argumento;
-		return markFunction( function( seed, matchs ) {
+function createPositionalPseudo( fn ) {
+	return markFunction( function( argument ) {
+		argument = +argument;
+		return markFunction( function( seed, matches ) {
 			var j,
-				matchIndexes = fn( [], seed.length, argumento ),
+				matchIndexes = fn( [], seed.length, argument ),
 				i = matchIndexes.length;
 
-			// Corresponde aos elementos encontrados nos índices especificados
-			enquanto eu-- ) {
-				if ( semente [ ( j = matchIndexes [ i ] ) ] ) {
-					seed[j] = !(match[j] = seed[j]);
+			// Match elements found at the specified indexes
+			while ( i-- ) {
+				if ( seed[ ( j = matchIndexes[ i ] ) ] ) {
+					seed[ j ] = !( matches[ j ] = seed[ j ] );
 				}
 			}
 		} );
@@ -1088,824 +1088,824 @@ função criarPosicionalPseudo( fn ) {
 }
 
 /**
- * Verifica a validade de um nó como um contexto de seletor jQuery
- * @param {Elemento|Objeto=} contexto
- * @returns {Element|Object|Boolean} O nó de entrada, se aceitável, caso contrário, um valor falso
+ * Checks a node for validity as a jQuery selector context
+ * @param {Element|Object=} context
+ * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
  */
-função testeContext( contexto ) {
-	return context && typeof context.getElementsByTagName !== "indefinido" && context;
+function testContext( context ) {
+	return context && typeof context.getElementsByTagName !== "undefined" && context;
 }
 
 /**
- * Define as variáveis ​​relacionadas ao documento uma vez com base no documento atual
- * @param {Element|Object} [node] Um elemento ou objeto de documento a ser usado para definir o documento
- * @returns {Object} Retorna o documento atual
+ * Sets document-related variables once based on the current document
+ * @param {Element|Object} [node] An element or document object to use to set the document
+ * @returns {Object} Returns the current document
  */
 function setDocument( node ) {
-	var subJanela,
-		doc = nó ? node.ownerDocument || nó : preferidoDoc;
+	var subWindow,
+		doc = node ? node.ownerDocument || node : preferredDoc;
 
-	// Retorna antecipadamente se o documento for inválido ou já selecionado
-	// Suporte: IE 11+, Edge 17 - 18+
-	// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-	// dois documentos; comparações rasas funcionam.
+	// Return early if doc is invalid or already selected
+	// Support: IE 11+, Edge 17 - 18+
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
-	if ( doc == documento || doc.nodeType !== 9 || !doc.documentElement ) {
-		documento de devolução;
+	if ( doc == document || doc.nodeType !== 9 || !doc.documentElement ) {
+		return document;
 	}
 
-	// Atualiza variáveis ​​globais
-	documento = documento;
+	// Update global variables
+	document = doc;
 	documentElement = document.documentElement;
-	documentIsHTML = !jQuery.isXMLDoc(documento);
+	documentIsHTML = !jQuery.isXMLDoc( document );
 
-	// Suporte: apenas iOS 7, IE 9 - 11+
-	// Navegadores mais antigos não suportavam `correspondências` sem prefixo.
-	partidas = documentElement.matches ||
+	// Support: iOS 7 only, IE 9 - 11+
+	// Older browsers didn't support unprefixed `matches`.
+	matches = documentElement.matches ||
 		documentElement.webkitMatchesSelector ||
 		documentElement.msMatchesSelector;
 
-	// Suporte: IE 9 - 11+, Edge 12 - 18+
-	// Acessar documentos iframe após o descarregamento gera erros de "permissão negada" (consulte trac-13936)
-	// Suporte: IE 11+, Edge 17 - 18+
-	// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-	// dois documentos; comparações rasas funcionam.
+	// Support: IE 9 - 11+, Edge 12 - 18+
+	// Accessing iframe documents after unload throws "permission denied" errors (see trac-13936)
+	// Support: IE 11+, Edge 17 - 18+
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
-	if (preferidoDoc != documento &&
+	if ( preferredDoc != document &&
 		( subWindow = document.defaultView ) && subWindow.top !== subWindow ) {
 
-		// Suporte: IE 9 - 11+, Edge 12 - 18+
-		subWindow.addEventListener( "descarregar", descarregarHandler );
+		// Support: IE 9 - 11+, Edge 12 - 18+
+		subWindow.addEventListener( "unload", unloadHandler );
 	}
 
-	// Suporte: IE <10
-	// Verifica se getElementById retorna elementos pelo nome
-	// Os métodos getElementById quebrados não pegam nomes definidos programaticamente,
-	// então use um teste getElementsByName indireto
+	// Support: IE <10
+	// Check if getElementById returns elements by name
+	// The broken getElementById methods don't pick up programmatically-set names,
+	// so use a roundabout getElementsByName test
 	support.getById = assert( function( el ) {
 		documentElement.appendChild( el ).id = jQuery.expando;
 		return !document.getElementsByName ||
 			!document.getElementsByName( jQuery.expando ).length;
 	} );
 
-	// Suporte: somente IE 9
-	// Verifica se é possível fazer matchSelector
-	// em um nó desconectado.
+	// Support: IE 9 only
+	// Check to see if it's possible to do matchesSelector
+	// on a disconnected node.
 	support.disconnectedMatch = assert( function( el ) {
-		return matchs.call( el, "*" );
+		return matches.call( el, "*" );
 	} );
 
-	// Suporte: IE 9 - 11+, Edge 12 - 18+
-	// IE/Edge não suporta a pseudoclasse :scope.
+	// Support: IE 9 - 11+, Edge 12 - 18+
+	// IE/Edge don't support the :scope pseudo-class.
 	support.scope = assert( function() {
 		return document.querySelectorAll( ":scope" );
 	} );
 
-	// Suporte: apenas Chrome 105 - 111, Safari 15.4 - 16.3 apenas
-	// Certifique-se de que o argumento `:has()` seja analisado impiedosamente.
-	// Incluímos `*` no teste para detectar implementações com bugs que são
-	// perdoando _seletivamente_ (especificamente quando a lista inclui pelo menos
-	// um seletor válido).
-	// Observe que tratamos a total falta de suporte para `:has()` como se fosse
-	// suporte compatível com especificações, o que é bom porque o uso de `:has()` em tal
-	// os ambientes falharão no caminho qSA e retornarão ao jQuery traversal
-	// de qualquer forma.
+	// Support: Chrome 105 - 111 only, Safari 15.4 - 16.3 only
+	// Make sure the `:has()` argument is parsed unforgivingly.
+	// We include `*` in the test to detect buggy implementations that are
+	// _selectively_ forgiving (specifically when the list includes at least
+	// one valid selector).
+	// Note that we treat complete lack of support for `:has()` as if it were
+	// spec-compliant support, which is fine because use of `:has()` in such
+	// environments will fail in the qSA path and fall back to jQuery traversal
+	// anyway.
 	support.cssHas = assert( function() {
-		tentar {
+		try {
 			document.querySelector( ":has(*,:jqfake)" );
-			retorna falso;
-		} pegar ( e ) {
-			retornar verdadeiro;
+			return false;
+		} catch ( e ) {
+			return true;
 		}
 	} );
 
-	// ID filtra e encontra
-	if (suporte.getById) {
+	// ID filter and find
+	if ( support.getById ) {
 		Expr.filter.ID = function( id ) {
 			var attrId = id.replace( runescape, funescape );
-			return função(elem){
+			return function( elem ) {
 				return elem.getAttribute( "id" ) === attrId;
 			};
 		};
-		Expr.find.ID = function( id, contexto ) {
-			if ( typeof context.getElementById !== "indefinido" && documentIsHTML ) {
+		Expr.find.ID = function( id, context ) {
+			if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
 				var elem = context.getElementById( id );
-				retornar elem? [ elem ] : [];
+				return elem ? [ elem ] : [];
 			}
 		};
-	} outro {
-		Expr.filter.ID = function( id ) {
+	} else {
+		Expr.filter.ID =  function( id ) {
 			var attrId = id.replace( runescape, funescape );
-			return função(elem){
-				var node = typeof elem.getAttributeNode !== "indefinido" &&
-					elem.getAttributeNode("id");
-				nó de retorno && node.value === attrId;
+			return function( elem ) {
+				var node = typeof elem.getAttributeNode !== "undefined" &&
+					elem.getAttributeNode( "id" );
+				return node && node.value === attrId;
 			};
 		};
 
-		// Suporte: IE 6 - 7 apenas
-		// getElementById não é confiável como um atalho de busca
-		Expr.find.ID = function( id, contexto ) {
-			if ( typeof context.getElementById !== "indefinido" && documentIsHTML ) {
-				nó var, i, elems,
-					elem = context.getElementById(id);
+		// Support: IE 6 - 7 only
+		// getElementById is not reliable as a find shortcut
+		Expr.find.ID = function( id, context ) {
+			if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
+				var node, i, elems,
+					elem = context.getElementById( id );
 
-				if (elem) {
+				if ( elem ) {
 
-					// Verifica o atributo id
-					node = elem.getAttributeNode("id");
-					if (node ​​&& node.value === id) {
-						retornar [elem];
+					// Verify the id attribute
+					node = elem.getAttributeNode( "id" );
+					if ( node && node.value === id ) {
+						return [ elem ];
 					}
 
-					// Recorre a getElementsByName
+					// Fall back on getElementsByName
 					elems = context.getElementsByName( id );
 					i = 0;
-					while ((elem = elems[i++])) {
-						node = elem.getAttributeNode("id");
-						if (node ​​&& node.value === id) {
-							retornar [elem];
+					while ( ( elem = elems[ i++ ] ) ) {
+						node = elem.getAttributeNode( "id" );
+						if ( node && node.value === id ) {
+							return [ elem ];
 						}
 					}
 				}
 
-				retornar [];
+				return [];
 			}
 		};
 	}
 
-	// Marcação
-	Expr.find.TAG = função( tag, contexto) {
-		if ( typeof context.getElementsByTagName !== "indefinido" ) {
+	// Tag
+	Expr.find.TAG = function( tag, context ) {
+		if ( typeof context.getElementsByTagName !== "undefined" ) {
 			return context.getElementsByTagName( tag );
 
-		// nós DocumentFragment não possuem gEBTN
-		} outro {
+		// DocumentFragment nodes don't have gEBTN
+		} else {
 			return context.querySelectorAll( tag );
 		}
 	};
 
-	// Aula
+	// Class
 	Expr.find.CLASS = function( className, context ) {
-		if ( typeof context.getElementsByClassName !== "indefinido" && documentIsHTML ) {
+		if ( typeof context.getElementsByClassName !== "undefined" && documentIsHTML ) {
 			return context.getElementsByClassName( className );
 		}
 	};
 
 	/* QSA/matchesSelector
-	-------------------------------------------------- -------------------- */
+	---------------------------------------------------------------------- */
 
-	// Suporte a QSA e matchSelector
+	// QSA and matchesSelector support
 
 	rbuggyQSA = [];
 
-	// Construir regex QSA
-	// Estratégia Regex adotada por Diego Perini
-	assert(função(el){
+	// Build QSA regex
+	// Regex strategy adopted from Diego Perini
+	assert( function( el ) {
 
-		var entrada;
+		var input;
 
 		documentElement.appendChild( el ).innerHTML =
 			"<a id='" + expando + "' href='' disabled='disabled'></a>" +
 			"<select id='" + expando + "-\r\\' disabled='disabled'>" +
 			"<option selected=''></option></select>";
 
-		// Suporte: iOS <=7 - 8 apenas
-		// Atributos booleanos e "valor" não são tratados corretamente em alguns documentos XML
-		if (!el.querySelectorAll( "[selecionado]" ).length) {
+		// Support: iOS <=7 - 8 only
+		// Boolean attributes and "value" are not treated correctly in some XML documents
+		if ( !el.querySelectorAll( "[selected]" ).length ) {
 			rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
 		}
 
-		// Suporte: iOS <=7 - 8 apenas
+		// Support: iOS <=7 - 8 only
 		if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
 			rbuggyQSA.push( "~=" );
 		}
 
-		// Suporte: apenas iOS 8
+		// Support: iOS 8 only
 		// https://bugs.webkit.org/show_bug.cgi?id=136851
-		// `selector#id sibling-combinator selector` na página falha
+		// In-page `selector#id sibling-combinator selector` fails
 		if ( !el.querySelectorAll( "a#" + expando + "+*" ).length ) {
 			rbuggyQSA.push( ".#.+[+~]" );
 		}
 
-		// Suporte: Chrome <=105+, Firefox <=104+, Safari <=15.4+
-		// Em alguns tipos de documentos, esses seletores não funcionariam nativamente.
-		// Isso provavelmente está OK, mas para compatibilidade com versões anteriores, queremos manter
-		// manipulando-os através do jQuery traversal no jQuery 3.x.
+		// Support: Chrome <=105+, Firefox <=104+, Safari <=15.4+
+		// In some of the document kinds, these selectors wouldn't work natively.
+		// This is probably OK but for backwards compatibility we want to maintain
+		// handling them through jQuery traversal in jQuery 3.x.
 		if ( !el.querySelectorAll( ":checked" ).length ) {
-			rbuggyQSA.push( ":marcado" );
+			rbuggyQSA.push( ":checked" );
 		}
 
-		// Suporte: Aplicativos nativos do Windows 8
-		// Os atributos type e name são restritos durante a atribuição .innerHTML
+		// Support: Windows 8 Native Apps
+		// The type and name attributes are restricted during .innerHTML assignment
 		input = document.createElement( "input" );
-		input.setAttribute( "tipo", "oculto" );
-		el.appendChild( entrada ).setAttribute( "nome", "D" );
+		input.setAttribute( "type", "hidden" );
+		el.appendChild( input ).setAttribute( "name", "D" );
 
-		// Suporte: IE 9 - 11+
-		// Seletor :disabled do IE não pega os filhos de fieldsets desabilitados
-		// Suporte: Chrome <=105+, Firefox <=104+, Safari <=15.4+
-		// Em alguns tipos de documentos, esses seletores não funcionariam nativamente.
-		// Isso provavelmente está OK, mas para compatibilidade com versões anteriores, queremos manter
-		// manipulando-os através do jQuery traversal no jQuery 3.x.
+		// Support: IE 9 - 11+
+		// IE's :disabled selector does not pick up the children of disabled fieldsets
+		// Support: Chrome <=105+, Firefox <=104+, Safari <=15.4+
+		// In some of the document kinds, these selectors wouldn't work natively.
+		// This is probably OK but for backwards compatibility we want to maintain
+		// handling them through jQuery traversal in jQuery 3.x.
 		documentElement.appendChild( el ).disabled = true;
 		if ( el.querySelectorAll( ":disabled" ).length !== 2 ) {
-			rbuggyQSA.push( ":ativado", ":desativado" );
+			rbuggyQSA.push( ":enabled", ":disabled" );
 		}
 
-		// Suporte: IE 11+, Edge 15 - 18+
-		// IE 11/Edge não encontra elementos em uma consulta `[name='']` em alguns casos.
-		// Adicionando um atributo temporário ao documento antes que a seleção funcione
-		// em torno do problema.
-		// Curiosamente, IE 10 e anteriores não parecem ter o problema.
+		// Support: IE 11+, Edge 15 - 18+
+		// IE 11/Edge don't find elements on a `[name='']` query in some cases.
+		// Adding a temporary attribute to the document before the selection works
+		// around the issue.
+		// Interestingly, IE 10 & older don't seem to have the issue.
 		input = document.createElement( "input" );
-		input.setAttribute( "nome", "" );
-		el.appendChild( entrada );
-		if (!el.querySelectorAll( "[nome='']" ).length) {
-			rbuggyQSA.push( "\\[" + espaço em branco + "*nome" + espaço em branco + "*=" +
-				espaço em branco + "*(?:''|\"\")" );
+		input.setAttribute( "name", "" );
+		el.appendChild( input );
+		if ( !el.querySelectorAll( "[name='']" ).length ) {
+			rbuggyQSA.push( "\\[" + whitespace + "*name" + whitespace + "*=" +
+				whitespace + "*(?:''|\"\")" );
 		}
 	} );
 
-	if (!support.cssHas) {
+	if ( !support.cssHas ) {
 
-		// Suporte: Chrome 105 - 110+, Safari 15.4 - 16.3+
-		// Nosso mecanismo regular `try-catch` falha ao detectar arquivos não suportados nativamente
-		// pseudo-classes dentro de `:has()` (como `:has(:contains("Foo"))`)
-		// em navegadores que analisam o argumento `:has()` como uma lista de seletores indulgente.
-		// https://drafts.csswg.org/selectors/#relational agora requer o argumento
-		// para ser analisado impiedosamente, mas os navegadores ainda não foram totalmente ajustados.
-		rbuggyQSA.push( ":tem" );
+		// Support: Chrome 105 - 110+, Safari 15.4 - 16.3+
+		// Our regular `try-catch` mechanism fails to detect natively-unsupported
+		// pseudo-classes inside `:has()` (such as `:has(:contains("Foo"))`)
+		// in browsers that parse the `:has()` argument as a forgiving selector list.
+		// https://drafts.csswg.org/selectors/#relational now requires the argument
+		// to be parsed unforgivingly, but browsers have not yet fully adjusted.
+		rbuggyQSA.push( ":has" );
 	}
 
 	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join( "|" ) );
 
-	/* Ordenação
-	-------------------------------------------------- -------------------- */
+	/* Sorting
+	---------------------------------------------------------------------- */
 
-	// Ordenação do documento
+	// Document order sorting
 	sortOrder = function( a, b ) {
 
-		// Flag para remoção duplicada
-		se (a === b) {
-			hasDuplicate = verdadeiro;
-			retornar 0;
+		// Flag for duplicate removal
+		if ( a === b ) {
+			hasDuplicate = true;
+			return 0;
 		}
 
-		// Classifica na existência do método se apenas uma entrada tiver compareDocumentPosition
+		// Sort on method existence if only one input has compareDocumentPosition
 		var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
-		se ( comparar ) {
-			retornar comparar;
+		if ( compare ) {
+			return compare;
 		}
 
-		// Calcula a posição se ambas as entradas pertencerem ao mesmo documento
-		// Suporte: IE 11+, Edge 17 - 18+
-		// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-		// dois documentos; comparações rasas funcionam.
+		// Calculate position if both inputs belong to the same document
+		// Support: IE 11+, Edge 17 - 18+
+		// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+		// two documents; shallow comparisons work.
 		// eslint-disable-next-line eqeqeq
 		compare = ( a.ownerDocument || a ) == ( b.ownerDocument || b ) ?
 			a.compareDocumentPosition( b ) :
 
-			// Caso contrário, sabemos que eles estão desconectados
+			// Otherwise we know they are disconnected
 			1;
 
-		// nós desconectados
-		if ( comparar & 1 ||
-			(!support.sortDetached && b.compareDocumentPosition(a) === compare)) {
+		// Disconnected nodes
+		if ( compare & 1 ||
+			( !support.sortDetached && b.compareDocumentPosition( a ) === compare ) ) {
 
-			// Escolha o primeiro elemento relacionado ao nosso documento preferido
-			// Suporte: IE 11+, Edge 17 - 18+
-			// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-			// dois documentos; comparações rasas funcionam.
+			// Choose the first element that is related to our preferred document
+			// Support: IE 11+, Edge 17 - 18+
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
-			if ( um === documento || a.ownerDocument == preferidoDoc &&
-				find.contains(preferredDoc, a)) {
-				retornar -1;
+			if ( a === document || a.ownerDocument == preferredDoc &&
+				find.contains( preferredDoc, a ) ) {
+				return -1;
 			}
 
-			// Suporte: IE 11+, Edge 17 - 18+
-			// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-			// dois documentos; comparações rasas funcionam.
+			// Support: IE 11+, Edge 17 - 18+
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
-			if ( b === documento || b.ownerDocument == preferidoDoc &&
-				find.contains(preferredDoc, b)) {
-				retornar 1;
+			if ( b === document || b.ownerDocument == preferredDoc &&
+				find.contains( preferredDoc, b ) ) {
+				return 1;
 			}
 
-			// Mantém a ordem original
+			// Maintain original order
 			return sortInput ?
 				( indexOf.call( sortInput, a ) - indexOf.call( sortInput, b ) ) :
 				0;
 		}
 
-		retornar comparar & 4 ? -1:1;
+		return compare & 4 ? -1 : 1;
 	};
 
-	documento de devolução;
+	return document;
 }
 
 find.matches = function( expr, elements ) {
-	return find(expr, null, null, elementos);
+	return find( expr, null, null, elements );
 };
 
 find.matchesSelector = function( elem, expr ) {
-	setDocument(elem);
+	setDocument( elem );
 
-	if (documentIsHTML &&
+	if ( documentIsHTML &&
 		!nonnativeSelectorCache[ expr + " " ] &&
 		( !rbuggyQSA || !rbuggyQSA.test( expr ) ) ) {
 
-		tentar {
-			var ret = matchs.call( elem, expr );
+		try {
+			var ret = matches.call( elem, expr );
 
-			// MatchSelector do IE 9 retorna falso em nós desconectados
+			// IE 9's matchesSelector returns false on disconnected nodes
 			if ( ret || support.disconnectedMatch ||
 
-					// Da mesma forma, nós desconectados estão em um documento
-					// fragmento no IE 9
+					// As well, disconnected nodes are said to be in a document
+					// fragment in IE 9
 					elem.document && elem.document.nodeType !== 11 ) {
-				retorno ret;
+				return ret;
 			}
-		} pegar ( e ) {
+		} catch ( e ) {
 			nonnativeSelectorCache( expr, true );
 		}
 	}
 
-	return find(expr, document, null, [elem]).length > 0;
+	return find( expr, document, null, [ elem ] ).length > 0;
 };
 
-find.contains = function( contexto, elemento ) {
+find.contains = function( context, elem ) {
 
-	// Definir vars de documento se necessário
-	// Suporte: IE 11+, Edge 17 - 18+
-	// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-	// dois documentos; comparações rasas funcionam.
+	// Set document vars if needed
+	// Support: IE 11+, Edge 17 - 18+
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
-	if ((contexto.proprietárioDocumento || contexto) != documento) {
-		setDocumento(contexto);
+	if ( ( context.ownerDocument || context ) != document ) {
+		setDocument( context );
 	}
-	return jQuery.contains( contexto, elem );
+	return jQuery.contains( context, elem );
 };
 
 
-find.attr = function(elem, name) {
+find.attr = function( elem, name ) {
 
-	// Definir vars de documento se necessário
-	// Suporte: IE 11+, Edge 17 - 18+
-	// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-	// dois documentos; comparações rasas funcionam.
+	// Set document vars if needed
+	// Support: IE 11+, Edge 17 - 18+
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
-	if ((elem.ownerDocument || elem) != documento) {
-		setDocument(elem);
+	if ( ( elem.ownerDocument || elem ) != document ) {
+		setDocument( elem );
 	}
 
-	var fn = Expr.attrHandle[ nome.toLowerCase() ],
+	var fn = Expr.attrHandle[ name.toLowerCase() ],
 
-		// Não se deixe enganar pelas propriedades de Object.prototype (consulte trac-13807)
+		// Don't get fooled by Object.prototype properties (see trac-13807)
 		val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
-			fn(elem, nome, !documentIsHTML):
-			indefinido;
+			fn( elem, name, !documentIsHTML ) :
+			undefined;
 
-	if ( val !== indefinido ) {
-		valor de retorno;
+	if ( val !== undefined ) {
+		return val;
 	}
 
-	return elem.getAttribute( nome );
+	return elem.getAttribute( name );
 };
 
 find.error = function( msg ) {
-	throw new Error( "Erro de sintaxe, expressão não reconhecida: " + msg );
+	throw new Error( "Syntax error, unrecognized expression: " + msg );
 };
 
 /**
- * Classificação de documentos e remoção de duplicatas
- * Resultados @param {ArrayLike}
+ * Document sorting and removing duplicates
+ * @param {ArrayLike} results
  */
-jQuery.uniqueSort = function(resultados) {
+jQuery.uniqueSort = function( results ) {
 	var elem,
-		duplicatas = [],
+		duplicates = [],
 		j = 0,
 		i = 0;
 
-	// A menos que *sabemos* que podemos detectar duplicatas, assuma sua presença
+	// Unless we *know* we can detect duplicates, assume their presence
 	//
-	// Suporte: Android <=4.0+
-	// O teste para detecção de duplicatas é imprevisível, portanto, assuma que não podemos
-	// depende da detecção de duplicatas em todos os navegadores sem classificação estável.
+	// Support: Android <=4.0+
+	// Testing for detecting duplicates is unpredictable so instead assume we can't
+	// depend on duplicate detection in all browsers without a stable sort.
 	hasDuplicate = !support.sortStable;
-	sortInput = !support.sortStable && slice.call( resultados, 0 );
-	sort.call( resultados, sortOrder );
+	sortInput = !support.sortStable && slice.call( results, 0 );
+	sort.call( results, sortOrder );
 
-	if (temDuplicado) {
-		while ((elem = resultados[i++])){
-			if (elem === resultados[ i ] ) {
-				j = duplicados.push( i );
+	if ( hasDuplicate ) {
+		while ( ( elem = results[ i++ ] ) ) {
+			if ( elem === results[ i ] ) {
+				j = duplicates.push( i );
 			}
 		}
 		while ( j-- ) {
-			splice.call(resultados, duplicados[ j ], 1 );
+			splice.call( results, duplicates[ j ], 1 );
 		}
 	}
 
-	// Limpa a entrada após a classificação para liberar os objetos
-	// Veja https://github.com/jquery/sizzle/pull/225
+	// Clear input after sorting to release objects
+	// See https://github.com/jquery/sizzle/pull/225
 	sortInput = null;
 
-	resultados de retorno;
+	return results;
 };
 
 jQuery.fn.uniqueSort = function() {
-	return this.pushStack(jQuery.uniqueSort(slice.apply(this)));
+	return this.pushStack( jQuery.uniqueSort( slice.apply( this ) ) );
 };
 
 Expr = jQuery.expr = {
 
-	// Pode ser ajustado pelo usuário
-	cacheComprimento: 50,
+	// Can be adjusted by the user
+	cacheLength: 50,
 
 	createPseudo: markFunction,
 
-	correspondência: matchExpr,
+	match: matchExpr,
 
-	atrHandle: {},
+	attrHandle: {},
 
-	encontrar: {},
+	find: {},
 
-	relativo: {
-		">": { dir: "parentNode", primeiro: verdadeiro },
+	relative: {
+		">": { dir: "parentNode", first: true },
 		" ": { dir: "parentNode" },
-		"+": { dir: "irmão anterior", primeiro: verdadeiro },
-		"~": { dir: "irmão anterior" }
+		"+": { dir: "previousSibling", first: true },
+		"~": { dir: "previousSibling" }
 	},
 
-	préFiltro: {
-		ATTR: function( corresponder ) {
+	preFilter: {
+		ATTR: function( match ) {
 			match[ 1 ] = match[ 1 ].replace( runescape, funescape );
 
-			// Move o valor dado para corresponder[3] entre aspas ou sem aspas
+			// Move the given value to match[3] whether quoted or unquoted
 			match[ 3 ] = ( match[ 3 ] || match[ 4 ] || match[ 5 ] || "" )
 				.replace( runescape, funescape );
 
-			if (combinar[2] === "~=") {
+			if ( match[ 2 ] === "~=" ) {
 				match[ 3 ] = " " + match[ 3 ] + " ";
 			}
 
 			return match.slice( 0, 4 );
 		},
 
-		FILHO: function( corresponder ) {
+		CHILD: function( match ) {
 
-			/* correspondências de matchExpr["CHILD"]
-				1 tipo (somente|nth|...)
-				2 o quê (filho | do tipo)
-				3 argumentos (par|ímpar|\d*|\d*n([+-]\d+)?|...)
-				4 xn-componente do argumento xn+y ([+-]?\d*n|)
-				5 sinal de xn-componente
-				6 x de xn-componente
-				7 sinal do componente y
-				8 y do componente y
+			/* matches from matchExpr["CHILD"]
+				1 type (only|nth|...)
+				2 what (child|of-type)
+				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
+				4 xn-component of xn+y argument ([+-]?\d*n|)
+				5 sign of xn-component
+				6 x of xn-component
+				7 sign of y-component
+				8 y of y-component
 			*/
 			match[ 1 ] = match[ 1 ].toLowerCase();
 
 			if ( match[ 1 ].slice( 0, 3 ) === "nth" ) {
 
-				// nth-* requer argumento
-				if (!match[ 3 ] ) {
-					find.error(match[ 0 ] );
+				// nth-* requires argument
+				if ( !match[ 3 ] ) {
+					find.error( match[ 0 ] );
 				}
 
-				// Parâmetros numéricos x e y para Expr.filter.CHILD
-				// lembre-se que false/true cast respectivamente para 0/1
-				correspondência[ 4 ] = +( correspondência[ 4 ] ?
-					match[ 5 ] + ( match[ 6 ] || 1 ):
-					2 * ( corresponder[ 3 ] === "par" || corresponder[ 3 ] === "ímpar" )
+				// numeric x and y parameters for Expr.filter.CHILD
+				// remember that false/true cast respectively to 0/1
+				match[ 4 ] = +( match[ 4 ] ?
+					match[ 5 ] + ( match[ 6 ] || 1 ) :
+					2 * ( match[ 3 ] === "even" || match[ 3 ] === "odd" )
 				);
 				match[ 5 ] = +( ( match[ 7 ] + match[ 8 ] ) || match[ 3 ] === "odd" );
 
-			// outros tipos proíbem argumentos
-			} else if (combinar[ 3 ] ) {
-				find.error(match[ 0 ] );
+			// other types prohibit arguments
+			} else if ( match[ 3 ] ) {
+				find.error( match[ 0 ] );
 			}
 
-			jogo de retorno;
+			return match;
 		},
 
-		PSEUDO: function( corresponder ) {
-			excesso de var,
-				sem aspas = !match[ 6 ] && match[ 2 ];
+		PSEUDO: function( match ) {
+			var excess,
+				unquoted = !match[ 6 ] && match[ 2 ];
 
-			if (matchExpr.CHILD.test(match[ 0 ] ) ) {
-				retornar nulo;
+			if ( matchExpr.CHILD.test( match[ 0 ] ) ) {
+				return null;
 			}
 
-			// Aceita argumentos entre aspas como estão
-			if (combinar[3]) {
-				correspondência[ 2 ] = correspondência[ 4 ] || combinar[ 5 ] || "";
+			// Accept quoted arguments as-is
+			if ( match[ 3 ] ) {
+				match[ 2 ] = match[ 4 ] || match[ 5 ] || "";
 
-			// Retira caracteres em excesso de argumentos sem aspas
-			} else if ( sem aspas && rpseudo.test( sem aspas ) &&
+			// Strip excess characters from unquoted arguments
+			} else if ( unquoted && rpseudo.test( unquoted ) &&
 
-				// Obtém o excesso de tokenize (recursivamente)
-				(excesso = tokenize(sem aspas, true)) &&
+				// Get excess from tokenize (recursively)
+				( excess = tokenize( unquoted, true ) ) &&
 
-				// avança para o próximo parêntese de fechamento
-				( excesso = sem aspas.indexOf( ")", sem aspas.comprimento - excesso ) - sem aspas.comprimento ) ) {
+				// advance to the next closing parenthesis
+				( excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length ) ) {
 
-				// excesso é um índice negativo
-				match[ 0 ] = match[ 0 ].slice( 0, excesso );
-				match[ 2 ] = sem aspas.slice( 0, excesso );
+				// excess is a negative index
+				match[ 0 ] = match[ 0 ].slice( 0, excess );
+				match[ 2 ] = unquoted.slice( 0, excess );
 			}
 
-			// Retorna apenas as capturas necessárias para o pseudo método de filtro (tipo e argumento)
+			// Return only captures needed by the pseudo filter method (type and argument)
 			return match.slice( 0, 3 );
 		}
 	},
 
-	filtro: {
+	filter: {
 
 		TAG: function( nodeNameSelector ) {
-			var ExpectNodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
+			var expectedNodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
 			return nodeNameSelector === "*" ?
-				função() {
-					retornar verdadeiro;
+				function() {
+					return true;
 				} :
-				function(elem){
-					return nodeName(elem, esperadoNodeNome);
+				function( elem ) {
+					return nodeName( elem, expectedNodeName );
 				};
 		},
 
-		CLASSE: function(className) {
-			var padrão = classCache[ className + " " ];
+		CLASS: function( className ) {
+			var pattern = classCache[ className + " " ];
 
-			padrão de retorno ||
-				( padrão = new RegExp( "(^|" + espaço em branco + ")" + className +
-					"(" + espaço em branco + "|$)" ) ) &&
-				classCache(className, function(elem) {
-					return padrão.teste(
+			return pattern ||
+				( pattern = new RegExp( "(^|" + whitespace + ")" + className +
+					"(" + whitespace + "|$)" ) ) &&
+				classCache( className, function( elem ) {
+					return pattern.test(
 						typeof elem.className === "string" && elem.className ||
-							typeof elem.getAttribute !== "indefinido" &&
-								elem.getAttribute( "classe" ) ||
+							typeof elem.getAttribute !== "undefined" &&
+								elem.getAttribute( "class" ) ||
 							""
 					);
 				} );
 		},
 
-		ATTR: function( nome, operador, cheque ) {
-			return função(elem){
-				var resultado = find.attr(elem, nome);
+		ATTR: function( name, operator, check ) {
+			return function( elem ) {
+				var result = find.attr( elem, name );
 
-				if ( resultado == null ) {
-					operador de retorno === "!=";
+				if ( result == null ) {
+					return operator === "!=";
 				}
-				if (!operador) {
-					retornar verdadeiro;
+				if ( !operator ) {
+					return true;
 				}
 
-				resultado += "";
+				result += "";
 
-				if ( operador === "=" ) {
-					resultado de retorno === verificar;
+				if ( operator === "=" ) {
+					return result === check;
 				}
-				if ( operador === "!=" ) {
-					retorna o resultado !== verifica;
+				if ( operator === "!=" ) {
+					return result !== check;
 				}
-				if (operador === "^=") {
+				if ( operator === "^=" ) {
 					return check && result.indexOf( check ) === 0;
 				}
-				if ( operador === "*=" ) {
+				if ( operator === "*=" ) {
 					return check && result.indexOf( check ) > -1;
 				}
-				if (operador === "$=") {
+				if ( operator === "$=" ) {
 					return check && result.slice( -check.length ) === check;
 				}
-				if ( operador === "~=" ) {
-					return( " " + resultado.replace( rwhitespace, " " ) + " " )
-						.indexOf( verificar ) > -1;
+				if ( operator === "~=" ) {
+					return ( " " + result.replace( rwhitespace, " " ) + " " )
+						.indexOf( check ) > -1;
 				}
-				if ( operador === "|=" ) {
-					resultado de retorno === verificar || result.slice( 0, check.length + 1 ) === check + "-";
+				if ( operator === "|=" ) {
+					return result === check || result.slice( 0, check.length + 1 ) === check + "-";
 				}
 
-				retorna falso;
+				return false;
 			};
 		},
 
-		FILHO: função( tipo, o quê, _argumento, primeiro, último ) {
+		CHILD: function( type, what, _argument, first, last ) {
 			var simple = type.slice( 0, 3 ) !== "nth",
 				forward = type.slice( -4 ) !== "last",
-				ofType = o que === "do tipo";
+				ofType = what === "of-type";
 
-			retornar primeiro === 1 && último === 0 ?
+			return first === 1 && last === 0 ?
 
-				// Atalho para :nth-*(n)
-				function(elem){
+				// Shortcut for :nth-*(n)
+				function( elem ) {
 					return !!elem.parentNode;
 				} :
 
-				function(elem, _context, xml) {
+				function( elem, _context, xml ) {
 					var cache, outerCache, node, nodeIndex, start,
-						dir = simples !== encaminhar ? "nextSibling" : "anteriorSibling",
-						pai = elem.parentNode,
-						nome = ofType && elem.nodeName.toLowerCase(),
+						dir = simple !== forward ? "nextSibling" : "previousSibling",
+						parent = elem.parentNode,
+						name = ofType && elem.nodeName.toLowerCase(),
 						useCache = !xml && !ofType,
-						diferença = falso;
+						diff = false;
 
-					if (pai) {
+					if ( parent ) {
 
 						// :(first|last|only)-(child|of-type)
-						if ( simples ) {
-							enquanto (dir) {
-								nó = elem;
-								while ((nó = nó[dir])) {
-									if (doTipo?
-										nodeName( node, name ):
+						if ( simple ) {
+							while ( dir ) {
+								node = elem;
+								while ( ( node = node[ dir ] ) ) {
+									if ( ofType ?
+										nodeName( node, name ) :
 										node.nodeType === 1 ) {
 
-										retorna falso;
+										return false;
 									}
 								}
 
-								// Inverte a direção para :only-* (se ainda não o fizemos)
-								start = dir = digite === "apenas" && !start && "nextSibling";
+								// Reverse direction for :only-* (if we haven't yet done so)
+								start = dir = type === "only" && !start && "nextSibling";
 							}
-							retornar verdadeiro;
+							return true;
 						}
 
-						início = [ encaminhar ? pai.primeirofilho : pai.últimofilho ];
+						start = [ forward ? parent.firstChild : parent.lastChild ];
 
-						// não-xml :nth-child(...) armazena dados de cache no `pai`
-						if ( encaminhar && usarCache ) {
+						// non-xml :nth-child(...) stores cache data on `parent`
+						if ( forward && useCache ) {
 
-							// Procura `elem` de um índice armazenado em cache anteriormente
-							outerCache = pai[ expando ] || ( pai[ expando ] = {} );
-							cache = outerCache[ tipo ] || [];
+							// Seek `elem` from a previously-cached index
+							outerCache = parent[ expando ] || ( parent[ expando ] = {} );
+							cache = outerCache[ type ] || [];
 							nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
 							diff = nodeIndex && cache[ 2 ];
 							node = nodeIndex && parent.childNodes[ nodeIndex ];
 
 							while ( ( node = ++nodeIndex && node && node[ dir ] ||
 
-								// Fallback para buscar `elem` desde o início
+								// Fallback to seeking `elem` from the start
 								( diff = nodeIndex = 0 ) || start.pop() ) ) {
 
-								// Quando encontrado, cache índices em `parent` e break
+								// When found, cache indexes on `parent` and break
 								if ( node.nodeType === 1 && ++diff && node === elem ) {
-									outerCache[ tipo ] = [ dirruns, nodeIndex, diff ];
-									quebrar;
+									outerCache[ type ] = [ dirruns, nodeIndex, diff ];
+									break;
 								}
 							}
 
-						} outro {
+						} else {
 
-							// Use o índice de elemento armazenado em cache anteriormente, se disponível
-							if (useCache) {
-								outerCache = elem[ expando ] || (elem[expansão] = {});
-								cache = outerCache[ tipo ] || [];
+							// Use previously-cached element index if available
+							if ( useCache ) {
+								outerCache = elem[ expando ] || ( elem[ expando ] = {} );
+								cache = outerCache[ type ] || [];
 								nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
 								diff = nodeIndex;
 							}
 
 							// xml :nth-child(...)
-							// ou :nth-last-child(...) ou :nth(-last)?-of-type(...)
-							if ( dif === false ) {
+							// or :nth-last-child(...) or :nth(-last)?-of-type(...)
+							if ( diff === false ) {
 
-								// Use o mesmo loop acima para buscar `elem` desde o início
+								// Use the same loop as above to seek `elem` from the start
 								while ( ( node = ++nodeIndex && node && node[ dir ] ||
 									( diff = nodeIndex = 0 ) || start.pop() ) ) {
 
-									if ((doTipo?
-										nodeName( node, name ):
+									if ( ( ofType ?
+										nodeName( node, name ) :
 										node.nodeType === 1 ) &&
-										++diferente) {
+										++diff ) {
 
-										// Cache o índice de cada elemento encontrado
-										if (useCache) {
+										// Cache the index of each encountered element
+										if ( useCache ) {
 											outerCache = node[ expando ] ||
 												( node[ expando ] = {} );
-											outerCache[ tipo ] = [ dirruns, diff ];
+											outerCache[ type ] = [ dirruns, diff ];
 										}
 
-										if ( nó === elem ) {
-											quebrar;
+										if ( node === elem ) {
+											break;
 										}
 									}
 								}
 							}
 						}
 
-						// Incorpore o deslocamento e, em seguida, verifique o tamanho do ciclo
-						diff -= último;
-						return diff === primeiro || (diff % primeiro === 0 && diff / first >= 0 );
+						// Incorporate the offset, then check against cycle size
+						diff -= last;
+						return diff === first || ( diff % first === 0 && diff / first >= 0 );
 					}
 				};
 		},
 
-		PSEUDO: function( pseudo, argumento ) {
+		PSEUDO: function( pseudo, argument ) {
 
-			// nomes de pseudoclasses não diferenciam maiúsculas de minúsculas
+			// pseudo-class names are case-insensitive
 			// https://www.w3.org/TR/selectors/#pseudo-classes
-			// Prioriza a diferenciação de maiúsculas e minúsculas no caso de pseudos personalizados serem adicionados com letras maiúsculas
-			// Lembre-se que setFilters herda de pseudos
+			// Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
+			// Remember that setFilters inherits from pseudos
 			var args,
 				fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
-					find.error( "pseudo não suportado: " + pseudo );
+					find.error( "unsupported pseudo: " + pseudo );
 
-			// O usuário pode usar createPseudo para indicar que
-			// argumentos são necessários para criar a função de filtro
-			// assim como o jQuery faz
-			if (fn[expansão]) {
-				return fn(argumento);
+			// The user may use createPseudo to indicate that
+			// arguments are needed to create the filter function
+			// just as jQuery does
+			if ( fn[ expando ] ) {
+				return fn( argument );
 			}
 
-			// Mas mantém o suporte para assinaturas antigas
-			if ( fn.comprimento > 1 ) {
-				args = [ pseudo, pseudo, "", argumento ];
+			// But maintain support for old signatures
+			if ( fn.length > 1 ) {
+				args = [ pseudo, pseudo, "", argument ];
 				return Expr.setFilters.hasOwnProperty( pseudo.toLowerCase() ) ?
-					markFunction( function( semente, correspondências ) {
+					markFunction( function( seed, matches ) {
 						var idx,
-							correspondido = fn(semente, argumento),
+							matched = fn( seed, argument ),
 							i = matched.length;
-						enquanto eu-- ) {
+						while ( i-- ) {
 							idx = indexOf.call( seed, matched[ i ] );
-							seed[idx] = !(matches[idx] = matched[i]);
+							seed[ idx ] = !( matches[ idx ] = matched[ i ] );
 						}
-					} ):
-					function(elem){
-						return fn(elem, 0, args);
+					} ) :
+					function( elem ) {
+						return fn( elem, 0, args );
 					};
 			}
 
-			retornar fn;
+			return fn;
 		}
 	},
 
 	pseudos: {
 
-		// pseudos potencialmente complexos
+		// Potentially complex pseudos
 		not: markFunction( function( selector ) {
 
-			// Apara o seletor passado para compilar
-			// para evitar o tratamento inicial e final
-			// espaços como combinadores
-			var entrada = [],
-				resultados = [],
+			// Trim the selector passed to compile
+			// to avoid treating leading and trailing
+			// spaces as combinators
+			var input = [],
+				results = [],
 				matcher = compile( selector.replace( rtrimCSS, "$1" ) );
 
 			return matcher[ expando ] ?
 				markFunction( function( seed, matches, _context, xml ) {
 					var elem,
-						incomparável = matcher( seed, null, xml, [] ),
-						i = semente.comprimento;
+						unmatched = matcher( seed, null, xml, [] ),
+						i = seed.length;
 
-					// Corresponde a elementos não correspondidos por `matcher`
-					enquanto eu-- ) {
-						if ((elem = incomparável[ i ] ) ) {
-							seed[ i ] = !( corresponde a [ i ] = elem );
+					// Match elements unmatched by `matcher`
+					while ( i-- ) {
+						if ( ( elem = unmatched[ i ] ) ) {
+							seed[ i ] = !( matches[ i ] = elem );
 						}
 					}
-				} ):
-				function(elem, _context, xml) {
-					entrada[ 0 ] = elemento;
-					matcher(entrada, nulo, xml, resultados);
+				} ) :
+				function( elem, _context, xml ) {
+					input[ 0 ] = elem;
+					matcher( input, null, xml, results );
 
-					// Não mantém o elemento
-					// (consulte https://github.com/jquery/sizzle/issues/299)
-					entrada[ 0 ] = nulo;
-					return !resultados.pop();
+					// Don't keep the element
+					// (see https://github.com/jquery/sizzle/issues/299)
+					input[ 0 ] = null;
+					return !results.pop();
 				};
 		} ),
 
-		tem: markFunction( function( selector ) {
-			return função(elem){
-				return find( seletor, elemento ).length > 0;
+		has: markFunction( function( selector ) {
+			return function( elem ) {
+				return find( selector, elem ).length > 0;
 			};
 		} ),
 
-		contém: markFunction( function( text ) {
+		contains: markFunction( function( text ) {
 			text = text.replace( runescape, funescape );
-			return função(elem){
+			return function( elem ) {
 				return ( elem.textContent || jQuery.text( elem ) ).indexOf( text ) > -1;
 			};
 		} ),
 
-		// "Se um elemento é representado por um seletor :lang()
-		// é baseado apenas no valor de linguagem do elemento
-		// sendo igual ao identificador C,
-		// ou começando com o identificador C imediatamente seguido por "-".
-		// A correspondência de C com o valor de idioma do elemento é executada sem distinção entre maiúsculas e minúsculas.
-		// O identificador C não precisa ser um nome de idioma válido."
+		// "Whether an element is represented by a :lang() selector
+		// is based solely on the element's language value
+		// being equal to the identifier C,
+		// or beginning with the identifier C immediately followed by "-".
+		// The matching of C against the element's language value is performed case-insensitively.
+		// The identifier C does not have to be a valid language name."
 		// https://www.w3.org/TR/selectors/#lang-pseudo
 		lang: markFunction( function( lang ) {
 
-			// valor lang deve ser um identificador válido
-			if (!ridentifier.test( lang || "" ) ) {
-				find.error( "idioma não suportado: " + idioma );
+			// lang value must be a valid identifier
+			if ( !ridentifier.test( lang || "" ) ) {
+				find.error( "unsupported lang: " + lang );
 			}
 			lang = lang.replace( runescape, funescape ).toLowerCase();
-			return função(elem){
+			return function( elem ) {
 				var elemLang;
-				fazer {
-					if ((elemLang = documentIsHTML?
+				do {
+					if ( ( elemLang = documentIsHTML ?
 						elem.lang :
 						elem.getAttribute( "xml:lang" ) || elem.getAttribute( "lang" ) ) ) {
 
@@ -1913,45 +1913,45 @@ Expr = jQuery.expr = {
 						return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
 					}
 				} while ( ( elem = elem.parentNode ) && elem.nodeType === 1 );
-				retorna falso;
+				return false;
 			};
 		} ),
 
-		// Diversos
-		alvo: function(elem) {
+		// Miscellaneous
+		target: function( elem ) {
 			var hash = window.location && window.location.hash;
 			return hash && hash.slice( 1 ) === elem.id;
 		},
 
-		root: function(elem) {
+		root: function( elem ) {
 			return elem === documentElement;
 		},
 
-		foco: function(elem) {
-			return elemento === safeActiveElement() &&
+		focus: function( elem ) {
+			return elem === safeActiveElement() &&
 				document.hasFocus() &&
 				!!( elem.type || elem.href || ~elem.tabIndex );
 		},
 
-		// Propriedades booleanas
-		habilitado: createDisabledPseudo( false ),
-		desativado: createDisabledPseudo( true ),
+		// Boolean properties
+		enabled: createDisabledPseudo( false ),
+		disabled: createDisabledPseudo( true ),
 
-		verificado: function(elem) {
+		checked: function( elem ) {
 
-			// Em CSS3, :checked deve retornar elementos marcados e selecionados
+			// In CSS3, :checked should return both checked and selected elements
 			// https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
 			return ( nodeName( elem, "input" ) && !!elem.checked ) ||
-				( nodeName( elem, "opção" ) && !!elem.selected );
+				( nodeName( elem, "option" ) && !!elem.selected );
 		},
 
-		selecionado: function(elem) {
+		selected: function( elem ) {
 
-			// Suporte: IE <=11+
-			// Acessando a propriedade selectedIndex
-			// força o navegador a tratar a opção padrão como
-			// selecionado quando em um optgroup.
-			if (elem.parentNode) {
+			// Support: IE <=11+
+			// Accessing the selectedIndex property
+			// forces the browser to treat the default option as
+			// selected when in an optgroup.
+			if ( elem.parentNode ) {
 				// eslint-disable-next-line no-unused-expressions
 				elem.parentNode.selectedIndex;
 			}
@@ -1959,66 +1959,66 @@ Expr = jQuery.expr = {
 			return elem.selected === true;
 		},
 
-		// Conteúdo
-		vazio: function(elem) {
+		// Contents
+		empty: function( elem ) {
 
 			// https://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty é negado pelo elemento (1) ou nós de conteúdo (texto: 3; cdata: 4; entidade ref: 5),
-			// mas não por outros (comentário: 8; instrução de processamento: 7; etc.)
-			// nodeType < 6 funciona porque os atributos (2) não aparecem como filhos
+			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+			//   but not by others (comment: 8; processing instruction: 7; etc.)
+			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
 				if ( elem.nodeType < 6 ) {
-					retorna falso;
+					return false;
 				}
 			}
-			retornar verdadeiro;
+			return true;
 		},
 
-		pai: function(elem) {
+		parent: function( elem ) {
 			return !Expr.pseudos.empty( elem );
 		},
 
-		// Tipos de elemento/entrada
-		cabeçalho: function(elem) {
+		// Element/input types
+		header: function( elem ) {
 			return rheader.test( elem.nodeName );
 		},
 
-		entrada: function(elem) {
+		input: function( elem ) {
 			return rinputs.test( elem.nodeName );
 		},
 
-		botão: function(elem) {
+		button: function( elem ) {
 			return nodeName( elem, "input" ) && elem.type === "button" ||
-				nodeName(elem, "botão");
+				nodeName( elem, "button" );
 		},
 
-		texto: function(elem) {
-			var atr;
+		text: function( elem ) {
+			var attr;
 			return nodeName( elem, "input" ) && elem.type === "text" &&
 
-				// Suporte: IE <10 apenas
-				// Novos valores de atributo HTML5 (por exemplo, "search") aparecem
-				// com elem.type === "texto"
-				( ( attr = elem.getAttribute( "tipo") ) == nulo ||
-					attr.toLowerCase() === "texto" );
+				// Support: IE <10 only
+				// New HTML5 attribute values (e.g., "search") appear
+				// with elem.type === "text"
+				( ( attr = elem.getAttribute( "type" ) ) == null ||
+					attr.toLowerCase() === "text" );
 		},
 
-		// Posição na coleção
-		primeiro: createPositionalPseudo( function() {
-			retornar [ 0 ];
+		// Position-in-collection
+		first: createPositionalPseudo( function() {
+			return [ 0 ];
 		} ),
 
-		último: createPositionalPseudo( function( _matchIndexes, length ) {
-			retornar [comprimento - 1];
+		last: createPositionalPseudo( function( _matchIndexes, length ) {
+			return [ length - 1 ];
 		} ),
 
 		eq: createPositionalPseudo( function( _matchIndexes, length, argument ) {
-			return [ argumento < 0 ? argumento + comprimento: argumento ];
+			return [ argument < 0 ? argument + length : argument ];
 		} ),
 
-		mesmo: createPositionalPseudo( function( matchIndexes, length ) {
+		even: createPositionalPseudo( function( matchIndexes, length ) {
 			var i = 0;
-			for ( ; i < comprimento; i += 2 ) {
+			for ( ; i < length; i += 2 ) {
 				matchIndexes.push( i );
 			}
 			return matchIndexes;
@@ -2026,7 +2026,7 @@ Expr = jQuery.expr = {
 
 		odd: createPositionalPseudo( function( matchIndexes, length ) {
 			var i = 1;
-			for ( ; i < comprimento; i += 2 ) {
+			for ( ; i < length; i += 2 ) {
 				matchIndexes.push( i );
 			}
 			return matchIndexes;
@@ -2035,12 +2035,12 @@ Expr = jQuery.expr = {
 		lt: createPositionalPseudo( function( matchIndexes, length, argument ) {
 			var i;
 
-			if (argumento < 0) {
-				i = argumento + comprimento;
-			} else if (argumento > comprimento) {
-				i = comprimento;
-			} outro {
-				i = argumento;
+			if ( argument < 0 ) {
+				i = argument + length;
+			} else if ( argument > length ) {
+				i = length;
+			} else {
+				i = argument;
 			}
 
 			for ( ; --i >= 0; ) {
@@ -2050,8 +2050,8 @@ Expr = jQuery.expr = {
 		} ),
 
 		gt: createPositionalPseudo( function( matchIndexes, length, argument ) {
-			var i = argumento < 0 ? argumento + comprimento: argumento;
-			for ( ; ++i < comprimento; ) {
+			var i = argument < 0 ? argument + length : argument;
+			for ( ; ++i < length; ) {
 				matchIndexes.push( i );
 			}
 			return matchIndexes;
@@ -2061,198 +2061,198 @@ Expr = jQuery.expr = {
 
 Expr.pseudos.nth = Expr.pseudos.eq;
 
-// Adicionar pseudos de tipo de botão/entrada
+// Add button/input type pseudos
 for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
-	Expr.pseudos[i] = createInputPseudo(i);
+	Expr.pseudos[ i ] = createInputPseudo( i );
 }
 for ( i in { submit: true, reset: true } ) {
-	Expr.pseudos[i] = createButtonPseudo(i);
+	Expr.pseudos[ i ] = createButtonPseudo( i );
 }
 
-// API fácil para criar novos setFilters
-função setFilters() {}
+// Easy API for creating new setFilters
+function setFilters() {}
 setFilters.prototype = Expr.filters = Expr.pseudos;
 Expr.setFilters = new setFilters();
 
-function tokenize(seletor, parseOnly) {
-	var correspondente, correspondência, tokens, tipo,
-		soFar, grupos, preFilters,
-		em cache = tokenCache[ seletor + " " ];
+function tokenize( selector, parseOnly ) {
+	var matched, match, tokens, type,
+		soFar, groups, preFilters,
+		cached = tokenCache[ selector + " " ];
 
-	if (em cache) {
+	if ( cached ) {
 		return parseOnly ? 0 : cached.slice( 0 );
 	}
 
-	soFar = seletor;
-	grupos = [];
+	soFar = selector;
+	groups = [];
 	preFilters = Expr.preFilter;
 
-	enquanto ( até agora ) {
+	while ( soFar ) {
 
-		// Vírgula e primeira execução
-		if (!matched || (match = rcomma.exec( soFar ) ) ) {
-			if (combinar) {
+		// Comma and first run
+		if ( !matched || ( match = rcomma.exec( soFar ) ) ) {
+			if ( match ) {
 
-				// Não consuma vírgulas à direita como válidas
-				soFar = soFar.slice( match[ 0 ].length ) || até aqui;
+				// Don't consume trailing commas as valid
+				soFar = soFar.slice( match[ 0 ].length ) || soFar;
 			}
-			groups.push( (tokens = [] ) );
+			groups.push( ( tokens = [] ) );
 		}
 
-		combinado = falso;
+		matched = false;
 
-		// Combinadores
-		if ((match = rleadingCombinator.exec(soFar))) {
-			combinado = match.shift();
+		// Combinators
+		if ( ( match = rleadingCombinator.exec( soFar ) ) ) {
+			matched = match.shift();
 			tokens.push( {
-				valor: combinado,
+				value: matched,
 
-				// Lança os combinadores descendentes no espaço
-				digite: match[ 0 ].replace( rtrimCSS, " " )
+				// Cast descendant combinators to space
+				type: match[ 0 ].replace( rtrimCSS, " " )
 			} );
-			soFar = soFar.slice(matched.length);
+			soFar = soFar.slice( matched.length );
 		}
 
-		// Filtros
-		for ( digite Expr.filter ) {
-			if ( (match = matchExpr[ type ].exec( soFar ) ) && ( !preFilters[ type ] ||
-				(correspondência = preFiltros[tipo](correspondência)))) {
-				combinado = match.shift();
+		// Filters
+		for ( type in Expr.filter ) {
+			if ( ( match = matchExpr[ type ].exec( soFar ) ) && ( !preFilters[ type ] ||
+				( match = preFilters[ type ]( match ) ) ) ) {
+				matched = match.shift();
 				tokens.push( {
-					valor: combinado,
-					tipo: tipo,
-					correspondências: correspondência
+					value: matched,
+					type: type,
+					matches: match
 				} );
-				soFar = soFar.slice(matched.length);
+				soFar = soFar.slice( matched.length );
 			}
 		}
 
-		if (!combinado) {
-			quebrar;
+		if ( !matched ) {
+			break;
 		}
 	}
 
-	// Retorna o comprimento do excesso inválido
-	// se estamos apenas analisando
-	// Caso contrário, lança um erro ou retorna tokens
+	// Return the length of the invalid excess
+	// if we're just parsing
+	// Otherwise, throw an error or return tokens
 	if ( parseOnly ) {
 		return soFar.length;
 	}
 
-	voltar tão longe?
-		find.error(seletor):
+	return soFar ?
+		find.error( selector ) :
 
-		// Cache os tokens
-		tokenCache( seletor, grupos ).slice( 0 );
+		// Cache the tokens
+		tokenCache( selector, groups ).slice( 0 );
 }
 
-function toSelector(tokens) {
+function toSelector( tokens ) {
 	var i = 0,
 		len = tokens.length,
-		seletor = "";
+		selector = "";
 	for ( ; i < len; i++ ) {
-		seletor += tokens[i].valor;
+		selector += tokens[ i ].value;
 	}
-	seletor de retorno;
+	return selector;
 }
 
-function addCombinator(correspondente, combinador, base) {
+function addCombinator( matcher, combinator, base ) {
 	var dir = combinator.dir,
-		skip = combinador.next,
-		tecla = pular || dir,
-		checkNonElements = base && chave === "parentNode",
-		feitoNome = feito++;
+		skip = combinator.next,
+		key = skip || dir,
+		checkNonElements = base && key === "parentNode",
+		doneName = done++;
 
 	return combinator.first ?
 
-		// Verifica o elemento ancestral/precedente mais próximo
-		function(elem, contexto, xml) {
-			while ((elem = elem[dir])) {
+		// Check against closest ancestor/preceding element
+		function( elem, context, xml ) {
+			while ( ( elem = elem[ dir ] ) ) {
 				if ( elem.nodeType === 1 || checkNonElements ) {
-					return matcher(elem, context, xml);
+					return matcher( elem, context, xml );
 				}
 			}
-			retorna falso;
+			return false;
 		} :
 
-		// Verifica todos os elementos ancestrais/precedentes
-		function(elem, contexto, xml) {
+		// Check against all ancestor/preceding elements
+		function( elem, context, xml ) {
 			var oldCache, outerCache,
-				newCache = [dirruns, doneName];
+				newCache = [ dirruns, doneName ];
 
-			// Não podemos definir dados arbitrários em nós XML, então eles não se beneficiam do cache do combinador
-			if (xml) {
-				while ((elem = elem[dir])) {
+			// We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
+			if ( xml ) {
+				while ( ( elem = elem[ dir ] ) ) {
 					if ( elem.nodeType === 1 || checkNonElements ) {
-						if (matcher(elem, context, xml)) {
-							retornar verdadeiro;
+						if ( matcher( elem, context, xml ) ) {
+							return true;
 						}
 					}
 				}
-			} outro {
-				while ((elem = elem[dir])) {
+			} else {
+				while ( ( elem = elem[ dir ] ) ) {
 					if ( elem.nodeType === 1 || checkNonElements ) {
-						outerCache = elem[ expando ] || (elem[expansão] = {});
+						outerCache = elem[ expando ] || ( elem[ expando ] = {} );
 
-						if (skip && nodeName(elem, skip)) {
-							elem = elem[ dir ] || elemento;
-						} else if ((oldCache = outerCache[chave]) &&
+						if ( skip && nodeName( elem, skip ) ) {
+							elem = elem[ dir ] || elem;
+						} else if ( ( oldCache = outerCache[ key ] ) &&
 							oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {
 
-							// Atribuir a newCache para que os resultados se propaguem de volta aos elementos anteriores
-							return (newCache[2] = oldCache[2]);
-						} outro {
+							// Assign to newCache so results back-propagate to previous elements
+							return ( newCache[ 2 ] = oldCache[ 2 ] );
+						} else {
 
-							// Reutiliza o newcache para que os resultados se propaguem de volta para os elementos anteriores
-							outerCache[chave] = newCache;
+							// Reuse newcache so results back-propagate to previous elements
+							outerCache[ key ] = newCache;
 
-							// Uma correspondência significa que terminamos; uma falha significa que temos que continuar verificando
-							if ((newCache[2] = matcher(elem, contexto, xml))) {
-								retornar verdadeiro;
+							// A match means we're done; a fail means we have to keep checking
+							if ( ( newCache[ 2 ] = matcher( elem, context, xml ) ) ) {
+								return true;
 							}
 						}
 					}
 				}
 			}
-			retorna falso;
+			return false;
 		};
 }
 
 function elementMatcher( matchers ) {
 	return matchers.length > 1 ?
-		function(elem, contexto, xml) {
+		function( elem, context, xml ) {
 			var i = matchers.length;
-			enquanto eu-- ) {
-				if (!matchers[ i ](elem, context, xml) ) {
-					retorna falso;
+			while ( i-- ) {
+				if ( !matchers[ i ]( elem, context, xml ) ) {
+					return false;
 				}
 			}
-			retornar verdadeiro;
+			return true;
 		} :
-		correspondentes[ 0 ];
+		matchers[ 0 ];
 }
 
-função multipleContexts(seletor, contextos, resultados) {
+function multipleContexts( selector, contexts, results ) {
 	var i = 0,
-		len = contextos.comprimento;
+		len = contexts.length;
 	for ( ; i < len; i++ ) {
-		find(seletor, contextos[ i ], resultados );
+		find( selector, contexts[ i ], results );
 	}
-	resultados de retorno;
+	return results;
 }
 
-função condensar(incomparável, mapa, filtro, contexto, xml) {
+function condense( unmatched, map, filter, context, xml ) {
 	var elem,
-		novoNão correspondido = [],
-		eu = 0,
-		len = incomparável. comprimento,
-		mapeado = mapa != nulo;
+		newUnmatched = [],
+		i = 0,
+		len = unmatched.length,
+		mapped = map != null;
 
 	for ( ; i < len; i++ ) {
-		if ((elem = incomparável[ i ] ) ) {
-			if (!filtro || filtro(elem, contexto, xml)) {
-				newUnmatched.push(elem);
-				if ( mapeado ) {
+		if ( ( elem = unmatched[ i ] ) ) {
+			if ( !filter || filter( elem, context, xml ) ) {
+				newUnmatched.push( elem );
+				if ( mapped ) {
 					map.push( i );
 				}
 			}
@@ -2264,162 +2264,162 @@ função condensar(incomparável, mapa, filtro, contexto, xml) {
 
 function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
 	if ( postFilter && !postFilter[ expando ] ) {
-		postFilter = setMatcher(postFilter);
+		postFilter = setMatcher( postFilter );
 	}
 	if ( postFinder && !postFinder[ expando ] ) {
 		postFinder = setMatcher( postFinder, postSelector );
 	}
 	return markFunction( function( seed, results, context, xml ) {
 		var temp, i, elem, matcherOut,
-			préMapa = [],
-			postMapa = [],
-			preexistente = resultados.comprimento,
+			preMap = [],
+			postMap = [],
+			preexisting = results.length,
 
-			// Obtém elementos iniciais da semente ou do contexto
-			elems = semente ||
-				multipleContexts( seletor || "*",
-					context.nodeType ? [ contexto ] : contexto, [] ),
+			// Get initial elements from seed or context
+			elems = seed ||
+				multipleContexts( selector || "*",
+					context.nodeType ? [ context ] : context, [] ),
 
-			// Pré-filtro para obter entrada correspondente, preservando um mapa para sincronização de resultados iniciais
-			matcherIn = preFilter && ( seed || !seletor ) ?
-				condense(elems, preMap, preFilter, context, xml):
-				elementos;
+			// Prefilter to get matcher input, preserving a map for seed-results synchronization
+			matcherIn = preFilter && ( seed || !selector ) ?
+				condense( elems, preMap, preFilter, context, xml ) :
+				elems;
 
-		if (correspondente) {
+		if ( matcher ) {
 
-			// Se tivermos um postFinder, ou seed filtrado, ou postFilter não seed
-			// ou resultados preexistentes,
-			matcherOut = postFinder || ( semente ? preFilter : preexistente || postFilter ) ?
+			// If we have a postFinder, or filtered seed, or non-seed postFilter
+			// or preexisting results,
+			matcherOut = postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
 
-				// ...processamento intermediário é necessário
+				// ...intermediate processing is necessary
 				[] :
 
-				// ... caso contrário, use os resultados diretamente
-				resultados;
+				// ...otherwise use results directly
+				results;
 
-			// Encontrar correspondências primárias
-			matcher(matcherIn, matcherOut, contexto, xml);
-		} outro {
+			// Find primary matches
+			matcher( matcherIn, matcherOut, context, xml );
+		} else {
 			matcherOut = matcherIn;
 		}
 
-		// Aplicar postFilter
+		// Apply postFilter
 		if ( postFilter ) {
 			temp = condense( matcherOut, postMap );
-			postFilter( temp, [], contexto, xml);
+			postFilter( temp, [], context, xml );
 
-			// Descombina os elementos com falha movendo-os de volta para matcherIn
-			i = temp.comprimento;
-			enquanto eu-- ) {
-				if ((elem = temp[i])) {
+			// Un-match failing elements by moving them back to matcherIn
+			i = temp.length;
+			while ( i-- ) {
+				if ( ( elem = temp[ i ] ) ) {
 					matcherOut[ postMap[ i ] ] = !( matcherIn[ postMap[ i ] ] = elem );
 				}
 			}
 		}
 
-		if ( semente ) {
+		if ( seed ) {
 			if ( postFinder || preFilter ) {
 				if ( postFinder ) {
 
-					// Obtenha o matcherOut final condensando este intermediário em contextos postFinder
-					temperatura = [];
+					// Get the final matcherOut by condensing this intermediate into postFinder contexts
+					temp = [];
 					i = matcherOut.length;
-					enquanto eu-- ) {
-						if ((elem = matcherOut[i])) {
+					while ( i-- ) {
+						if ( ( elem = matcherOut[ i ] ) ) {
 
-							// Restaura matcherIn já que elem ainda não é uma correspondência final
-							temp.push( (matcherIn[ i ] = elem ) );
+							// Restore matcherIn since elem is not yet a final match
+							temp.push( ( matcherIn[ i ] = elem ) );
 						}
 					}
 					postFinder( null, ( matcherOut = [] ), temp, xml );
 				}
 
-				// Move os elementos correspondentes da semente para os resultados para mantê-los sincronizados
+				// Move matched elements from seed to results to keep them synchronized
 				i = matcherOut.length;
-				enquanto eu-- ) {
-					if ((elem = matcherOut[i]) &&
-						( temp = postFinder ? indexOf.call( seed, elem ): preMap[ i ] ) > -1 ) {
+				while ( i-- ) {
+					if ( ( elem = matcherOut[ i ] ) &&
+						( temp = postFinder ? indexOf.call( seed, elem ) : preMap[ i ] ) > -1 ) {
 
-						seed[ temp ] = !( resultados[ temp ] = elem );
+						seed[ temp ] = !( results[ temp ] = elem );
 					}
 				}
 			}
 
-		// Adiciona elementos aos resultados, através do postFinder se definido
-		} outro {
-			matcherOut = condensar(
-				matcherOut === resultados?
-					matcherOut.splice( preexistente, matcherOut.length ):
+		// Add elements to results, through postFinder if defined
+		} else {
+			matcherOut = condense(
+				matcherOut === results ?
+					matcherOut.splice( preexisting, matcherOut.length ) :
 					matcherOut
 			);
 			if ( postFinder ) {
-				postFinder(nulo, resultados, matcherOut, xml);
-			} outro {
-				push.apply( resultados, matcherOut );
+				postFinder( null, results, matcherOut, xml );
+			} else {
+				push.apply( results, matcherOut );
 			}
 		}
 	} );
 }
 
-function matcherFromTokens(tokens) {
-	var checkContext, correspondente, j,
+function matcherFromTokens( tokens ) {
+	var checkContext, matcher, j,
 		len = tokens.length,
-		leaderRelative = Expr.relative[ tokens[ 0 ].type ],
-		Relativo implícito = Relativo principal || Expr.relativa[ " " ],
-		i = líderRelativo ? 1: 0,
+		leadingRelative = Expr.relative[ tokens[ 0 ].type ],
+		implicitRelative = leadingRelative || Expr.relative[ " " ],
+		i = leadingRelative ? 1 : 0,
 
-		// O matcher fundamental garante que os elementos sejam acessíveis a partir do(s) contexto(s) de nível superior
+		// The foundational matcher ensures that elements are reachable from top-level context(s)
 		matchContext = addCombinator( function( elem ) {
 			return elem === checkContext;
 		}, implicitRelative, true ),
 		matchAnyContext = addCombinator( function( elem ) {
-			return indexOf.call(checkContext, elem) > -1;
+			return indexOf.call( checkContext, elem ) > -1;
 		}, implicitRelative, true ),
-		matchers = [ função(elem, contexto, xml) {
+		matchers = [ function( elem, context, xml ) {
 
-			// Suporte: IE 11+, Edge 17 - 18+
-			// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-			// dois documentos; comparações rasas funcionam.
+			// Support: IE 11+, Edge 17 - 18+
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
-			var ret = ( !leadingRelative && ( xml || contexto != outermostContext ) ) || (
-				(checkContext = contexto).nodeType?
-					matchContext(elem, contexto, xml):
-					matchAnyContext(elem, context, xml));
+			var ret = ( !leadingRelative && ( xml || context != outermostContext ) ) || (
+				( checkContext = context ).nodeType ?
+					matchContext( elem, context, xml ) :
+					matchAnyContext( elem, context, xml ) );
 
-			// Evite pendurar no elemento
-			// (consulte https://github.com/jquery/sizzle/issues/299)
+			// Avoid hanging onto element
+			// (see https://github.com/jquery/sizzle/issues/299)
 			checkContext = null;
-			retorno ret;
+			return ret;
 		} ];
 
 	for ( ; i < len; i++ ) {
-		if ((matcher = Expr.relative[ tokens[ i ].type ] ) ) {
+		if ( ( matcher = Expr.relative[ tokens[ i ].type ] ) ) {
 			matchers = [ addCombinator( elementMatcher( matchers ), matcher ) ];
-		} outro {
+		} else {
 			matcher = Expr.filter[ tokens[ i ].type ].apply( null, tokens[ i ].matches );
 
-			// Retorna especial ao ver um matcher posicional
-			if (correspondente[expansão]) {
+			// Return special upon seeing a positional matcher
+			if ( matcher[ expando ] ) {
 
-				// Encontra o próximo operador relativo (se houver) para manipulação adequada
+				// Find the next relative operator (if any) for proper handling
 				j = ++i;
 				for ( ; j < len; j++ ) {
 					if ( Expr.relative[ tokens[ j ].type ] ) {
-						quebrar;
+						break;
 					}
 				}
 				return setMatcher(
 					i > 1 && elementMatcher( matchers ),
-					i > 1 && paraSeletor(
+					i > 1 && toSelector(
 
-						// Se o token anterior for um combinador descendente, insira um elemento qualquer implícito `*`
+						// If the preceding token was a descendant combinator, insert an implicit any-element `*`
 						tokens.slice( 0, i - 1 )
-							.concat( { valor: tokens[ i - 2 ].type === " " ? "*" : "" } )
-					).replace(rtrimCSS, "$1" ),
-					combinador,
+							.concat( { value: tokens[ i - 2 ].type === " " ? "*" : "" } )
+					).replace( rtrimCSS, "$1" ),
+					matcher,
 					i < j && matcherFromTokens( tokens.slice( i, j ) ),
-					j < len && matcherFromTokens( (tokens = tokens.slice(j))),
-					j < len && toSelector(tokens)
+					j < len && matcherFromTokens( ( tokens = tokens.slice( j ) ) ),
+					j < len && toSelector( tokens )
 				);
 			}
 			matchers.push( matcher );
@@ -2429,378 +2429,378 @@ function matcherFromTokens(tokens) {
 	return elementMatcher( matchers );
 }
 
-função matcherFromGroupMatchers( elementMatchers, setMatchers ) {
+function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 	var bySet = setMatchers.length > 0,
 		byElement = elementMatchers.length > 0,
 		superMatcher = function( seed, context, xml, results, outermost ) {
-			var elem, j, correspondente,
-				número correspondente = 0,
-				eu = "0",
-				incomparável = semente && [],
+			var elem, j, matcher,
+				matchedCount = 0,
+				i = "0",
+				unmatched = seed && [],
 				setMatched = [],
-				contextBackup = contexto externo,
+				contextBackup = outermostContext,
 
-				// Devemos sempre ter elementos de origem ou contexto externo
-				elems = semente || byElement && Expr.find.TAG( "*", mais externo ),
+				// We must always have either seed elements or outermost context
+				elems = seed || byElement && Expr.find.TAG( "*", outermost ),
 
-				// Use dirruns inteiros se este for o matcher mais externo
+				// Use integer dirruns iff this is the outermost matcher
 				dirrunsUnique = ( dirruns += contextBackup == null ? 1 : Math.random() || 0.1 ),
 				len = elems.length;
 
-			if (mais externo) {
+			if ( outermost ) {
 
-				// Suporte: IE 11+, Edge 17 - 18+
-				// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-				// dois documentos; comparações rasas funcionam.
+				// Support: IE 11+, Edge 17 - 18+
+				// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+				// two documents; shallow comparisons work.
 				// eslint-disable-next-line eqeqeq
-				outermostContext = contexto == documento || contexto || mais externo;
+				outermostContext = context == document || context || outermost;
 			}
 
-			// Adiciona elementos passando elementMatchers diretamente aos resultados
-			// Suporte: iOS <=7 - 9 apenas
-			// Tolera propriedades NodeList (IE: "comprimento"; Safari: <número>) correspondente
-			// elementos por id. (ver trac-14142)
-			for ( ; i !== len && ( elem = elems[ i ] ) != nulo; i++ ) {
-				if (porElemento && elem) {
+			// Add elements passing elementMatchers directly to results
+			// Support: iOS <=7 - 9 only
+			// Tolerate NodeList properties (IE: "length"; Safari: <number>) matching
+			// elements by id. (see trac-14142)
+			for ( ; i !== len && ( elem = elems[ i ] ) != null; i++ ) {
+				if ( byElement && elem ) {
 					j = 0;
 
-					// Suporte: IE 11+, Edge 17 - 18+
-					// Às vezes, o IE/Edge lança um erro de "Permissão negada" ao comparar estritamente
-					// dois documentos; comparações rasas funcionam.
+					// Support: IE 11+, Edge 17 - 18+
+					// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+					// two documents; shallow comparisons work.
 					// eslint-disable-next-line eqeqeq
-					if ( !contexto && elem.ownerDocument != documento ) {
-						setDocument(elem);
+					if ( !context && elem.ownerDocument != document ) {
+						setDocument( elem );
 						xml = !documentIsHTML;
 					}
-					while ((matcher = elementMatchers[j++])){
-						if (correspondente(elem, contexto || documento, xml)) {
-							push.call( resultados, elem );
-							quebrar;
+					while ( ( matcher = elementMatchers[ j++ ] ) ) {
+						if ( matcher( elem, context || document, xml ) ) {
+							push.call( results, elem );
+							break;
 						}
 					}
-					if (mais externo) {
-						dirruns = dirrunsÚnico;
+					if ( outermost ) {
+						dirruns = dirrunsUnique;
 					}
 				}
 
-				// Rastrear elementos incomparáveis ​​para filtros definidos
-				if (porSet) {
+				// Track unmatched elements for set filters
+				if ( bySet ) {
 
-					// Eles terão passado por todos os matchers possíveis
-					if ((elem = !matcher && elem)) {
+					// They will have gone through all possible matchers
+					if ( ( elem = !matcher && elem ) ) {
 						matchedCount--;
 					}
 
-					// Aumenta o array para cada elemento, combinado ou não
-					if ( semente ) {
-						unmatched.push(elem);
+					// Lengthen the array for every element, matched or not
+					if ( seed ) {
+						unmatched.push( elem );
 					}
 				}
 			}
 
-			// `i` agora é a contagem de elementos visitados acima, e adicionando-a a `matchedCount`
-			// torna o último não negativo.
-			matchedCont += i;
+			// `i` is now the count of elements visited above, and adding it to `matchedCount`
+			// makes the latter nonnegative.
+			matchedCount += i;
 
-			// Aplicar filtros de conjunto a elementos não correspondentes
-			// NOTA: Isso pode ser ignorado se não houver elementos não correspondentes (ou seja, `matchedCount`
-			// é igual a `i`), a menos que não tenhamos visitado _any_ elementos no loop acima porque temos
-			// sem matchers de elemento e sem seed.
-			// Incrementar uma string inicial "0" `i` permite que `i` permaneça uma string apenas naquele
-			// caso, que resultará em um "00" `matchedCount` que difere de `i`, mas também é
-			// numericamente zero.
+			// Apply set filters to unmatched elements
+			// NOTE: This can be skipped if there are no unmatched elements (i.e., `matchedCount`
+			// equals `i`), unless we didn't visit _any_ elements in the above loop because we have
+			// no element matchers and no seed.
+			// Incrementing an initially-string "0" `i` allows `i` to remain a string only in that
+			// case, which will result in a "00" `matchedCount` that differs from `i` but is also
+			// numerically zero.
 			if ( bySet && i !== matchedCount ) {
 				j = 0;
-				while ((matcher = setMatchers[j++])){
-					matcher(incomparável, setMatched, contexto, xml);
+				while ( ( matcher = setMatchers[ j++ ] ) ) {
+					matcher( unmatched, setMatched, context, xml );
 				}
 
-				if ( semente ) {
+				if ( seed ) {
 
-					// Reintegra correspondências de elemento para eliminar a necessidade de classificação
-					if (contagem correspondente > 0) {
-						enquanto eu-- ) {
-							if ( !( incomparável[ i ] || setMatched[ i ] ) ) {
-								setMatched[i] = pop.call(resultados);
+					// Reintegrate element matches to eliminate the need for sorting
+					if ( matchedCount > 0 ) {
+						while ( i-- ) {
+							if ( !( unmatched[ i ] || setMatched[ i ] ) ) {
+								setMatched[ i ] = pop.call( results );
 							}
 						}
 					}
 
-					// Descarta os valores de espaço reservado do índice para obter apenas correspondências reais
+					// Discard index placeholder values to get only actual matches
 					setMatched = condense( setMatched );
 				}
 
-				// Adicionar correspondências aos resultados
-				push.apply( resultados, setMatched );
+				// Add matches to results
+				push.apply( results, setMatched );
 
-				// Correspondências de conjunto sem sementes sucedendo várias correspondências bem-sucedidas estipulam classificação
-				if ( mais externo && !seed && setMatched.length > 0 &&
-					(matchedCount + setMatchers.length) > 1) {
+				// Seedless set matches succeeding multiple successful matchers stipulate sorting
+				if ( outermost && !seed && setMatched.length > 0 &&
+					( matchedCount + setMatchers.length ) > 1 ) {
 
-					jQuery.uniqueSort( resultados );
+					jQuery.uniqueSort( results );
 				}
 			}
 
-			// Substitui a manipulação de globais por correspondências aninhadas
-			if (mais externo) {
-				dirruns = dirrunsÚnico;
-				outermostContext = contextoBackup;
+			// Override manipulation of globals by nested matchers
+			if ( outermost ) {
+				dirruns = dirrunsUnique;
+				outermostContext = contextBackup;
 			}
 
-			retorno incomparável;
+			return unmatched;
 		};
 
-	retornar porSet ?
-		markFunction(superMatcher):
+	return bySet ?
+		markFunction( superMatcher ) :
 		superMatcher;
 }
 
-function compile( selector, match /* Apenas para uso interno */ ) {
-	var eu,
+function compile( selector, match /* Internal Use Only */ ) {
+	var i,
 		setMatchers = [],
 		elementMatchers = [],
-		cached = compilerCache[ seletor + " " ];
+		cached = compilerCache[ selector + " " ];
 
-	if ( !em cache ) {
+	if ( !cached ) {
 
-		// Gera uma função de funções recursivas que podem ser usadas para verificar cada elemento
-		if (!match) {
-			match = tokenize(seletor);
+		// Generate a function of recursive functions that can be used to check each element
+		if ( !match ) {
+			match = tokenize( selector );
 		}
-		i = correspondência.comprimento;
-		enquanto eu-- ) {
-			cached = matcherFromTokens(match[ i ] );
-			if (em cache[ expandido ] ) {
-				setMatchers.push( em cache );
-			} outro {
-				elementMatchers.push( em cache );
+		i = match.length;
+		while ( i-- ) {
+			cached = matcherFromTokens( match[ i ] );
+			if ( cached[ expando ] ) {
+				setMatchers.push( cached );
+			} else {
+				elementMatchers.push( cached );
 			}
 		}
 
-		// Cache a função compilada
-		cached = compiladorCache(seletor,
+		// Cache the compiled function
+		cached = compilerCache( selector,
 			matcherFromGroupMatchers( elementMatchers, setMatchers ) );
 
-		// Salvar seletor e tokenização
-		cached.selector = seletor;
+		// Save selector and tokenization
+		cached.selector = selector;
 	}
-	retornar em cache;
+	return cached;
 }
 
 /**
- * Uma função de seleção de baixo nível que funciona com jQuery's compilado
- * funções do seletor
- * @param {String|Function} seletor Um seletor ou pré-compilado
- * função de seletor construída com compilação de seletor jQuery
- * @param {Elemento} contexto
- * @param {Array} [resultados]
- * @param {Array} [seed] Um conjunto de elementos para comparar
+ * A low-level selection function that works with jQuery's compiled
+ *  selector functions
+ * @param {String|Function} selector A selector or a pre-compiled
+ *  selector function built with jQuery selector compile
+ * @param {Element} context
+ * @param {Array} [results]
+ * @param {Array} [seed] A set of elements to match against
  */
-function select(seletor, contexto, resultados, semente) {
+function select( selector, context, results, seed ) {
 	var i, tokens, token, type, find,
-		compilado = seletor de tipo === "função" && seletor,
-		match = !seed && tokenize( ( seletor = compilado.seletor || seletor ) );
+		compiled = typeof selector === "function" && selector,
+		match = !seed && tokenize( ( selector = compiled.selector || selector ) );
 
-	resultados = resultados || [];
+	results = results || [];
 
-	// Tenta minimizar as operações se houver apenas um seletor na lista e nenhuma semente
-	// (este último nos garante o contexto)
+	// Try to minimize operations if there is only one selector in the list and no seed
+	// (the latter of which guarantees us context)
 	if ( match.length === 1 ) {
 
-		// Reduz o contexto se o seletor composto principal for um ID
+		// Reduce context if the leading compound selector is an ID
 		tokens = match[ 0 ] = match[ 0 ].slice( 0 );
 		if ( tokens.length > 2 && ( token = tokens[ 0 ] ).type === "ID" &&
 				context.nodeType === 9 && documentIsHTML && Expr.relative[ tokens[ 1 ].type ] ) {
 
-			contexto = ( Expr.find.ID(
+			context = ( Expr.find.ID(
 				token.matches[ 0 ].replace( runescape, funescape ),
-				contexto
-			) || [] )[0];
-			if ( !contexto ) {
-				resultados de retorno;
+				context
+			) || [] )[ 0 ];
+			if ( !context ) {
+				return results;
 
-			// Correspondentes pré-compilados ainda verificarão a ancestralidade, então suba um nível
-			} else if ( compilado ) {
-				contexto = context.parentNode;
+			// Precompiled matchers will still verify ancestry, so step up a level
+			} else if ( compiled ) {
+				context = context.parentNode;
 			}
 
-			seletor = seletor.fatia(tokens.shift().valor.comprimento);
+			selector = selector.slice( tokens.shift().value.length );
 		}
 
-		// Busca um conjunto de sementes para correspondência da direita para a esquerda
-		i = matchExpr.needsContext.test(seletor)? 0 : tokens.comprimento;
-		enquanto eu-- ) {
-			ficha = fichas[i];
+		// Fetch a seed set for right-to-left matching
+		i = matchExpr.needsContext.test( selector ) ? 0 : tokens.length;
+		while ( i-- ) {
+			token = tokens[ i ];
 
-			// Aborta se atingirmos um combinador
+			// Abort if we hit a combinator
 			if ( Expr.relative[ ( type = token.type ) ] ) {
-				quebrar;
+				break;
 			}
-			if ((find = Expr.find[tipo])){
+			if ( ( find = Expr.find[ type ] ) ) {
 
-				// Pesquise, expandindo o contexto para os principais combinadores irmãos
-				if ((semente = encontrar(
+				// Search, expanding context for leading sibling combinators
+				if ( ( seed = find(
 					token.matches[ 0 ].replace( runescape, funescape ),
 					rsibling.test( tokens[ 0 ].type ) &&
-						testContext( context.parentNode ) || contexto
+						testContext( context.parentNode ) || context
 				) ) ) {
 
-					// Se a semente estiver vazia ou nenhum token restar, podemos retornar antecipadamente
+					// If seed is empty or no tokens remain, we can return early
 					tokens.splice( i, 1 );
-					seletor = seed.length && toSelector( tokens );
-					if (!seletor) {
-						push.apply( resultados, semente );
-						resultados de retorno;
+					selector = seed.length && toSelector( tokens );
+					if ( !selector ) {
+						push.apply( results, seed );
+						return results;
 					}
 
-					quebrar;
+					break;
 				}
 			}
 		}
 	}
 
-	// Compila e executa uma função de filtragem se não for fornecida
-	// Forneça `match` para evitar a reconstituição se modificarmos o seletor acima
-	(compilado || compilar(seletor, corresponder))(
-		semente,
-		contexto,
+	// Compile and execute a filtering function if one is not provided
+	// Provide `match` to avoid retokenization if we modified the selector above
+	( compiled || compile( selector, match ) )(
+		seed,
+		context,
 		!documentIsHTML,
-		resultados,
-		!contexto || rsibling.test( selector ) && testContext( context.parentNode ) || contexto
+		results,
+		!context || rsibling.test( selector ) && testContext( context.parentNode ) || context
 	);
-	resultados de retorno;
+	return results;
 }
 
-// Atribuições únicas
+// One-time assignments
 
-// Suporte: Android <=4.0 - 4.1+
-// Estabilidade de classificação
+// Support: Android <=4.0 - 4.1+
+// Sort stability
 support.sortStable = expando.split( "" ).sort( sortOrder ).join( "" ) === expando;
 
-// Inicializa contra o documento padrão
-setDocumento();
+// Initialize against the default document
+setDocument();
 
-// Suporte: Android <=4.0 - 4.1+
-// Nós separados seguem confusamente *um ao outro*
+// Support: Android <=4.0 - 4.1+
+// Detached nodes confoundingly follow *each other*
 support.sortDetached = assert( function( el ) {
 
-	// Deve retornar 1, mas retorna 4 (seguindo)
+	// Should return 1, but returns 4 (following)
 	return el.compareDocumentPosition( document.createElement( "fieldset" ) ) & 1;
 } );
 
-jQuery.find = localizar;
+jQuery.find = find;
 
-// Descontinuada
+// Deprecated
 jQuery.expr[ ":" ] = jQuery.expr.pseudos;
 jQuery.unique = jQuery.uniqueSort;
 
-// Estes sempre foram privados, mas costumavam ser documentados
-// como parte do Sizzle então vamos mantê-los na linha 3.x
-// para fins de compatibilidade com versões anteriores.
-localizar.compile = compilar;
-localizar.selecionar = selecionar;
+// These have always been private, but they used to be documented
+// as part of Sizzle so let's maintain them in the 3.x line
+// for backwards compatibility purposes.
+find.compile = compile;
+find.select = select;
 find.setDocument = setDocument;
 
 find.escape = jQuery.escapeSelector;
-localizar.getText = jQuery.text;
-encontrar.isXML = jQuery.isXMLDoc;
-encontrar.seletores = jQuery.expr;
-encontrar.suporte = jQuery.suporte;
-encontrar.uniqueSort = jQuery.uniqueSort;
+find.getText = jQuery.text;
+find.isXML = jQuery.isXMLDoc;
+find.selectors = jQuery.expr;
+find.support = jQuery.support;
+find.uniqueSort = jQuery.uniqueSort;
 
-	/* habilitar eslint */
+	/* eslint-enable */
 
 } )();
 
 
-var dir = function(elem, dir, até) {
-	var correspondente = [],
-		truncar = até !== indefinido;
+var dir = function( elem, dir, until ) {
+	var matched = [],
+		truncate = until !== undefined;
 
 	while ( ( elem = elem[ dir ] ) && elem.nodeType !== 9 ) {
-		if (elem.nodeType === 1) {
-			if ( truncar && jQuery(elem).is(até)){
-				quebrar;
+		if ( elem.nodeType === 1 ) {
+			if ( truncate && jQuery( elem ).is( until ) ) {
+				break;
 			}
-			matched.push(elem);
+			matched.push( elem );
 		}
 	}
-	retornar correspondido;
+	return matched;
 };
 
 
-var irmãos = function( n, elem ) {
-	var correspondido = [];
+var siblings = function( n, elem ) {
+	var matched = [];
 
-	for ( ; n; n = n.próximoIrmão ) {
+	for ( ; n; n = n.nextSibling ) {
 		if ( n.nodeType === 1 && n !== elem ) {
 			matched.push( n );
 		}
 	}
 
-	retornar correspondido;
+	return matched;
 };
 
 
 var rneedsContext = jQuery.expr.match.needsContext;
 
-var rsingleTag = ( /^<([az][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>( ?:<\/\1>|)$/i );
+var rsingleTag = ( /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i );
 
 
 
-// Implemente a funcionalidade idêntica para filtro e não
-função winnow( elementos, qualificador, não ) {
-	if ( isFunction( qualificador ) ) {
-		return jQuery.grep(elementos, função(elem,i){
+// Implement the identical functionality for filter and not
+function winnow( elements, qualifier, not ) {
+	if ( isFunction( qualifier ) ) {
+		return jQuery.grep( elements, function( elem, i ) {
 			return !!qualifier.call( elem, i, elem ) !== not;
 		} );
 	}
 
-	// Único elemento
-	if (qualifier.nodeType) {
-		return jQuery.grep(elementos, função(elem){
-			return (elem === qualificador) !== não;
+	// Single element
+	if ( qualifier.nodeType ) {
+		return jQuery.grep( elements, function( elem ) {
+			return ( elem === qualifier ) !== not;
 		} );
 	}
 
-	// Arraylike de elementos (jQuery, argumentos, Array)
-	if ( qualificador typeof !== "string" ) {
-		return jQuery.grep(elementos, função(elem){
-			return ( indexOf.call( qualificador, elem ) > -1 ) !== não;
+	// Arraylike of elements (jQuery, arguments, Array)
+	if ( typeof qualifier !== "string" ) {
+		return jQuery.grep( elements, function( elem ) {
+			return ( indexOf.call( qualifier, elem ) > -1 ) !== not;
 		} );
 	}
 
-	// Filtrado diretamente para seletores simples e complexos
-	return jQuery.filter( qualificador, elementos, não );
+	// Filtered directly for both simple and complex selectors
+	return jQuery.filter( qualifier, elements, not );
 }
 
 jQuery.filter = function( expr, elems, not ) {
 	var elem = elems[ 0 ];
 
-	se não ) {
+	if ( not ) {
 		expr = ":not(" + expr + ")";
 	}
 
-	if (elems.length === 1 && elem.nodeType === 1) {
+	if ( elems.length === 1 && elem.nodeType === 1 ) {
 		return jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [];
 	}
 
-	return jQuery.find.matches(expr, jQuery.grep(elems, function(elem){
+	return jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
 		return elem.nodeType === 1;
 	} ) );
 };
 
 jQuery.fn.extend( {
-	encontre: function(seletor) {
+	find: function( selector ) {
 		var i, ret,
 			len = this.length,
-			auto = isso;
+			self = this;
 
-		if (tipo de seletor !== "string" ) {
-			return this.pushStack( jQuery( seletor ).filter( function() {
+		if ( typeof selector !== "string" ) {
+			return this.pushStack( jQuery( selector ).filter( function() {
 				for ( i = 0; i < len; i++ ) {
 					if ( jQuery.contains( self[ i ], this ) ) {
-						retornar verdadeiro;
+						return true;
 					}
 				}
 			} ) );
@@ -2809,787 +2809,787 @@ jQuery.fn.extend( {
 		ret = this.pushStack( [] );
 
 		for ( i = 0; i < len; i++ ) {
-			jQuery.find( seletor, self[ i ], ret );
+			jQuery.find( selector, self[ i ], ret );
 		}
 
-		retornar len > 1 ? jQuery.uniqueSort( ret ) : ret;
+		return len > 1 ? jQuery.uniqueSort( ret ) : ret;
 	},
-	filtro: function(seletor) {
+	filter: function( selector ) {
 		return this.pushStack( winnow( this, selector || [], false ) );
 	},
-	não: function(seletor) {
+	not: function( selector ) {
 		return this.pushStack( winnow( this, selector || [], true ) );
 	},
-	é: function(seletor) {
-		voltar !!winnow(
-			esse,
+	is: function( selector ) {
+		return !!winnow(
+			this,
 
-			// Se este for um seletor posicional/relativo, verifique a associação no conjunto retornado
-			// então $("p:first").is("p:last") não retornará verdadeiro para um documento com dois "p".
-			seletor typeof === "string" && rneedsContext.test( seletor ) ?
-				jQuery(seletor):
-				seletor || [],
-			falso
-		).comprimento;
+			// If this is a positional/relative selector, check membership in the returned set
+			// so $("p:first").is("p:last") won't return true for a doc with two "p".
+			typeof selector === "string" && rneedsContext.test( selector ) ?
+				jQuery( selector ) :
+				selector || [],
+			false
+		).length;
 	}
 } );
 
 
-// Inicializa um objeto jQuery
+// Initialize a jQuery object
 
 
-// Uma referência central para a raiz jQuery(document)
+// A central reference to the root jQuery(document)
 var rootjQuery,
 
-	// Uma maneira simples de verificar strings HTML
-	// Priorizar #id sobre <tag> para evitar XSS via location.hash (trac-9521)
-	// Reconhecimento estrito de HTML (trac-11290: deve começar com <)
-	// Atalho simples #id case para velocidade
+	// A simple way to check for HTML strings
+	// Prioritize #id over <tag> to avoid XSS via location.hash (trac-9521)
+	// Strict HTML recognition (trac-11290: must start with <)
+	// Shortcut simple #id case for speed
 	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
 
-	init = jQuery.fn.init = function(seletor, contexto, raiz) {
-		var corresponder, elem;
+	init = jQuery.fn.init = function( selector, context, root ) {
+		var match, elem;
 
-		// HANDLE: $(""), $(nulo), $(indefinido), $(falso)
-		if (!seletor) {
-			devolva isto;
+		// HANDLE: $(""), $(null), $(undefined), $(false)
+		if ( !selector ) {
+			return this;
 		}
 
-		// O método init() aceita um rootjQuery alternativo
-		// então a migração pode suportar jQuery.sub (gh-2101)
-		raiz = raiz || rootjQuery;
+		// Method init() accepts an alternate rootjQuery
+		// so migrate can support jQuery.sub (gh-2101)
+		root = root || rootjQuery;
 
-		// Manipula strings HTML
-		if (tipo de seletor === "string" ) {
-			if (seletor[ 0 ] === "<" &&
-				seletor[ seletor.comprimento - 1 ] === ">" &&
-				seletor.comprimento >= 3 ) {
+		// Handle HTML strings
+		if ( typeof selector === "string" ) {
+			if ( selector[ 0 ] === "<" &&
+				selector[ selector.length - 1 ] === ">" &&
+				selector.length >= 3 ) {
 
-				// Assuma que as strings que começam e terminam com <> são HTML e pule a verificação de regex
-				match = [nulo, seletor, nulo];
+				// Assume that strings that start and end with <> are HTML and skip the regex check
+				match = [ null, selector, null ];
 
-			} outro {
-				match = rquickExpr.exec(seletor);
+			} else {
+				match = rquickExpr.exec( selector );
 			}
 
-			// Corresponde html ou certifique-se de que nenhum contexto seja especificado para #id
-			if (combinar && (combinar[ 1 ] || !contexto ) ) {
+			// Match html or make sure no context is specified for #id
+			if ( match && ( match[ 1 ] || !context ) ) {
 
 				// HANDLE: $(html) -> $(array)
-				if (combinar[1]) {
-					context = instância de contexto de jQuery? contexto[ 0 ] : contexto;
+				if ( match[ 1 ] ) {
+					context = context instanceof jQuery ? context[ 0 ] : context;
 
-					// A opção de executar scripts é verdadeira para back-compat
-					// Permitir intencionalmente que o erro seja lançado se parseHTML não estiver presente
+					// Option to run scripts is true for back-compat
+					// Intentionally let the error be thrown if parseHTML is not present
 					jQuery.merge( this, jQuery.parseHTML(
-						corresponder[1],
-						context && context.nodeType ? context.ownerDocument || contexto: documento,
-						verdadeiro
+						match[ 1 ],
+						context && context.nodeType ? context.ownerDocument || context : document,
+						true
 					) );
 
-					// MANIPULAÇÃO: $(html, props)
-					if (rsingleTag.test( match[ 1 ] ) && jQuery.isPlainObject( context ) ) {
-						for (combinar no contexto) {
+					// HANDLE: $(html, props)
+					if ( rsingleTag.test( match[ 1 ] ) && jQuery.isPlainObject( context ) ) {
+						for ( match in context ) {
 
-							// Propriedades de contexto são chamadas como métodos se possível
+							// Properties of context are called as methods if possible
 							if ( isFunction( this[ match ] ) ) {
-								esta[correspondência](contexto[correspondência]);
+								this[ match ]( context[ match ] );
 
-							// ...e de outra forma definido como atributos
-							} outro {
-								this.attr(correspondência, contexto[correspondência]);
+							// ...and otherwise set as attributes
+							} else {
+								this.attr( match, context[ match ] );
 							}
 						}
 					}
 
-					devolva isto;
+					return this;
 
-				// MANUSEIO: $(#id)
-				} outro {
+				// HANDLE: $(#id)
+				} else {
 					elem = document.getElementById( match[ 2 ] );
 
-					if (elem) {
+					if ( elem ) {
 
-						// Injeta o elemento diretamente no objeto jQuery
-						este[ 0 ] = elemento;
+						// Inject the element directly into the jQuery object
+						this[ 0 ] = elem;
 						this.length = 1;
 					}
-					devolva isto;
+					return this;
 				}
 
-			//HANDLE: $(expr, $(...))
-			} else if (!context || context.jquery) {
-				return (contexto || root ).find( seletor );
+			// HANDLE: $(expr, $(...))
+			} else if ( !context || context.jquery ) {
+				return ( context || root ).find( selector );
 
-			// MANIPULAÇÃO: $(expr, contexto)
-			// (que é apenas equivalente a: $(context).find(expr)
-			} outro {
-				return this.constructor(contexto).find(seletor);
+			// HANDLE: $(expr, context)
+			// (which is just equivalent to: $(context).find(expr)
+			} else {
+				return this.constructor( context ).find( selector );
 			}
 
 		// HANDLE: $(DOMElement)
 		} else if ( selector.nodeType ) {
-			this[ 0 ] = seletor;
+			this[ 0 ] = selector;
 			this.length = 1;
-			devolva isto;
+			return this;
 
-		//HANDLE: $(função)
-		// Atalho para documento pronto
-		} else if (isFunction(seletor)) {
-			return root.ready !== indefinido ?
-				root.ready(seletor):
+		// HANDLE: $(function)
+		// Shortcut for document ready
+		} else if ( isFunction( selector ) ) {
+			return root.ready !== undefined ?
+				root.ready( selector ) :
 
-				// Executa imediatamente se pronto não estiver presente
-				seletor(jQuery);
+				// Execute immediately if ready is not present
+				selector( jQuery );
 		}
 
-		return jQuery.makeArray(seletor, this);
+		return jQuery.makeArray( selector, this );
 	};
 
-// Dê à função init o protótipo jQuery para instanciação posterior
+// Give the init function the jQuery prototype for later instantiation
 init.prototype = jQuery.fn;
 
-// Inicializa a referência central
-rootjQuery = jQuery(documento);
+// Initialize central reference
+rootjQuery = jQuery( document );
 
 
-var rparentsprev = /^(?:parents|prev(?:Até|Todos))/,
+var rparentsprev = /^(?:parents|prev(?:Until|All))/,
 
-	// Métodos garantidos para produzir um conjunto único ao iniciar de um conjunto único
-	garantido Único = {
-		crianças: verdade,
-		conteúdo: verdadeiro,
-		próximo: verdadeiro,
-		anterior: verdadeiro
+	// Methods guaranteed to produce a unique set when starting from a unique set
+	guaranteedUnique = {
+		children: true,
+		contents: true,
+		next: true,
+		prev: true
 	};
 
 jQuery.fn.extend( {
-	tem: function(alvo) {
+	has: function( target ) {
 		var targets = jQuery( target, this ),
-			l = alvos.comprimento;
+			l = targets.length;
 
 		return this.filter( function() {
 			var i = 0;
 			for ( ; i < l; i++ ) {
 				if ( jQuery.contains( this, targets[ i ] ) ) {
-					retornar verdadeiro;
+					return true;
 				}
 			}
 		} );
 	},
 
-	mais próximo: function(seletores, contexto) {
+	closest: function( selectors, context ) {
 		var cur,
-			eu = 0,
+			i = 0,
 			l = this.length,
-			correspondido = [],
+			matched = [],
 			targets = typeof selectors !== "string" && jQuery( selectors );
 
-		// Os seletores posicionais nunca correspondem, pois não há contexto _selection_
-		if (!rneedsContext.test(seletores)) {
+		// Positional selectors never match, since there's no _selection_ context
+		if ( !rneedsContext.test( selectors ) ) {
 			for ( ; i < l; i++ ) {
-				for ( cur = this[ i ]; cur && cur !== contexto; cur = cur.parentNode ) {
+				for ( cur = this[ i ]; cur && cur !== context; cur = cur.parentNode ) {
 
-					// Sempre pular fragmentos de documento
-					if (cur.nodeType < 11 && (alvos?
+					// Always skip document fragments
+					if ( cur.nodeType < 11 && ( targets ?
 						targets.index( cur ) > -1 :
 
-						// Não passe não-elementos para jQuery#find
+						// Don't pass non-elements to jQuery#find
 						cur.nodeType === 1 &&
 							jQuery.find.matchesSelector( cur, selectors ) ) ) {
 
 						matched.push( cur );
-						quebrar;
+						break;
 					}
 				}
 			}
 		}
 
-		return this.pushStack(matched.length > 1 ? jQuery.uniqueSort(matched):matched);
+		return this.pushStack( matched.length > 1 ? jQuery.uniqueSort( matched ) : matched );
 	},
 
-	// Determina a posição de um elemento dentro do conjunto
-	index: function(elem) {
+	// Determine the position of an element within the set
+	index: function( elem ) {
 
-		// Sem argumento, retorna índice no pai
+		// No argument, return index in parent
 		if ( !elem ) {
-			return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length: -1;
+			return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length : -1;
 		}
 
-		// Índice no seletor
-		if (tipo de elemento === "string" ) {
+		// Index in selector
+		if ( typeof elem === "string" ) {
 			return indexOf.call( jQuery( elem ), this[ 0 ] );
 		}
 
-		// Localiza a posição do elemento desejado
+		// Locate the position of the desired element
 		return indexOf.call( this,
 
-			// Se receber um objeto jQuery, o primeiro elemento é usado
-			elem.jquery ? elemento[ 0 ] : elemento
+			// If it receives a jQuery object, the first element is used
+			elem.jquery ? elem[ 0 ] : elem
 		);
 	},
 
-	adicione: function(seletor, contexto) {
+	add: function( selector, context ) {
 		return this.pushStack(
 			jQuery.uniqueSort(
-				jQuery.merge( this.get(), jQuery( seletor, contexto ) )
+				jQuery.merge( this.get(), jQuery( selector, context ) )
 			)
 		);
 	},
 
-	addBack: function(seletor) {
+	addBack: function( selector ) {
 		return this.add( selector == null ?
-			this.prevObject : this.prevObject.filter( seletor )
+			this.prevObject : this.prevObject.filter( selector )
 		);
 	}
 } );
 
-função irmão( cur, dir ) {
+function sibling( cur, dir ) {
 	while ( ( cur = cur[ dir ] ) && cur.nodeType !== 1 ) {}
-	retorno cur;
+	return cur;
 }
 
 jQuery.each( {
-	pai: function(elem) {
-		var pai = elem.parentNode;
-		return parent && parent.nodeType !== 11 ? pai: nulo;
+	parent: function( elem ) {
+		var parent = elem.parentNode;
+		return parent && parent.nodeType !== 11 ? parent : null;
 	},
-	pais: function(elem) {
-		return dir(elem, "parentNode");
+	parents: function( elem ) {
+		return dir( elem, "parentNode" );
 	},
-	paisAté: função(elem, _i, até) {
-		return dir(elem, "parentNode", até );
+	parentsUntil: function( elem, _i, until ) {
+		return dir( elem, "parentNode", until );
 	},
-	próximo: function(elem) {
-		return sibling(elem, "nextSibling" );
+	next: function( elem ) {
+		return sibling( elem, "nextSibling" );
 	},
-	anterior: function(elem) {
-		return irmão(elem, "irmãoanterior");
+	prev: function( elem ) {
+		return sibling( elem, "previousSibling" );
 	},
-	nextAll: function(elem) {
-		return dir(elem, "nextSibling" );
+	nextAll: function( elem ) {
+		return dir( elem, "nextSibling" );
 	},
-	prevAll: function(elem) {
-		return dir(elem, "irmão anterior");
+	prevAll: function( elem ) {
+		return dir( elem, "previousSibling" );
 	},
-	nextUntil: function( elem, _i, até ) {
-		return dir(elem, "nextSibling", até );
+	nextUntil: function( elem, _i, until ) {
+		return dir( elem, "nextSibling", until );
 	},
-	prevUntil: function( elem, _i, até ) {
-		return dir(elem, "irmão anterior", até );
+	prevUntil: function( elem, _i, until ) {
+		return dir( elem, "previousSibling", until );
 	},
-	irmãos: function(elem) {
-		return irmãos( ( elem.parentNode || {} ).firstChild, elem );
+	siblings: function( elem ) {
+		return siblings( ( elem.parentNode || {} ).firstChild, elem );
 	},
-	filhos: function(elem) {
-		return irmãos(elem.firstChild);
+	children: function( elem ) {
+		return siblings( elem.firstChild );
 	},
-	conteúdo: function(elem) {
+	contents: function( elem ) {
 		if ( elem.contentDocument != null &&
 
-			// Suporte: IE 11+
-			// elementos <object> sem atributo `data` tem um objeto
-			// `contentDocument` com um protótipo `null`.
-			getProto(elem.contentDocument)) {
+			// Support: IE 11+
+			// <object> elements with no `data` attribute has an object
+			// `contentDocument` with a `null` prototype.
+			getProto( elem.contentDocument ) ) {
 
 			return elem.contentDocument;
 		}
 
-		// Suporte: apenas IE 9 - 11, apenas iOS 7, navegador Android <=4.3 apenas
-		// Trate o elemento template como um normal em navegadores que
-		// não suporta isso.
-		if (nodeName(elem, "modelo")) {
-			elem = elem.content || elemento;
+		// Support: IE 9 - 11 only, iOS 7 only, Android Browser <=4.3 only
+		// Treat the template element as a regular one in browsers that
+		// don't support it.
+		if ( nodeName( elem, "template" ) ) {
+			elem = elem.content || elem;
 		}
 
 		return jQuery.merge( [], elem.childNodes );
 	}
-}, função(nome, fn) {
-	jQuery.fn[ nome ] = função( até, seletor ) {
+}, function( name, fn ) {
+	jQuery.fn[ name ] = function( until, selector ) {
 		var matched = jQuery.map( this, fn, until );
 
-		if (name.slice( -5) !== "Até" ) {
-			seletor = até;
+		if ( name.slice( -5 ) !== "Until" ) {
+			selector = until;
 		}
 
-		if ( seletor && tipo de seletor === "string" ) {
-			correspondido = jQuery.filter(seletor, correspondido);
+		if ( selector && typeof selector === "string" ) {
+			matched = jQuery.filter( selector, matched );
 		}
 
 		if ( this.length > 1 ) {
 
-			// Remove duplicatas
-			if (!guaranteedUnique[ nome ] ) {
-				jQuery.uniqueSort(combinado);
+			// Remove duplicates
+			if ( !guaranteedUnique[ name ] ) {
+				jQuery.uniqueSort( matched );
 			}
 
-			// Ordem inversa para pais* e derivados anteriores
-			if (rparentsprev.test(nome)) {
+			// Reverse order for parents* and prev-derivatives
+			if ( rparentsprev.test( name ) ) {
 				matched.reverse();
 			}
 		}
 
-		return this.pushStack(matched);
+		return this.pushStack( matched );
 	};
 } );
 var rnothtmlwhite = ( /[^\x20\t\r\n\f]+/g );
 
 
 
-// Converte opções formatadas em string em formatadas em objeto
-função criarOpções(opções) {
-	var objeto = {};
-	jQuery.each(options.match(rnothtmlwhite) || [], function(_, flag) {
-		objeto[ sinalizador ] = verdadeiro;
+// Convert String-formatted options into Object-formatted ones
+function createOptions( options ) {
+	var object = {};
+	jQuery.each( options.match( rnothtmlwhite ) || [], function( _, flag ) {
+		object[ flag ] = true;
 	} );
-	objeto de retorno;
+	return object;
 }
 
 /*
- * Crie uma lista de retorno de chamada usando os seguintes parâmetros:
+ * Create a callback list using the following parameters:
  *
- * opções: uma lista opcional de opções separadas por espaços que mudarão como
- * a lista de callback se comporta ou um objeto de opção mais tradicional
+ *	options: an optional list of space-separated options that will change how
+ *			the callback list behaves or a more traditional option object
  *
- * Por padrão, uma lista de retorno de chamada funcionará como uma lista de retorno de chamada de evento e pode ser
- * "disparou" várias vezes.
+ * By default a callback list will act like an event callback list and can be
+ * "fired" multiple times.
  *
- * Opções possíveis:
+ * Possible options:
  *
- * once: garantirá que a lista de retorno de chamada possa ser disparada apenas uma vez (como um Deferred)
+ *	once:			will ensure the callback list can only be fired once (like a Deferred)
  *
- * memória: acompanhará os valores anteriores e chamará qualquer callback adicionado
- * após a lista ter sido disparada imediatamente com o último "memorizado"
- * valores (como um Adiado)
+ *	memory:			will keep track of previous values and will call any callback added
+ *					after the list has been fired right away with the latest "memorized"
+ *					values (like a Deferred)
  *
- * exclusivo: garantirá que um retorno de chamada possa ser adicionado apenas uma vez (sem duplicatas na lista)
+ *	unique:			will ensure a callback can only be added once (no duplicate in the list)
  *
- * stopOnFalse: interrompa chamadas quando um retorno de chamada retornar falso
+ *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
-jQuery.Callbacks = função( opções) {
+jQuery.Callbacks = function( options ) {
 
-	// Converte opções do formato String para o formato Object, se necessário
-	// (verificamos o cache primeiro)
-	opções = tipo de opções === "string" ?
-		criarOpções(opções):
-		jQuery.extend( {}, opções );
+	// Convert options from String-formatted to Object-formatted if needed
+	// (we check in cache first)
+	options = typeof options === "string" ?
+		createOptions( options ) :
+		jQuery.extend( {}, options );
 
-	var // Flag para saber se a lista está disparando no momento
-		disparando,
+	var // Flag to know if list is currently firing
+		firing,
 
-		// Último valor de disparo para listas não esquecíveis
-		memória,
+		// Last fire value for non-forgettable lists
+		memory,
 
-		// Flag para saber se a lista já foi disparada
-		despedido,
+		// Flag to know if list was already fired
+		fired,
 
-		// Flag para evitar disparos
-		bloqueado,
+		// Flag to prevent firing
+		locked,
 
-		// lista de callback atual
-		lista = [],
+		// Actual callback list
+		list = [],
 
-		// Fila de dados de execução para listas repetíveis
-		fila = [],
+		// Queue of execution data for repeatable lists
+		queue = [],
 
-		// Índice de retorno de chamada acionado atualmente (modificado por adicionar/remover conforme necessário)
-		índice de disparo = -1,
+		// Index of currently firing callback (modified by add/remove as needed)
+		firingIndex = -1,
 
-		// Dispara retornos de chamada
-		fogo = função() {
+		// Fire callbacks
+		fire = function() {
 
-			// Aplica disparo único
-			bloqueado = bloqueado || opções.uma vez;
+			// Enforce single-firing
+			locked = locked || options.once;
 
-			// Executa callbacks para todas as execuções pendentes,
-			// respeitando substituições de shootingIndex e alterações de tempo de execução
-			disparado = disparando = verdadeiro;
-			for ( ; queue.length; shootingIndex = -1 ) {
-				memoria = fila.shift();
-				while (++firingIndex < lista.comprimento) {
+			// Execute callbacks for all pending executions,
+			// respecting firingIndex overrides and runtime changes
+			fired = firing = true;
+			for ( ; queue.length; firingIndex = -1 ) {
+				memory = queue.shift();
+				while ( ++firingIndex < list.length ) {
 
-					// Executa callback e verifica se há encerramento antecipado
-					if ( list[ shootingIndex ].apply( memory[ 0 ], memory [ 1 ] ) === false &&
-						opções.stopOnFalse ) {
+					// Run callback and check for early termination
+					if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
+						options.stopOnFalse ) {
 
-						// Pule para o final e esqueça os dados para que .add não seja disparado novamente
-						fireIndex = lista.comprimento;
-						memória = falso;
+						// Jump to end and forget the data so .add doesn't re-fire
+						firingIndex = list.length;
+						memory = false;
 					}
 				}
 			}
 
-			// Esqueça os dados se terminarmos
+			// Forget the data if we're done with it
 			if ( !options.memory ) {
-				memória = falso;
+				memory = false;
 			}
 
-			disparo = falso;
+			firing = false;
 
-			// Limpe se terminarmos de atirar de vez
-			if (bloqueado) {
+			// Clean up if we're done firing for good
+			if ( locked ) {
 
-				// Mantém uma lista vazia se tivermos dados para futuras chamadas de adição
-				if (memória) {
-					lista = [];
+				// Keep an empty list if we have data for future add calls
+				if ( memory ) {
+					list = [];
 
-				// Caso contrário, este objeto é gasto
-				} outro {
-					lista = "";
+				// Otherwise, this object is spent
+				} else {
+					list = "";
 				}
 			}
 		},
 
-		// Objeto de retornos de chamada reais
-		auto = {
+		// Actual Callbacks object
+		self = {
 
-			// Adiciona um callback ou uma coleção de callbacks à lista
-			adicione: função() {
-				if ( lista ) {
+			// Add a callback or a collection of callbacks to the list
+			add: function() {
+				if ( list ) {
 
-					// Se tivermos memória de uma execução anterior, devemos disparar após adicionar
-					if (memória && !disparando) {
-						disparoIndex = lista.comprimento - 1;
-						fila.push( memória );
+					// If we have memory from a past run, we should fire after adding
+					if ( memory && !firing ) {
+						firingIndex = list.length - 1;
+						queue.push( memory );
 					}
 
-					(função add(args){
+					( function add( args ) {
 						jQuery.each( args, function( _, arg ) {
-							if (isFunction(arg)) {
-								if (!options.unique || !self.has( arg ) ) {
-									lista.push( arg );
+							if ( isFunction( arg ) ) {
+								if ( !options.unique || !self.has( arg ) ) {
+									list.push( arg );
 								}
 							} else if ( arg && arg.length && toType( arg ) !== "string" ) {
 
-								// Inspecionar recursivamente
-								add(arg);
+								// Inspect recursively
+								add( arg );
 							}
 						} );
-					} )(argumentos);
+					} )( arguments );
 
-					if (memória && !disparando) {
-						fogo();
+					if ( memory && !firing ) {
+						fire();
 					}
 				}
-				devolva isto;
+				return this;
 			},
 
-			// Remove um callback da lista
-			remover: function () {
-				jQuery.each( argumentos, função( _, arg ) {
-					var índice;
-					while ((índice = jQuery.inArray(arg, lista, índice)) > -1) {
-						lista.splice( índice, 1 );
+			// Remove a callback from the list
+			remove: function() {
+				jQuery.each( arguments, function( _, arg ) {
+					var index;
+					while ( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
+						list.splice( index, 1 );
 
-						// Trata índices de disparo
-						if ( índice <= índice de disparo ) {
-							fireIndex--;
+						// Handle firing indexes
+						if ( index <= firingIndex ) {
+							firingIndex--;
 						}
 					}
 				} );
-				devolva isto;
+				return this;
 			},
 
-			// Verifica se um determinado callback está na lista.
-			// Se nenhum argumento for fornecido, retorna se a lista possui ou não callbacks anexados.
-			tem: function( fn ) {
-				retornar f?
-					jQuery.inArray( fn, lista ) > -1 :
-					lista.comprimento > 0;
+			// Check if a given callback is in the list.
+			// If no argument is given, return whether or not list has callbacks attached.
+			has: function( fn ) {
+				return fn ?
+					jQuery.inArray( fn, list ) > -1 :
+					list.length > 0;
 			},
 
-			// Remove todos os callbacks da lista
-			vazio: function() {
-				if ( lista ) {
-					lista = [];
+			// Remove all callbacks from the list
+			empty: function() {
+				if ( list ) {
+					list = [];
 				}
-				devolva isto;
+				return this;
 			},
 
-			// Desabilitar .fire e .add
-			// Aborta qualquer execução atual/pendente
-			// Limpa todos os callbacks e valores
-			desabilitar: function() {
-				bloqueado = fila = [];
-				lista = memoria = "";
-				devolva isto;
+			// Disable .fire and .add
+			// Abort any current/pending executions
+			// Clear all callbacks and values
+			disable: function() {
+				locked = queue = [];
+				list = memory = "";
+				return this;
 			},
-			desabilitado: function() {
-				retornar !lista;
+			disabled: function() {
+				return !list;
 			},
 
-			// Desabilita .fire
-			// Também desabilite .add a menos que tenhamos memória (já que não teria efeito)
-			// Aborta qualquer execução pendente
-			bloqueio: function () {
-				bloqueado = fila = [];
-				if ( !memória && !disparando ) {
-					lista = memoria = "";
+			// Disable .fire
+			// Also disable .add unless we have memory (since it would have no effect)
+			// Abort any pending executions
+			lock: function() {
+				locked = queue = [];
+				if ( !memory && !firing ) {
+					list = memory = "";
 				}
-				devolva isto;
+				return this;
 			},
-			bloqueado: function() {
-				retornar !!bloqueado;
+			locked: function() {
+				return !!locked;
 			},
 
-			// Chama todos os retornos de chamada com o contexto e os argumentos fornecidos
-			fireWith: function( contexto, args ) {
-				if ( ! bloqueado ) {
+			// Call all callbacks with the given context and arguments
+			fireWith: function( context, args ) {
+				if ( !locked ) {
 					args = args || [];
-					args = [ contexto, args.slice ? args.slice() : args ];
-					fila.push( args );
-					if ( !disparando ) {
-						fogo();
+					args = [ context, args.slice ? args.slice() : args ];
+					queue.push( args );
+					if ( !firing ) {
+						fire();
 					}
 				}
-				devolva isto;
+				return this;
 			},
 
-			// Chama todos os callbacks com os argumentos dados
-			fogo: function() {
-				self.fireWith( isto, argumentos );
-				devolva isto;
+			// Call all the callbacks with the given arguments
+			fire: function() {
+				self.fireWith( this, arguments );
+				return this;
 			},
 
-			// Para saber se os callbacks já foram chamados pelo menos uma vez
-			disparado: function () {
-				retorno !!disparado;
+			// To know if the callbacks have already been called at least once
+			fired: function() {
+				return !!fired;
 			}
 		};
 
-	retornar auto;
+	return self;
 };
 
 
-função Identidade( v ) {
-	retornar v;
+function Identity( v ) {
+	return v;
 }
-função Lançador (ex) {
-	jogue ex;
+function Thrower( ex ) {
+	throw ex;
 }
 
-function adoptValue( valor, resolver, rejeitar, noValue ) {
-	método var;
+function adoptValue( value, resolve, reject, noValue ) {
+	var method;
 
-	tentar {
+	try {
 
-		// Verifique primeiro o aspecto da promessa para privilegiar o comportamento síncrono
-		if ( valor && isFunction( ( método = valor.promessa ) ) ) {
-			method.call( valor ).done( resolver ).fail( rejeitar );
+		// Check for promise aspect first to privilege synchronous behavior
+		if ( value && isFunction( ( method = value.promise ) ) ) {
+			method.call( value ).done( resolve ).fail( reject );
 
-		// Outras possibilidades
-		} else if ( valor && isFunction( ( método = valor.então ) ) ) {
-			method.call(valor, resolver, rejeitar);
+		// Other thenables
+		} else if ( value && isFunction( ( method = value.then ) ) ) {
+			method.call( value, resolve, reject );
 
-		// Outros não-entáveis
-		} outro {
+		// Other non-thenables
+		} else {
 
-			// Controle os argumentos `resolve` deixando Array#slice converter booleano `noValue` para inteiro:
-			// * false: [ valor ].slice( 0 ) => resolve( valor )
-			// * verdadeiro: [ valor ].slice( 1 ) => resolve()
-			resolve.apply( indefinido, [ valor ].slice( noValue ) );
+			// Control `resolve` arguments by letting Array#slice cast boolean `noValue` to integer:
+			// * false: [ value ].slice( 0 ) => resolve( value )
+			// * true: [ value ].slice( 1 ) => resolve()
+			resolve.apply( undefined, [ value ].slice( noValue ) );
 		}
 
-	// Para Promises/A+, converte exceções em rejeições
-	// Já que jQuery.when não desempacota os theables, podemos pular as verificações extras que aparecem em
-	// Deferred#then para suprimir condicionalmente a rejeição.
-	} pegar ( valor ) {
+	// For Promises/A+, convert exceptions into rejections
+	// Since jQuery.when doesn't unwrap thenables, we can skip the extra checks appearing in
+	// Deferred#then to conditionally suppress rejection.
+	} catch ( value ) {
 
-		// Suporte: apenas Android 4.0
-		// Funções de modo estrito invocadas sem .call/.apply obtêm contexto de objeto global
-		rejeitar.aplicar(indefinido, [valor]);
+		// Support: Android 4.0 only
+		// Strict mode functions invoked without .call/.apply get global-object context
+		reject.apply( undefined, [ value ] );
 	}
 }
 
 jQuery.extend( {
 
-	Adiado: function( func ) {
-		var tuplas = [
+	Deferred: function( func ) {
+		var tuples = [
 
-				// ação, adiciona ouvinte, callbacks,
-				// ... .then manipuladores, índice de argumento, [estado final]
-				[ "notificar", "progresso", jQuery.Callbacks( "memória" ),
-					jQuery.Callbacks( "memória" ), 2 ],
-				[ "resolver", "concluído", jQuery.Callbacks( "once memory" ),
-					jQuery.Callbacks( "once memory" ), 0, "resolvido" ],
-				[ "rejeitar", "falha", jQuery.Callbacks( "once memory" ),
-					jQuery.Callbacks( "once memory" ), 1, "rejeitado" ]
+				// action, add listener, callbacks,
+				// ... .then handlers, argument index, [final state]
+				[ "notify", "progress", jQuery.Callbacks( "memory" ),
+					jQuery.Callbacks( "memory" ), 2 ],
+				[ "resolve", "done", jQuery.Callbacks( "once memory" ),
+					jQuery.Callbacks( "once memory" ), 0, "resolved" ],
+				[ "reject", "fail", jQuery.Callbacks( "once memory" ),
+					jQuery.Callbacks( "once memory" ), 1, "rejected" ]
 			],
-			estado = "pendente",
-			promessa = {
-				função estatal() {
-					estado de retorno;
+			state = "pending",
+			promise = {
+				state: function() {
+					return state;
 				},
-				sempre: function() {
-					deferred.done(argumentos).fail(argumentos);
-					devolva isto;
+				always: function() {
+					deferred.done( arguments ).fail( arguments );
+					return this;
 				},
-				"pegar": function( fn ) {
-					return promessa.então( null, fn );
+				"catch": function( fn ) {
+					return promise.then( null, fn );
 				},
 
-				// Mantém o pipe para back-compat
+				// Keep pipe for back-compat
 				pipe: function( /* fnDone, fnFail, fnProgress */ ) {
-					var fns = argumentos;
+					var fns = arguments;
 
 					return jQuery.Deferred( function( newDefer ) {
-						jQuery.each( tuplas, function( _i, tupla ) {
+						jQuery.each( tuples, function( _i, tuple ) {
 
-							// Mapeia tuplas (progress, done, fail) para argumentos (done, fail, progress)
+							// Map tuples (progress, done, fail) to arguments (done, fail, progress)
 							var fn = isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
 
-							// deferred.progress(function() { vincular a newDefer ou newDefer.notify })
-							// deferred.done(function() { vincular a newDefer ou newDefer.resolve })
-							// deferred.fail(function() { vincular a newDefer ou newDefer.reject })
-							deferido[ tupla[ 1 ] ]( function() {
-								var retornado = fn && fn.apply( isto, argumentos );
-								if (retornou && isFunction(retornou.promise)) {
-									devolvido.promessa()
+							// deferred.progress(function() { bind to newDefer or newDefer.notify })
+							// deferred.done(function() { bind to newDefer or newDefer.resolve })
+							// deferred.fail(function() { bind to newDefer or newDefer.reject })
+							deferred[ tuple[ 1 ] ]( function() {
+								var returned = fn && fn.apply( this, arguments );
+								if ( returned && isFunction( returned.promise ) ) {
+									returned.promise()
 										.progress( newDefer.notify )
 										.done( newDefer.resolve )
 										.fail( newDefer.reject );
-								} outro {
-									newDefer[ tupla[ 0 ] + "Com" ](
-										esse,
-										fn? [retornou]: argumentos
+								} else {
+									newDefer[ tuple[ 0 ] + "With" ](
+										this,
+										fn ? [ returned ] : arguments
 									);
 								}
 							} );
 						} );
-						fns = nulo;
-					} ).promessa();
+						fns = null;
+					} ).promise();
 				},
-				então: function( onFulfilled, onRejected, onProgress ) {
+				then: function( onFulfilled, onRejected, onProgress ) {
 					var maxDepth = 0;
-					função resolve( profundidade, adiada, manipulador, especial ) {
-						função return() {
-							var que = isso,
-								args = argumentos,
-								mayThrow = function() {
-									var retornou, então;
+					function resolve( depth, deferred, handler, special ) {
+						return function() {
+							var that = this,
+								args = arguments,
+								mightThrow = function() {
+									var returned, then;
 
-									// Suporte: Promessas/A+ seção 2.3.3.3.3
+									// Support: Promises/A+ section 2.3.3.3.3
 									// https://promisesaplus.com/#point-59
-									// Ignora tentativas de resolução dupla
-									if ( profundidade < maxDepth ) {
-										retornar;
+									// Ignore double-resolution attempts
+									if ( depth < maxDepth ) {
+										return;
 									}
 
-									retornado = handler.apply( that, args );
+									returned = handler.apply( that, args );
 
-									// Suporte: Promessas/A+ seção 2.3.1
+									// Support: Promises/A+ section 2.3.1
 									// https://promisesaplus.com/#point-48
-									if (retornou === deferred.promise()) {
-										throw new TypeError("Enable auto-resolução");
+									if ( returned === deferred.promise() ) {
+										throw new TypeError( "Thenable self-resolution" );
 									}
 
-									// Suporte: Promessas/seções A+ 2.3.3.1, 3.5
+									// Support: Promises/A+ sections 2.3.3.1, 3.5
 									// https://promisesaplus.com/#point-54
 									// https://promisesaplus.com/#point-75
-									// Recupera `then` apenas uma vez
-									então = retornado &&
+									// Retrieve `then` only once
+									then = returned &&
 
-										// Suporte: Promessas/A+ seção 2.3.4
+										// Support: Promises/A+ section 2.3.4
 										// https://promisesaplus.com/#point-64
-										// Apenas verifica objetos e funções quanto à sua capacidade
-										( typeof retornado === "objeto" ||
-											typeof retornado === "função" ) &&
-										retornado.então;
+										// Only check objects and functions for thenability
+										( typeof returned === "object" ||
+											typeof returned === "function" ) &&
+										returned.then;
 
-									// Manipula um thenable retornado
-									if (éFunção(então)) {
+									// Handle a returned thenable
+									if ( isFunction( then ) ) {
 
-										// Processadores especiais (notificar) apenas aguardar a resolução
-										se ( especial ) {
-											Em seguida, ligue(
-												devolvida,
-												resolve(maxDepth, adiado, Identidade, especial),
-												resolve(maxDepth, diferido, Thrower, especial)
+										// Special processors (notify) just wait for resolution
+										if ( special ) {
+											then.call(
+												returned,
+												resolve( maxDepth, deferred, Identity, special ),
+												resolve( maxDepth, deferred, Thrower, special )
 											);
 
-										// Processadores normais (resolver) também se conectam ao progresso
-										} outro {
+										// Normal processors (resolve) also hook into progress
+										} else {
 
-											// ...e desconsidera valores de resolução mais antigos
+											// ...and disregard older resolution values
 											maxDepth++;
 
-											Em seguida, ligue(
-												devolvida,
-												resolve(maxDepth, adiado, Identidade, especial),
-												resolve(maxDepth, diferido, Thrower, especial),
-												resolve(maxDepth, adiado, Identidade,
-													adiado.notifyWith )
+											then.call(
+												returned,
+												resolve( maxDepth, deferred, Identity, special ),
+												resolve( maxDepth, deferred, Thrower, special ),
+												resolve( maxDepth, deferred, Identity,
+													deferred.notifyWith )
 											);
 										}
 
-									// Trata todos os outros valores retornados
-									} outro {
+									// Handle all other returned values
+									} else {
 
-										// Somente manipuladores substitutos passam o contexto
-										// e vários valores (comportamento não específico)
-										if ( manipulador !== Identidade ) {
-											que = indefinido;
-											args = [retornou];
+										// Only substitute handlers pass on context
+										// and multiple values (non-spec behavior)
+										if ( handler !== Identity ) {
+											that = undefined;
+											args = [ returned ];
 										}
 
-										// Processa o(s) valor(es)
-										// O processo padrão é resolver
-										( especial || deferred.resolveWith )( that, args );
+										// Process the value(s)
+										// Default process is resolve
+										( special || deferred.resolveWith )( that, args );
 									}
 								},
 
-								// Apenas processadores normais (resolvem) capturam e rejeitam exceções
-								processo = especial ?
-									mayThrow:
-									função() {
-										tentar {
-											mayThrow();
-										} pegar ( e ) {
+								// Only normal processors (resolve) catch and reject exceptions
+								process = special ?
+									mightThrow :
+									function() {
+										try {
+											mightThrow();
+										} catch ( e ) {
 
 											if ( jQuery.Deferred.exceptionHook ) {
 												jQuery.Deferred.exceptionHook( e,
 													process.error );
 											}
 
-											// Suporte: Promessas/A+ seção 2.3.3.3.4.1
+											// Support: Promises/A+ section 2.3.3.3.4.1
 											// https://promisesaplus.com/#point-61
-											// Ignora exceções pós-resolução
-											if ( profundidade + 1 >= maxDepth ) {
+											// Ignore post-resolution exceptions
+											if ( depth + 1 >= maxDepth ) {
 
-												// Somente manipuladores substitutos passam o contexto
-												// e vários valores (comportamento não específico)
-												if ( manipulador !== Lançador ) {
-													que = indefinido;
-													args = [e];
+												// Only substitute handlers pass on context
+												// and multiple values (non-spec behavior)
+												if ( handler !== Thrower ) {
+													that = undefined;
+													args = [ e ];
 												}
 
-												deferred.rejectWith( isso, args );
+												deferred.rejectWith( that, args );
 											}
 										}
 									};
 
-							// Suporte: Promessas/A+ seção 2.3.3.3.1
+							// Support: Promises/A+ section 2.3.3.3.1
 							// https://promisesaplus.com/#point-57
-							// Resolva promessas imediatamente para evitar falsas rejeições de
-							// erros subseqüentes
-							if ( profundidade ) {
-								processo();
-							} outro {
+							// Re-resolve promises immediately to dodge false rejection from
+							// subsequent errors
+							if ( depth ) {
+								process();
+							} else {
 
-								// Chama um hook opcional para registrar o erro, em caso de exceção
-								// já que é perdido quando a execução fica assíncrona
+								// Call an optional hook to record the error, in case of exception
+								// since it's otherwise lost when execution goes async
 								if ( jQuery.Deferred.getErrorHook ) {
 									process.error = jQuery.Deferred.getErrorHook();
 
-								// O alias obsoleto acima. Embora o nome sugira
-								// retornando a pilha, não uma instância de erro, jQuery apenas passa
-								// diretamente para `console.warn` para que ambos funcionem; uma instância
-								// apenas coopera melhor com os mapas de origem.
+								// The deprecated alias of the above. While the name suggests
+								// returning the stack, not an error instance, jQuery just passes
+								// it directly to `console.warn` so both will work; an instance
+								// just better cooperates with source maps.
 								} else if ( jQuery.Deferred.getStackHook ) {
 									process.error = jQuery.Deferred.getStackHook();
 								}
-								window.setTimeout( processo );
+								window.setTimeout( process );
 							}
 						};
 					}
@@ -3597,96 +3597,96 @@ jQuery.extend( {
 					return jQuery.Deferred( function( newDefer ) {
 
 						// progress_handlers.add( ... )
-						tuplas[ 0 ][ 3 ].add(
-							resolver(
+						tuples[ 0 ][ 3 ].add(
+							resolve(
 								0,
-								novoAdiar,
-								isFunction(onProgress) ?
-									em progresso :
-									Identidade,
+								newDefer,
+								isFunction( onProgress ) ?
+									onProgress :
+									Identity,
 								newDefer.notifyWith
 							)
 						);
 
-						// cumprido_handlers.add( ... )
-						tuplas[ 1 ][ 3 ].add(
-							resolver(
+						// fulfilled_handlers.add( ... )
+						tuples[ 1 ][ 3 ].add(
+							resolve(
 								0,
-								novoAdiar,
-								isFunction(onFulfilled) ?
-									onCumprido:
-									Identidade
+								newDefer,
+								isFunction( onFulfilled ) ?
+									onFulfilled :
+									Identity
 							)
 						);
 
-						// rejeitado_handlers.add( ... )
-						tuplas[ 2 ][ 3 ].add(
-							resolver(
+						// rejected_handlers.add( ... )
+						tuples[ 2 ][ 3 ].add(
+							resolve(
 								0,
-								novoAdiar,
-								isFunction(onRejected) ?
-									onRejected:
-									Atirador
+								newDefer,
+								isFunction( onRejected ) ?
+									onRejected :
+									Thrower
 							)
 						);
-					} ).promessa();
+					} ).promise();
 				},
 
-				// Obter uma promessa para este diferido
-				// Se obj for fornecido, o aspecto de promessa é adicionado ao objeto
-				promessa: function( obj ) {
-					return obj != null ? jQuery.extend(obj, promessa): promessa;
+				// Get a promise for this deferred
+				// If obj is provided, the promise aspect is added to the object
+				promise: function( obj ) {
+					return obj != null ? jQuery.extend( obj, promise ) : promise;
 				}
 			},
-			diferido = {};
+			deferred = {};
 
-		// Adicionar métodos específicos da lista
-		jQuery.each( tuplas, função( i, tupla ) {
-			var lista = tupla[ 2 ],
-				estadoString = tuple[ 5 ];
+		// Add list-specific methods
+		jQuery.each( tuples, function( i, tuple ) {
+			var list = tuple[ 2 ],
+				stateString = tuple[ 5 ];
 
-			// promessa.progresso = lista.add
-			// promessa.done = list.add
-			// promessa.fail = list.add
-			promessa[ tupla[ 1 ] ] = lista.add;
+			// promise.progress = list.add
+			// promise.done = list.add
+			// promise.fail = list.add
+			promise[ tuple[ 1 ] ] = list.add;
 
-			// Manipula o estado
-			if (estadoString) {
-				lista.adicionar(
-					função() {
+			// Handle state
+			if ( stateString ) {
+				list.add(
+					function() {
 
-						// estado = "resolvido" (ou seja, cumprido)
-						// estado = "rejeitado"
-						estado = estadoString;
+						// state = "resolved" (i.e., fulfilled)
+						// state = "rejected"
+						state = stateString;
 					},
 
-					// rejeição_callbacks.disable
-					// cumprido_callbacks.disable
-					tuplas[ 3 - i ][ 2 ].desativar,
+					// rejected_callbacks.disable
+					// fulfilled_callbacks.disable
+					tuples[ 3 - i ][ 2 ].disable,
 
-					// rejeitado_handlers.disable
-					// cumprido_handlers.disable
-					tuplas[ 3 - i ][ 3 ].desativar,
+					// rejected_handlers.disable
+					// fulfilled_handlers.disable
+					tuples[ 3 - i ][ 3 ].disable,
 
 					// progress_callbacks.lock
-					tuplas[ 0 ][ 2 ].lock,
+					tuples[ 0 ][ 2 ].lock,
 
 					// progress_handlers.lock
-					tuplas[ 0 ][ 3 ].lock
+					tuples[ 0 ][ 3 ].lock
 				);
 			}
 
 			// progress_handlers.fire
-			// cumprido_handlers.fire
-			// rejeitado_handlers.fire
-			list.add(tuple[ 3 ].fire );
+			// fulfilled_handlers.fire
+			// rejected_handlers.fire
+			list.add( tuple[ 3 ].fire );
 
 			// deferred.notify = function() { deferred.notifyWith(...) }
 			// deferred.resolve = function() { deferred.resolveWith(...) }
 			// deferred.reject = function() { deferred.rejectWith(...) }
-			deferido[ tupla[ 0 ] ] = function() {
+			deferred[ tuple[ 0 ] ] = function() {
 				deferred[ tuple[ 0 ] + "With" ]( this === deferred ? undefined : this, arguments );
-				devolva isto;
+				return this;
 			};
 
 			// deferred.notifyWith = list.fireWith
@@ -3695,82 +3695,82 @@ jQuery.extend( {
 			deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
 		} );
 
-		// Faça do adiado uma promessa
-		promessa.promessa( adiada );
+		// Make the deferred a promise
+		promise.promise( deferred );
 
-		// Chama a função fornecida se houver
-		if (função) {
-			func.call( adiado, adiado );
+		// Call given func if any
+		if ( func ) {
+			func.call( deferred, deferred );
 		}
 
-		// Tudo feito!
-		retorno diferido;
+		// All done!
+		return deferred;
 	},
 
-	// ajudante diferido
-	quando: function( singleValue ) {
+	// Deferred helper
+	when: function( singleValue ) {
 		var
 
-			// contagem de subordinados incompletos
-			restante = argumentos.comprimento,
+			// count of uncompleted subordinates
+			remaining = arguments.length,
 
-			// contagem de argumentos não processados
-			i = restante,
+			// count of unprocessed arguments
+			i = remaining,
 
-			// dados de atendimento subordinados
+			// subordinate fulfillment data
 			resolveContexts = Array( i ),
-			resolveValues ​​= slice.call(argumentos),
+			resolveValues = slice.call( arguments ),
 
-			// o principal diferido
-			primário = jQuery.Deferred(),
+			// the primary Deferred
+			primary = jQuery.Deferred(),
 
-			// fábrica de retorno de chamada subordinada
-			updateFunc = function(i) {
-				return function( valor ) {
-					resolveContexts[i] = this;
-					resolveValues[ i ] = argumentos.comprimento > 1 ? slice.call(argumentos): valor;
-					if ( !( --restante ) ) {
-						primário.resolveWith( resolveContexts, resolveValues ​​);
+			// subordinate callback factory
+			updateFunc = function( i ) {
+				return function( value ) {
+					resolveContexts[ i ] = this;
+					resolveValues[ i ] = arguments.length > 1 ? slice.call( arguments ) : value;
+					if ( !( --remaining ) ) {
+						primary.resolveWith( resolveContexts, resolveValues );
 					}
 				};
 			};
 
-		// Argumentos simples e vazios são adotados como Promise.resolve
-		if (restante <= 1) {
+		// Single- and empty arguments are adopted like Promise.resolve
+		if ( remaining <= 1 ) {
 			adoptValue( singleValue, primary.done( updateFunc( i ) ).resolve, primary.reject,
-				!restante );
+				!remaining );
 
-			// Use .then() para desembrulhar os thenables secundários (cf. gh-3000)
-			if ( primary.state() === "pendente" ||
+			// Use .then() to unwrap secondary thenables (cf. gh-3000)
+			if ( primary.state() === "pending" ||
 				isFunction( resolveValues[ i ] && resolveValues[ i ].then ) ) {
 
-				return primário.então();
+				return primary.then();
 			}
 		}
 
-		// Múltiplos argumentos são agregados como elementos do array Promise.all
-		enquanto eu-- ) {
+		// Multiple arguments are aggregated like Promise.all array elements
+		while ( i-- ) {
 			adoptValue( resolveValues[ i ], updateFunc( i ), primary.reject );
 		}
 
-		return primário.promessa();
+		return primary.promise();
 	}
 } );
 
 
-// Geralmente indicam um erro do programador durante o desenvolvimento,
-// alerta sobre eles o mais rápido possível, em vez de engoli-los por padrão.
-var rerrorNames = /^(Eval|Interno|Intervalo|Referência|Sintaxe|Tipo|URI)Error$/;
+// These usually indicate a programmer mistake during development,
+// warn about them ASAP rather than swallowing them by default.
+var rerrorNames = /^(Eval|Internal|Range|Reference|Syntax|Type|URI)Error$/;
 
-// Se `jQuery.Deferred.getErrorHook` for definido, `asyncError` é um erro
-// capturado antes da barreira assíncrona para obter a causa original do erro
-// que, de outra forma, pode estar oculto.
-jQuery.Deferred.exceptionHook = function(erro, asyncError) {
+// If `jQuery.Deferred.getErrorHook` is defined, `asyncError` is an error
+// captured before the async barrier to get the original error cause
+// which may otherwise be hidden.
+jQuery.Deferred.exceptionHook = function( error, asyncError ) {
 
-	// Suporte: IE 8 - 9 somente
-	// O console existe quando as ferramentas de desenvolvimento estão abertas, o que pode acontecer a qualquer momento
+	// Support: IE 8 - 9 only
+	// Console exists when dev tools are open, which can happen at any time
 	if ( window.console && window.console.warn && error && rerrorNames.test( error.name ) ) {
-		window.console.warn( "exceção jQuery.Deferred: " + error.message,
+		window.console.warn( "jQuery.Deferred exception: " + error.message,
 			error.stack, asyncError );
 	}
 };
@@ -3778,333 +3778,333 @@ jQuery.Deferred.exceptionHook = function(erro, asyncError) {
 
 
 
-jQuery.readyException = function(erro) {
+jQuery.readyException = function( error ) {
 	window.setTimeout( function() {
-		lançar erro;
+		throw error;
 	} );
 };
 
 
 
 
-// O diferido usado no DOM pronto
+// The deferred used on DOM ready
 var readyList = jQuery.Deferred();
 
 jQuery.fn.ready = function( fn ) {
 
-	lista pronta
-		.então ( fn )
+	readyList
+		.then( fn )
 
-		// Envolva jQuery.readyException em uma função para que a pesquisa
-		// acontece no momento do tratamento de erro ao invés do retorno de chamada
-		// cadastro.
-		.catch(função(erro){
-			jQuery.readyException(erro);
+		// Wrap jQuery.readyException in a function so that the lookup
+		// happens at the time of error handling instead of callback
+		// registration.
+		.catch( function( error ) {
+			jQuery.readyException( error );
 		} );
 
-	devolva isto;
+	return this;
 };
 
 jQuery.extend( {
 
-	// O DOM está pronto para ser usado? Defina como verdadeiro assim que ocorrer.
-	isReady: falso,
+	// Is the DOM ready to be used? Set to true once it occurs.
+	isReady: false,
 
-	// Um ​​contador para rastrear quantos itens esperar antes
-	// o evento pronto dispara. Veja trac-6781
-	prontoEspera: 1,
+	// A counter to track how many items to wait for before
+	// the ready event fires. See trac-6781
+	readyWait: 1,
 
-	// Trata quando o DOM está pronto
-	pronto: function(espera) {
+	// Handle when the DOM is ready
+	ready: function( wait ) {
 
-		// Abortar se houver retenções pendentes ou já estivermos prontos
-		if (espera === true? --jQuery.readyWait: jQuery.isReady) {
-			retornar;
+		// Abort if there are pending holds or we're already ready
+		if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
+			return;
 		}
 
-		// Lembre-se que o DOM está pronto
-		jQuery.isReady = verdadeiro;
+		// Remember that the DOM is ready
+		jQuery.isReady = true;
 
-		// Se um evento DOM Ready normal disparar, diminua e aguarde se necessário
-		if ( espere !== true && --jQuery.readyWait > 0 ) {
-			retornar;
+		// If a normal DOM Ready event fired, decrement, and wait if need be
+		if ( wait !== true && --jQuery.readyWait > 0 ) {
+			return;
 		}
 
-		// Se houver funções vinculadas, para executar
-		readyList.resolveWith(documento, [jQuery]);
+		// If there are functions bound, to execute
+		readyList.resolveWith( document, [ jQuery ] );
 	}
 } );
 
 jQuery.ready.then = readyList.then;
 
-// O manipulador de eventos pronto e o método de autolimpeza
-função concluída() {
-	document.removeEventListener( "DOMContentLoaded", concluído );
-	window.removeEventListener("carregar", concluído);
+// The ready event handler and self cleanup method
+function completed() {
+	document.removeEventListener( "DOMContentLoaded", completed );
+	window.removeEventListener( "load", completed );
 	jQuery.ready();
 }
 
-// Captura casos em que $(document).ready() é chamado
-// depois que o evento do navegador já ocorreu.
-// Suporte: IE <=9 - 10 apenas
-// IE mais antigo às vezes sinaliza "interativo" muito cedo
-if ( document.readyState === "completo" ||
-	( document.readyState !== "carregando" && !document.documentElement.doScroll ) ) {
+// Catch cases where $(document).ready() is called
+// after the browser event has already occurred.
+// Support: IE <=9 - 10 only
+// Older IE sometimes signals "interactive" too soon
+if ( document.readyState === "complete" ||
+	( document.readyState !== "loading" && !document.documentElement.doScroll ) ) {
 
-	// Manipule-o de forma assíncrona para permitir que os scripts tenham a oportunidade de atrasar o pronto
+	// Handle it asynchronously to allow scripts the opportunity to delay ready
 	window.setTimeout( jQuery.ready );
 
-} outro {
+} else {
 
-	// Use o retorno de chamada de evento útil
-	document.addEventListener( "DOMContentLoaded", concluído );
+	// Use the handy event callback
+	document.addEventListener( "DOMContentLoaded", completed );
 
-	// Um ​​substituto para window.onload, que sempre funcionará
-	window.addEventListener("carregar", concluído);
+	// A fallback to window.onload, that will always work
+	window.addEventListener( "load", completed );
 }
 
 
 
 
-// Método multifuncional para obter e definir valores de uma coleção
-// O(s) valor(es) podem opcionalmente ser executados se for uma função
-var access = function(elems, fn, key, value, chainable, emptyGet, raw) {
+// Multifunctional method to get and set values of a collection
+// The value/s can optionally be executed if it's a function
+var access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
 	var i = 0,
 		len = elems.length,
-		massa = chave == null;
+		bulk = key == null;
 
-	// Define muitos valores
-	if ( toType( chave ) === "objeto" ) {
-		encadeável = verdadeiro;
-		for ( i na chave ) {
-			access(elems, fn, i, key[ i ], true, emptyGet, raw );
+	// Sets many values
+	if ( toType( key ) === "object" ) {
+		chainable = true;
+		for ( i in key ) {
+			access( elems, fn, i, key[ i ], true, emptyGet, raw );
 		}
 
-	// Define um valor
-	} else if ( valor !== indefinido ) {
-		encadeável = verdadeiro;
+	// Sets one value
+	} else if ( value !== undefined ) {
+		chainable = true;
 
-		if (!isFunction( valor ) ) {
-			bruto = verdadeiro;
+		if ( !isFunction( value ) ) {
+			raw = true;
 		}
 
-		if (em massa) {
+		if ( bulk ) {
 
-			// Operações em massa são executadas em todo o conjunto
-			if (bruto) {
-				fn.call(elems, valor);
-				fn = nulo;
+			// Bulk operations run against the entire set
+			if ( raw ) {
+				fn.call( elems, value );
+				fn = null;
 
-			// ...exceto ao executar valores de função
-			} outro {
-				massa = fn;
-				fn = function(elem, _key, valor) {
-					return bulk.call( jQuery( elem ), valor );
+			// ...except when executing function values
+			} else {
+				bulk = fn;
+				fn = function( elem, _key, value ) {
+					return bulk.call( jQuery( elem ), value );
 				};
 			}
 		}
 
-		se ( fn ) {
+		if ( fn ) {
 			for ( ; i < len; i++ ) {
 				fn(
-					elems[ i ], chave, raw ?
-						valor :
-						value.call(elems[i],i,fn(elems[i],chave))
+					elems[ i ], key, raw ?
+						value :
+						value.call( elems[ i ], i, fn( elems[ i ], key ) )
 				);
 			}
 		}
 	}
 
-	if ( encadeável ) {
-		elementos de retorno;
+	if ( chainable ) {
+		return elems;
 	}
 
-	// Obtém
-	if (em massa) {
-		return fn.call(elems);
+	// Gets
+	if ( bulk ) {
+		return fn.call( elems );
 	}
 
-	Devolve Len? fn(elems[ 0 ], key ): emptyGet;
+	return len ? fn( elems[ 0 ], key ) : emptyGet;
 };
 
 
-// Corresponde à string tracejada para camelizar
+// Matches dashed string for camelizing
 var rmsPrefix = /^-ms-/,
-	rdashAlpha = /-([az])/g;
+	rdashAlpha = /-([a-z])/g;
 
-// Usado por camelCase como callback para replace()
-função fcamelCase( _all, letra ) {
+// Used by camelCase as callback to replace()
+function fcamelCase( _all, letter ) {
 	return letter.toUpperCase();
 }
 
-// Converte tracejado para camelCase; usado pelos módulos css e dados
-// Suporte: IE <=9 - 11, Edge 12 - 15
-// A Microsoft esqueceu de alterar o prefixo do fornecedor (trac-9572)
+// Convert dashed to camelCase; used by the css and data modules
+// Support: IE <=9 - 11, Edge 12 - 15
+// Microsoft forgot to hump their vendor prefix (trac-9572)
 function camelCase( string ) {
 	return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 }
-var aceitarDados = function(proprietário) {
+var acceptData = function( owner ) {
 
-	// Aceita apenas:
-	// - Nó
-	// - Node.ELEMENT_NODE
-	// - Node.DOCUMENT_NODE
-	// - Objeto
-	// - Qualquer
+	// Accepts only:
+	//  - Node
+	//    - Node.ELEMENT_NODE
+	//    - Node.DOCUMENT_NODE
+	//  - Object
+	//    - Any
 	return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
 };
 
 
 
 
-função Dados() {
+function Data() {
 	this.expando = jQuery.expando + Data.uid++;
 }
 
-dados.uid = 1;
+Data.uid = 1;
 
 Data.prototype = {
 
-	cache: função (proprietário) {
+	cache: function( owner ) {
 
-		// Verifica se o objeto proprietário já possui um cache
+		// Check if the owner object already has a cache
 		var value = owner[ this.expando ];
 
-		// Se não, crie um
-		if ( !valor ) {
-			valor = {};
+		// If not, create one
+		if ( !value ) {
+			value = {};
 
-			// Podemos aceitar dados para nós não elementares em navegadores modernos,
-			// mas não devemos, veja trac-8335.
-			// Sempre retorna um objeto vazio.
-			if (aceitarDados(proprietário)) {
+			// We can accept data for non-element nodes in modern browsers,
+			// but we should not, see trac-8335.
+			// Always return an empty object.
+			if ( acceptData( owner ) ) {
 
-				// Se for um nó improvável de ser stringificado ou repetido
-				// usa atribuição simples
-				if (owner.nodeType) {
-					proprietário[ this.expandindo ] = valor;
+				// If it is a node unlikely to be stringify-ed or looped over
+				// use plain assignment
+				if ( owner.nodeType ) {
+					owner[ this.expando ] = value;
 
-				// Caso contrário, proteja-o em uma propriedade não enumerável
-				// configurável deve ser verdadeiro para permitir que a propriedade seja
-				// excluído quando os dados são removidos
-				} outro {
-					Object.defineProperty(proprietário, this.expandindo, {
-						valor: valor,
-						configurável: verdadeiro
+				// Otherwise secure it in a non-enumerable property
+				// configurable must be true to allow the property to be
+				// deleted when data is removed
+				} else {
+					Object.defineProperty( owner, this.expando, {
+						value: value,
+						configurable: true
 					} );
 				}
 			}
 		}
 
-		valor de retorno;
+		return value;
 	},
-	set: function(proprietário, dados, valor) {
-		suporte var,
-			cache = this.cache(proprietário);
+	set: function( owner, data, value ) {
+		var prop,
+			cache = this.cache( owner );
 
-		// Handle: [proprietário, chave, valor] args
-		// Sempre use a chave camelCase (gh-2257)
-		if (tipo de dado === "string" ) {
-			cache[ camelCase(dados)] = valor;
+		// Handle: [ owner, key, value ] args
+		// Always use camelCase key (gh-2257)
+		if ( typeof data === "string" ) {
+			cache[ camelCase( data ) ] = value;
 
-		// Handle: [proprietário, {propriedades}] args
-		} outro {
+		// Handle: [ owner, { properties } ] args
+		} else {
 
-			// Copia as propriedades uma a uma para o objeto cache
-			for ( prop em dados ) {
+			// Copy the properties one-by-one to the cache object
+			for ( prop in data ) {
 				cache[ camelCase( prop ) ] = data[ prop ];
 			}
 		}
-		cache de retorno;
+		return cache;
 	},
-	get: function(proprietário, chave) {
-		tecla de retorno === indefinido?
-			this.cache(proprietário):
+	get: function( owner, key ) {
+		return key === undefined ?
+			this.cache( owner ) :
 
-			// Sempre use a chave camelCase (gh-2257)
+			// Always use camelCase key (gh-2257)
 			owner[ this.expando ] && owner[ this.expando ][ camelCase( key ) ];
 	},
-	acesso: function(proprietário, chave, valor) {
+	access: function( owner, key, value ) {
 
-		// Nos casos em que:
+		// In cases where either:
 		//
-		// 1. Nenhuma chave foi especificada
-		// 2. Uma chave de string foi especificada, mas nenhum valor foi fornecido
+		//   1. No key was specified
+		//   2. A string key was specified, but no value provided
 		//
-		// Pegue o caminho "read" e permita que o método get determine
-		// qual valor retornar, respectivamente:
+		// Take the "read" path and allow the get method to determine
+		// which value to return, respectively either:
 		//
-		// 1. Todo o objeto de cache
-		// 2. Os dados armazenados na chave
+		//   1. The entire cache object
+		//   2. The data stored at the key
 		//
-		if (tecla === indefinido ||
-				((chave && tipo de chave === "string") && valor === indefinido) ) {
+		if ( key === undefined ||
+				( ( key && typeof key === "string" ) && value === undefined ) ) {
 
-			return this.get(proprietário, chave);
+			return this.get( owner, key );
 		}
 
-		// Quando a chave não é uma string, ou tanto uma chave quanto um valor
-		// são especificados, definidos ou estendidos (objetos existentes) com:
+		// When the key is not a string, or both a key and value
+		// are specified, set or extend (existing objects) with either:
 		//
-		// 1. Um objeto de propriedades
-		// 2. Uma chave e um valor
+		//   1. An object of properties
+		//   2. A key and value
 		//
-		this.set(proprietário, chave, valor);
+		this.set( owner, key, value );
 
-		// Uma vez que o caminho "set" pode ter dois pontos de entrada possíveis
-		// retorna os dados esperados com base em qual caminho foi tomado[*]
-		valor de retorno !== indefinido ? valor : chave;
+		// Since the "set" path can have two possible entry points
+		// return the expected data based on which path was taken[*]
+		return value !== undefined ? value : key;
 	},
-	remover: function(proprietário, chave) {
-		var eu,
-			cache = dono[ this.expandindo ];
+	remove: function( owner, key ) {
+		var i,
+			cache = owner[ this.expando ];
 
-		if ( cache === indefinido ) {
-			retornar;
+		if ( cache === undefined ) {
+			return;
 		}
 
-		if ( chave !== indefinido ) {
+		if ( key !== undefined ) {
 
-			// Suporta array ou string de chaves separadas por espaço
-			if (Array.isArray(chave)) {
+			// Support array or space separated string of keys
+			if ( Array.isArray( key ) ) {
 
-				// Se a chave for um array de chaves...
-				// Nós sempre definimos chaves camelCase, então remova isso.
+				// If key is an array of keys...
+				// We always set camelCase keys, so remove that.
 				key = key.map( camelCase );
-			} outro {
-				chave = camelCase( chave );
+			} else {
+				key = camelCase( key );
 
-				// Se existir uma chave com os espaços, use-a.
-				// Caso contrário, crie uma matriz combinando não-espaço em branco
-				chave = chave no cache?
-					[ chave ] :
+				// If a key with the spaces exists, use it.
+				// Otherwise, create an array by matching non-whitespace
+				key = key in cache ?
+					[ key ] :
 					( key.match( rnothtmlwhite ) || [] );
 			}
 
-			i = chave.comprimento;
+			i = key.length;
 
-			enquanto eu-- ) {
-				excluir cache[chave[i]];
+			while ( i-- ) {
+				delete cache[ key[ i ] ];
 			}
 		}
 
-		// Remove o expando se não houver mais dados
-		if (chave === indefinido || jQuery.isEmptyObject( cache ) ) {
+		// Remove the expando if there's no more data
+		if ( key === undefined || jQuery.isEmptyObject( cache ) ) {
 
-			// Suporte: Chrome <=35 - 45
-			// O desempenho do Webkit & Blink sofre ao excluir propriedades
-			// a partir de nós DOM, então defina como indefinido
-			// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restrito)
-			if (owner.nodeType) {
-				proprietário[ this.expandindo ] = indefinido;
-			} outro {
+			// Support: Chrome <=35 - 45
+			// Webkit & Blink performance suffers when deleting properties
+			// from DOM nodes, so set to undefined instead
+			// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
+			if ( owner.nodeType ) {
+				owner[ this.expando ] = undefined;
+			} else {
 				delete owner[ this.expando ];
 			}
 		}
 	},
-	hasData: function(proprietário) {
+	hasData: function( owner ) {
 		var cache = owner[ this.expando ];
-		cache de retorno !== indefinido && !jQuery.isEmptyObject( cache );
+		return cache !== undefined && !jQuery.isEmptyObject( cache );
 	}
 };
 var dataPriv = new Data();
@@ -4113,168 +4113,168 @@ var dataUser = new Data();
 
 
 
-// Resumo da Implementação
+//	Implementation Summary
 //
-// 1. Aplicar superfície API e compatibilidade semântica com ramificação 1.9.x
-// 2. Melhorar a capacidade de manutenção do módulo reduzindo o armazenamento
-// caminhos para um único mecanismo.
-// 3. Use o mesmo mecanismo único para oferecer suporte a dados "privados" e "usuários".
-// 4. _Nunca_ exponha dados "privados" ao código do usuário (TODO: Drop _data, _removeData)
-// 5. Evite expor detalhes de implementação em objetos de usuário (por exemplo, propriedades expando)
-// 6. Fornecer um caminho claro para atualização de implementação para WeakMap em 2014
+//	1. Enforce API surface and semantic compatibility with 1.9.x branch
+//	2. Improve the module's maintainability by reducing the storage
+//		paths to a single mechanism.
+//	3. Use the same single mechanism to support "private" and "user" data.
+//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
+//	5. Avoid exposing implementation details on user objects (eg. expando properties)
+//	6. Provide a clear path for implementation upgrade to WeakMap in 2014
 
 var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
-	rmultiDash = /[AZ]/g;
+	rmultiDash = /[A-Z]/g;
 
-função getData( dados ) {
-	if (dados === "verdadeiro" ) {
-		retornar verdadeiro;
+function getData( data ) {
+	if ( data === "true" ) {
+		return true;
 	}
 
-	if (dados === "falso" ) {
-		retorna falso;
+	if ( data === "false" ) {
+		return false;
 	}
 
-	if (dados === "nulo" ) {
-		retornar nulo;
+	if ( data === "null" ) {
+		return null;
 	}
 
-	// Só converte para um número se não mudar a string
-	if (dados === +dados + "") {
-		retornar +dados;
+	// Only convert to a number if it doesn't change the string
+	if ( data === +data + "" ) {
+		return +data;
 	}
 
-	if (rbrace.test(data)) {
-		return JSON.parse( dados );
+	if ( rbrace.test( data ) ) {
+		return JSON.parse( data );
 	}
 
-	dados de retorno;
+	return data;
 }
 
-function dataAttr(elem, key, data) {
-	var nome;
+function dataAttr( elem, key, data ) {
+	var name;
 
-	// Se nada for encontrado internamente, tente buscar algum
-	// dados do atributo data-* do HTML5
-	if ( dados === undefined && elem.nodeType === 1 ) {
-		nome = "dados-" + key.replace( rmultiDash, "-$&" ).toLowerCase();
-		dados = elem.getAttribute(nome);
+	// If nothing was found internally, try to fetch any
+	// data from the HTML5 data-* attribute
+	if ( data === undefined && elem.nodeType === 1 ) {
+		name = "data-" + key.replace( rmultiDash, "-$&" ).toLowerCase();
+		data = elem.getAttribute( name );
 
-		if (tipo de dado === "string" ) {
-			tentar {
-				dados = getDados(dados);
-			} pegar ( e ) {}
+		if ( typeof data === "string" ) {
+			try {
+				data = getData( data );
+			} catch ( e ) {}
 
-			// Certifique-se de definir os dados para que não sejam alterados posteriormente
-			dataUser.set(elem, chave, dados);
-		} outro {
-			dados = indefinido;
+			// Make sure we set the data so it isn't changed later
+			dataUser.set( elem, key, data );
+		} else {
+			data = undefined;
 		}
 	}
-	dados de retorno;
+	return data;
 }
 
 jQuery.extend( {
-	hasData: function(elem) {
+	hasData: function( elem ) {
 		return dataUser.hasData( elem ) || dataPriv.hasData( elem );
 	},
 
-	dados: função(elem, nome, dados) {
-		return dataUser.access(elem, nome, dados);
+	data: function( elem, name, data ) {
+		return dataUser.access( elem, name, data );
 	},
 
-	removeData: function(elem, nome) {
-		dataUser.remove(elem, nome);
+	removeData: function( elem, name ) {
+		dataUser.remove( elem, name );
 	},
 
-	// TODO: Agora que todas as chamadas para _data e _removeData foram substituídas
-	// com chamadas diretas para métodos dataPriv, eles podem ser obsoletos.
-	_data: função(elem, nome, dados) {
-		return dataPriv.access(elem, nome, dados);
+	// TODO: Now that all calls to _data and _removeData have been replaced
+	// with direct calls to dataPriv methods, these can be deprecated.
+	_data: function( elem, name, data ) {
+		return dataPriv.access( elem, name, data );
 	},
 
-	_removeData: function(elem, nome) {
-		dataPriv.remove(elem, nome);
+	_removeData: function( elem, name ) {
+		dataPriv.remove( elem, name );
 	}
 } );
 
 jQuery.fn.extend( {
-	dados: function(chave, valor) {
-		var i, nome, dados,
-			elemento = este[ 0 ],
-			attrs = elem && elem.atributos;
+	data: function( key, value ) {
+		var i, name, data,
+			elem = this[ 0 ],
+			attrs = elem && elem.attributes;
 
-		// Obtém todos os valores
-		if (tecla === indefinido) {
+		// Gets all values
+		if ( key === undefined ) {
 			if ( this.length ) {
-				dados = dataUser.get(elem);
+				data = dataUser.get( elem );
 
 				if ( elem.nodeType === 1 && !dataPriv.get( elem, "hasDataAttrs" ) ) {
 					i = attrs.length;
-					enquanto eu-- ) {
+					while ( i-- ) {
 
-						// Suporte: somente IE 11
-						// Os elementos attrs podem ser nulos (trac-14894)
-						if (attrs[i]) {
-							nome = attrs[i].nome;
-							if (name.indexOf("dados-") === 0) {
-								nome = camelCase( nome.fatia( 5 ) );
-								dataAttr(elem, nome, dados[ nome ] );
+						// Support: IE 11 only
+						// The attrs elements can be null (trac-14894)
+						if ( attrs[ i ] ) {
+							name = attrs[ i ].name;
+							if ( name.indexOf( "data-" ) === 0 ) {
+								name = camelCase( name.slice( 5 ) );
+								dataAttr( elem, name, data[ name ] );
 							}
 						}
 					}
-					dataPriv.set(elem, "hasDataAttrs", true );
+					dataPriv.set( elem, "hasDataAttrs", true );
 				}
 			}
 
-			dados de retorno;
+			return data;
 		}
 
-		// Define vários valores
-		if (tipo de chave === "objeto" ) {
+		// Sets multiple values
+		if ( typeof key === "object" ) {
 			return this.each( function() {
 				dataUser.set( this, key );
 			} );
 		}
 
 		return access( this, function( value ) {
-			var dados;
+			var data;
 
-			// O objeto jQuery de chamada (correspondências de elemento) não está vazio
-			// (e, portanto, tem um elemento aparece neste [ 0 ]) e o
-			// O parâmetro `value` não era indefinido. Um objeto jQuery vazio
-			// resultará em `indefinido` para elem = this[ 0 ] que irá
-			// lança uma exceção se for feita uma tentativa de ler um cache de dados.
-			if (elem && valor === indefinido) {
+			// The calling jQuery object (element matches) is not empty
+			// (and therefore has an element appears at this[ 0 ]) and the
+			// `value` parameter was not undefined. An empty jQuery object
+			// will result in `undefined` for elem = this[ 0 ] which will
+			// throw an exception if an attempt to read a data cache is made.
+			if ( elem && value === undefined ) {
 
-				// Tenta obter dados do cache
-				// A chave sempre será camelCased em Data
-				dados = dataUser.get(elem, chave);
-				if ( dados !== indefinido ) {
-					dados de retorno;
+				// Attempt to get data from the cache
+				// The key will always be camelCased in Data
+				data = dataUser.get( elem, key );
+				if ( data !== undefined ) {
+					return data;
 				}
 
-				// Tenta "descobrir" os dados em
-				// dados personalizados HTML5-* attrs
-				dados = dataAttr(elem, chave);
-				if ( dados !== indefinido ) {
-					dados de retorno;
+				// Attempt to "discover" the data in
+				// HTML5 custom data-* attrs
+				data = dataAttr( elem, key );
+				if ( data !== undefined ) {
+					return data;
 				}
 
-				// Nós tentamos muito, mas os dados não existem.
-				retornar;
+				// We tried really hard, but the data doesn't exist.
+				return;
 			}
 
-			// Define os dados...
-			this.each( função() {
+			// Set the data...
+			this.each( function() {
 
-				// Sempre armazenamos a chave camelCased
+				// We always store the camelCased key
 				dataUser.set( this, key, value );
 			} );
-		}, nulo, valor, argumentos.comprimento > 1, nulo, verdadeiro );
+		}, null, value, arguments.length > 1, null, true );
 	},
 
-	removeData: function(chave) {
+	removeData: function( key ) {
 		return this.each( function() {
 			dataUser.remove( this, key );
 		} );
@@ -4283,262 +4283,262 @@ jQuery.fn.extend( {
 
 
 jQuery.extend( {
-	fila: function(elem, type, data) {
-		var fila;
+	queue: function( elem, type, data ) {
+		var queue;
 
-		if (elem) {
-			tipo = ( tipo || "fx" ) + "fila";
-			fila = dataPriv.get(elem, tipo);
+		if ( elem ) {
+			type = ( type || "fx" ) + "queue";
+			queue = dataPriv.get( elem, type );
 
-			// Acelera o desenfileiramento saindo rapidamente se for apenas uma pesquisa
-			if ( dados ) {
-				if (!fila || Array.isArray( dados ) ) {
-					fila = dataPriv.access(elem, tipo, jQuery.makeArray(dados));
-				} outro {
-					fila.push( dados );
+			// Speed up dequeue by getting out quickly if this is just a lookup
+			if ( data ) {
+				if ( !queue || Array.isArray( data ) ) {
+					queue = dataPriv.access( elem, type, jQuery.makeArray( data ) );
+				} else {
+					queue.push( data );
 				}
 			}
-			fila de retorno || [];
+			return queue || [];
 		}
 	},
 
-	desenfileirar: function(elem, type) {
-		tipo = tipo || "fx";
+	dequeue: function( elem, type ) {
+		type = type || "fx";
 
-		var fila = jQuery.queue(elem, tipo),
-			startLength = fila.comprimento,
-			fn = fila.shift(),
-			ganchos = jQuery._queueHooks(elem, tipo),
-			proximo = function() {
-				jQuery.dequeue(elem, tipo);
+		var queue = jQuery.queue( elem, type ),
+			startLength = queue.length,
+			fn = queue.shift(),
+			hooks = jQuery._queueHooks( elem, type ),
+			next = function() {
+				jQuery.dequeue( elem, type );
 			};
 
-		// Se a fila fx for desenfileirada, sempre remova a sentinela de progresso
-		if ( fn === "em andamento") {
-			fn = fila.shift();
-			comprimentoinício--;
+		// If the fx queue is dequeued, always remove the progress sentinel
+		if ( fn === "inprogress" ) {
+			fn = queue.shift();
+			startLength--;
 		}
 
-		se ( fn ) {
+		if ( fn ) {
 
-			// Adiciona uma sentinela de progresso para evitar que a fila fx seja
-			// desenfileirado automaticamente
-			if (digite === "fx") {
-				fila.unshift("em andamento");
+			// Add a progress sentinel to prevent the fx queue from being
+			// automatically dequeued
+			if ( type === "fx" ) {
+				queue.unshift( "inprogress" );
 			}
 
-			// Limpa a última função de parada da fila
-			excluir hooks.stop;
-			fn.call(elem, próximo, ganchos);
+			// Clear up the last queue stop function
+			delete hooks.stop;
+			fn.call( elem, next, hooks );
 		}
 
-		if (!startLength && ganchos) {
+		if ( !startLength && hooks ) {
 			hooks.empty.fire();
 		}
 	},
 
-	// Não público - gera um objeto queueHooks ou retorna o atual
-	_queueHooks: function(elem, type) {
-		var chave = tipo + "queueHooks";
-		return dataPriv.get(elem, chave) || dataPriv.access(elem, chave, {
-			vazio: jQuery.Callbacks( "memória única" ).add( function() {
-				dataPriv.remove(elem, [ tipo + "fila", chave ] );
+	// Not public - generate a queueHooks object, or return the current one
+	_queueHooks: function( elem, type ) {
+		var key = type + "queueHooks";
+		return dataPriv.get( elem, key ) || dataPriv.access( elem, key, {
+			empty: jQuery.Callbacks( "once memory" ).add( function() {
+				dataPriv.remove( elem, [ type + "queue", key ] );
 			} )
 		} );
 	}
 } );
 
 jQuery.fn.extend( {
-	fila: function(tipo, dados) {
-		var configurador = 2;
+	queue: function( type, data ) {
+		var setter = 2;
 
-		if ( tipo do tipo !== "string" ) {
-			dados = tipo;
-			tipo = "fx";
-			normatizador--;
+		if ( typeof type !== "string" ) {
+			data = type;
+			type = "fx";
+			setter--;
 		}
 
-		if (argumentos.comprimento <setter) {
-			return jQuery.queue( this[ 0 ], digite );
+		if ( arguments.length < setter ) {
+			return jQuery.queue( this[ 0 ], type );
 		}
 
-		dados de retorno === indefinido?
-			esse :
-			this.each( função() {
-				var fila = jQuery.queue( this, type, data );
+		return data === undefined ?
+			this :
+			this.each( function() {
+				var queue = jQuery.queue( this, type, data );
 
-				// Garante um gancho para esta fila
+				// Ensure a hooks for this queue
 				jQuery._queueHooks( this, type );
 
-				if ( digite === "fx" && fila[ 0 ] !== "inprogress" ) {
+				if ( type === "fx" && queue[ 0 ] !== "inprogress" ) {
 					jQuery.dequeue( this, type );
 				}
 			} );
 	},
-	desenfileirar: function(tipo) {
+	dequeue: function( type ) {
 		return this.each( function() {
 			jQuery.dequeue( this, type );
 		} );
 	},
-	clearQueue: function( tipo ) {
+	clearQueue: function( type ) {
 		return this.queue( type || "fx", [] );
 	},
 
-	// Obtém uma promessa resolvida quando filas de um certo tipo
-	// são esvaziados (fx é o tipo padrão)
-	promessa: função (tipo, obj) {
+	// Get a promise resolved when queues of a certain type
+	// are emptied (fx is the type by default)
+	promise: function( type, obj ) {
 		var tmp,
-			contagem = 1,
+			count = 1,
 			defer = jQuery.Deferred(),
-			elementos = isso,
+			elements = this,
 			i = this.length,
 			resolve = function() {
 				if ( !( --count ) ) {
-					defer.resolveWith(elementos, [elementos]);
+					defer.resolveWith( elements, [ elements ] );
 				}
 			};
 
-		if ( tipo do tipo !== "string" ) {
-			obj = tipo;
-			tipo = indefinido;
+		if ( typeof type !== "string" ) {
+			obj = type;
+			type = undefined;
 		}
-		tipo = tipo || "fx";
+		type = type || "fx";
 
-		enquanto eu-- ) {
-			tmp = dataPriv.get(elements[ i ], type + "queueHooks" );
-			if ( tmp && tmp.vazio ) {
-				contar++;
-				tmp.empty.add( resolver );
+		while ( i-- ) {
+			tmp = dataPriv.get( elements[ i ], type + "queueHooks" );
+			if ( tmp && tmp.empty ) {
+				count++;
+				tmp.empty.add( resolve );
 			}
 		}
-		resolver();
+		resolve();
 		return defer.promise( obj );
 	}
 } );
 var pnum = ( /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/ ).source;
 
-var rcssNum = new RegExp( "^(?:([+-])=|)(" + pnum + ")([az%]*)$", "i" );
+var rcssNum = new RegExp( "^(?:([+-])=|)(" + pnum + ")([a-z%]*)$", "i" );
 
 
-var cssExpand = ["Superior", "Direita", "Inferior", "Esquerda"];
+var cssExpand = [ "Top", "Right", "Bottom", "Left" ];
 
 var documentElement = document.documentElement;
 
 
 
-	var isAttached = function(elem) {
-			return jQuery.contains(elem.ownerDocument, elem);
+	var isAttached = function( elem ) {
+			return jQuery.contains( elem.ownerDocument, elem );
 		},
-		composto = { composto: verdadeiro };
+		composed = { composed: true };
 
-	// Suporte: IE 9 - 11+, Edge 12 - 18+, apenas iOS 10.0 - 10.2
-	// Verifica o anexo nos limites do shadow DOM quando possível (gh-3504)
-	// Suporte: apenas iOS 10.0-10.2
-	// As primeiras versões do iOS 10 suportam `attachShadow`, mas não `getRootNode`,
-	// levando a erros. Precisamos verificar `getRootNode`.
+	// Support: IE 9 - 11+, Edge 12 - 18+, iOS 10.0 - 10.2 only
+	// Check attachment across shadow DOM boundaries when possible (gh-3504)
+	// Support: iOS 10.0-10.2 only
+	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
+	// leading to errors. We need to check for `getRootNode`.
 	if ( documentElement.getRootNode ) {
-		isAttached = function(elem) {
+		isAttached = function( elem ) {
 			return jQuery.contains( elem.ownerDocument, elem ) ||
-				elem.getRootNode( composto ) === elem.ownerDocument;
+				elem.getRootNode( composed ) === elem.ownerDocument;
 		};
 	}
-var isHiddenWithinTree = function(elem, el) {
+var isHiddenWithinTree = function( elem, el ) {
 
-		// isHiddenWithinTree pode ser chamado da função jQuery#filter;
-		// nesse caso, o elemento será o segundo argumento
-		elem = el || elemento;
+		// isHiddenWithinTree might be called from jQuery#filter function;
+		// in that case, element will be second argument
+		elem = el || elem;
 
-		// O estilo inline supera todos
-		return elem.style.display === "nenhum" ||
+		// Inline style trumps all
+		return elem.style.display === "none" ||
 			elem.style.display === "" &&
 
-			// Caso contrário, verifica o estilo computado
-			// Suporte: Firefox <=43 - 45
-			// Elementos desconectados podem ter display calculado: nenhum, então primeiro confirme se elem é
-			// no documento.
-			isAttached(elem) &&
+			// Otherwise, check computed style
+			// Support: Firefox <=43 - 45
+			// Disconnected elements can have computed display: none, so first confirm that elem is
+			// in the document.
+			isAttached( elem ) &&
 
-			jQuery.css( elem, "exibir" ) === "nenhum";
+			jQuery.css( elem, "display" ) === "none";
 	};
 
 
 
-function ajusteCSS(elem, prop, valueParts, tween) {
-	var ajustado, escala,
-		maxIterações = 20,
-		valoratual = interpolação?
-			função() {
+function adjustCSS( elem, prop, valueParts, tween ) {
+	var adjusted, scale,
+		maxIterations = 20,
+		currentValue = tween ?
+			function() {
 				return tween.cur();
 			} :
-			função() {
-				return jQuery.css(elem, prop, "" );
+			function() {
+				return jQuery.css( elem, prop, "" );
 			},
-		inicial = valoratual(),
+		initial = currentValue(),
 		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
-		// O cálculo do valor inicial é necessário para possíveis incompatibilidades de unidades
-		inicialInUnit = elem.nodeType &&
-			( jQuery.cssNumber[ prop ] || unidade !== "px" && +inicial ) &&
-			rcssNum.exec(jQuery.css(elem, prop));
+		// Starting value computation is required for potential unit mismatches
+		initialInUnit = elem.nodeType &&
+			( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
+			rcssNum.exec( jQuery.css( elem, prop ) );
 
-	if ( inicialInUnit && inicialInUnit[ 3 ] !== unidade ) {
+	if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
 
-		// Suporte: Firefox <=54
-		// Reduzir pela metade o valor de destino da iteração para evitar interferência dos limites superiores do CSS (gh-2144)
-		inicial = inicial / 2;
+		// Support: Firefox <=54
+		// Halve the iteration target value to prevent interference from CSS upper bounds (gh-2144)
+		initial = initial / 2;
 
-		// Unidades de confiança relatadas por jQuery.css
-		unidade = unidade || inicialInUnit[ 3 ];
+		// Trust units reported by jQuery.css
+		unit = unit || initialInUnit[ 3 ];
 
-		// Aproxima iterativamente de um ponto inicial diferente de zero
-		inicialInUnit = +inicial || 1;
+		// Iteratively approximate from a nonzero starting point
+		initialInUnit = +initial || 1;
 
 		while ( maxIterations-- ) {
 
-			// Avalia e atualiza nosso melhor palpite (duplicando palpites que zeram).
-			// Termina se a escala for igual ou cruzada a 1 (tornando o produto antigo*novo não positivo).
-			jQuery.style(elem, prop, initialInUnit + unidade);
-			if ( (1 - escala ) * ( 1 - ( escala = currentValue() / inicial || 0,5 ) ) <= 0 ) {
-				maxIterações = 0;
+			// Evaluate and update our best guess (doubling guesses that zero out).
+			// Finish if the scale equals or crosses 1 (making the old*new product non-positive).
+			jQuery.style( elem, prop, initialInUnit + unit );
+			if ( ( 1 - scale ) * ( 1 - ( scale = currentValue() / initial || 0.5 ) ) <= 0 ) {
+				maxIterations = 0;
 			}
-			inicialInUnit = inicialInUnit / escala;
+			initialInUnit = initialInUnit / scale;
 
 		}
 
-		inicialInUnit = inicialInUnit * 2;
-		jQuery.style(elem, prop, initialInUnit + unidade);
+		initialInUnit = initialInUnit * 2;
+		jQuery.style( elem, prop, initialInUnit + unit );
 
-		// Certifique-se de atualizar as propriedades de interpolação mais tarde
+		// Make sure we update the tween properties later on
 		valueParts = valueParts || [];
 	}
 
-	if ( partes de valor ) {
-		inicialInUnit = +inicialInUnit || +inicial || 0;
+	if ( valueParts ) {
+		initialInUnit = +initialInUnit || +initial || 0;
 
-		// Aplicar deslocamento relativo (+=/-=) se especificado
-		ajustado = valueParts[ 1 ] ?
-			inicialInUnit + (valorParts[ 1 ] + 1 ) * valorParts[ 2 ] :
-			+valorPartes[ 2 ];
-		if (entre) {
-			tween.unit = unidade;
-			tween.start = inicialInUnit;
-			tween.end = ajustado;
+		// Apply relative offset (+=/-=) if specified
+		adjusted = valueParts[ 1 ] ?
+			initialInUnit + ( valueParts[ 1 ] + 1 ) * valueParts[ 2 ] :
+			+valueParts[ 2 ];
+		if ( tween ) {
+			tween.unit = unit;
+			tween.start = initialInUnit;
+			tween.end = adjusted;
 		}
 	}
-	retorno ajustado;
+	return adjusted;
 }
 
 
 var defaultDisplayMap = {};
 
-function getDefaultDisplay(elem) {
-	temperatura variável,
+function getDefaultDisplay( elem ) {
+	var temp,
 		doc = elem.ownerDocument,
 		nodeName = elem.nodeName,
 		display = defaultDisplayMap[ nodeName ];
 
-	if (exibir) {
-		exibição de retorno;
+	if ( display ) {
+		return display;
 	}
 
 	temp = doc.body.appendChild( doc.createElement( nodeName ) );
@@ -4546,180 +4546,180 @@ function getDefaultDisplay(elem) {
 
 	temp.parentNode.removeChild( temp );
 
-	if (exibir === "nenhum" ) {
-		exibição = "bloco";
+	if ( display === "none" ) {
+		display = "block";
 	}
-	defaultDisplayMap[ nodeName ] = exibição;
+	defaultDisplayMap[ nodeName ] = display;
 
-	exibição de retorno;
+	return display;
 }
 
-função mostrarOcultar(elementos, mostrar) {
-	exibição var, elem,
-		valores = [],
-		índice = 0,
-		comprimento = elementos.comprimento;
+function showHide( elements, show ) {
+	var display, elem,
+		values = [],
+		index = 0,
+		length = elements.length;
 
-	// Determina novo valor de exibição para elementos que precisam mudar
-	for ( ; índice < comprimento; índice++ ) {
-		elem = elementos[ índice ];
-		if (!elem.style) {
-			continuar;
+	// Determine new display value for elements that need to change
+	for ( ; index < length; index++ ) {
+		elem = elements[ index ];
+		if ( !elem.style ) {
+			continue;
 		}
 
 		display = elem.style.display;
-		se ( mostrar ) {
+		if ( show ) {
 
-			// Como forçamos a visibilidade sobre os elementos ocultos em cascata, um imediato (e lento)
-			// a verificação é necessária neste primeiro loop, a menos que tenhamos um valor de exibição não vazio (seja
-			// inline ou prestes a ser restaurado)
-			if (exibir === "nenhum" ) {
-				valores[ index ] = dataPriv.get( elem, "display" ) || nulo;
-				if (!valores[ índice ] ) {
+			// Since we force visibility upon cascade-hidden elements, an immediate (and slow)
+			// check is required in this first loop unless we have a nonempty display value (either
+			// inline or about-to-be-restored)
+			if ( display === "none" ) {
+				values[ index ] = dataPriv.get( elem, "display" ) || null;
+				if ( !values[ index ] ) {
 					elem.style.display = "";
 				}
 			}
-			if (elem.style.display === "" && isHiddenWithinTree( elem ) ) {
-				valores[ index ] = getDefaultDisplay( elem );
+			if ( elem.style.display === "" && isHiddenWithinTree( elem ) ) {
+				values[ index ] = getDefaultDisplay( elem );
 			}
-		} outro {
-			if (display!== "nenhum") {
-				valores[ índice ] = "nenhum";
+		} else {
+			if ( display !== "none" ) {
+				values[ index ] = "none";
 
-				// Lembre-se do que estamos substituindo
-				dataPriv.set(elem, "display", display);
+				// Remember what we're overwriting
+				dataPriv.set( elem, "display", display );
 			}
 		}
 	}
 
-	// Define a exibição dos elementos em um segundo loop para evitar refluxo constante
-	for (índice = 0; índice < comprimento; índice++) {
-		if (valores[ índice ] != null ) {
-			elementos[ índice ].estilo.display = valores[ índice ];
+	// Set the display of the elements in a second loop to avoid constant reflow
+	for ( index = 0; index < length; index++ ) {
+		if ( values[ index ] != null ) {
+			elements[ index ].style.display = values[ index ];
 		}
 	}
 
-	elementos de retorno;
+	return elements;
 }
 
 jQuery.fn.extend( {
-	mostre: função() {
+	show: function() {
 		return showHide( this, true );
 	},
-	ocultar: função() {
-		return mostrarOcultar(este);
+	hide: function() {
+		return showHide( this );
 	},
-	alternar: function(estado) {
-		if (tipo de estado === "booleano" ) {
-			estado de retorno? this.show() : this.hide();
+	toggle: function( state ) {
+		if ( typeof state === "boolean" ) {
+			return state ? this.show() : this.hide();
 		}
 
 		return this.each( function() {
 			if ( isHiddenWithinTree( this ) ) {
-				jQuery(este).show();
-			} outro {
-				jQuery(este).hide();
+				jQuery( this ).show();
+			} else {
+				jQuery( this ).hide();
 			}
 		} );
 	}
 } );
 var rcheckableType = ( /^(?:checkbox|radio)$/i );
 
-var rtagName = ( /<([az][^\/\0>\x20\t\r\n\f]*)/i );
+var rtagName = ( /<([a-z][^\/\0>\x20\t\r\n\f]*)/i );
 
 var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
 
 
-( função() {
+( function() {
 	var fragment = document.createDocumentFragment(),
 		div = fragment.appendChild( document.createElement( "div" ) ),
 		input = document.createElement( "input" );
 
-	// Suporte: Android 4.0 - 4.3 apenas
-	// Verifica o estado perdido se o nome estiver definido (trac-11217)
-	// Suporte: Windows Web Apps (WWA)
-	// `name` e `type` devem usar .setAttribute para WWA (trac-14901)
-	input.setAttribute( "tipo", "radio" );
-	input.setAttribute( "verificado", "verificado" );
-	input.setAttribute( "nome", "t" );
+	// Support: Android 4.0 - 4.3 only
+	// Check state lost if the name is set (trac-11217)
+	// Support: Windows Web Apps (WWA)
+	// `name` and `type` must use .setAttribute for WWA (trac-14901)
+	input.setAttribute( "type", "radio" );
+	input.setAttribute( "checked", "checked" );
+	input.setAttribute( "name", "t" );
 
-	div.appendChild( entrada );
+	div.appendChild( input );
 
-	// Suporte: Android <=4.1 somente
-	// O WebKit mais antigo não clona o estado verificado corretamente em fragmentos
+	// Support: Android <=4.1 only
+	// Older WebKit doesn't clone checked state correctly in fragments
 	support.checkClone = div.cloneNode( true ).cloneNode( true ).lastChild.checked;
 
-	// Suporte: IE <=11 somente
-	// Certifique-se de que textarea (e caixa de seleção) defaultValue está clonado corretamente
+	// Support: IE <=11 only
+	// Make sure textarea (and checkbox) defaultValue is properly cloned
 	div.innerHTML = "<textarea>x</textarea>";
 	support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
 
-	// Suporte: IE <=9 apenas
-	// IE <=9 substitui tags <option> por seus conteúdos quando inseridos fora de
-	// o elemento selecionado.
-	div.innerHTML = "<opção></opção>";
+	// Support: IE <=9 only
+	// IE <=9 replaces <option> tags with their contents when inserted outside of
+	// the select element.
+	div.innerHTML = "<option></option>";
 	support.option = !!div.lastChild;
 } )();
 
 
-// Temos que fechar essas tags para suportar XHTML (trac-13200)
+// We have to close these tags to support XHTML (trac-13200)
 var wrapMap = {
 
-	// Analisadores XHTML não inserem magicamente elementos no
-	// da mesma forma que os analisadores de sopa de tags fazem. Então não podemos encurtar
-	// isso omitindo <tbody> ou outros elementos necessários.
-	cabeçalho: [ 1, "<tabela>", "</tabela>" ],
+	// XHTML parsers do not magically insert elements in the
+	// same way that tag soup parsers do. So we cannot shorten
+	// this by omitting <tbody> or other required elements.
+	thead: [ 1, "<table>", "</table>" ],
 	col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
 	tr: [ 2, "<table><tbody>", "</tbody></table>" ],
 	td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
 
-	_padrão: [ 0, "", "" ]
+	_default: [ 0, "", "" ]
 };
 
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 wrapMap.th = wrapMap.td;
 
-// Suporte: IE <=9 apenas
-if (!suporte.opção) {
+// Support: IE <=9 only
+if ( !support.option ) {
 	wrapMap.optgroup = wrapMap.option = [ 1, "<select multiple='multiple'>", "</select>" ];
 }
 
 
-function getAll( contexto, tag ) {
+function getAll( context, tag ) {
 
-	// Suporte: IE <=9 - 11 somente
-	// Use typeof para evitar invocação de método de argumento zero em objetos de host (trac-15151)
+	// Support: IE <=9 - 11 only
+	// Use typeof to avoid zero-argument method invocation on host objects (trac-15151)
 	var ret;
 
-	if ( typeof context.getElementsByTagName !== "indefinido" ) {
+	if ( typeof context.getElementsByTagName !== "undefined" ) {
 		ret = context.getElementsByTagName( tag || "*" );
 
-	} else if ( typeof context.querySelectorAll !== "indefinido" ) {
+	} else if ( typeof context.querySelectorAll !== "undefined" ) {
 		ret = context.querySelectorAll( tag || "*" );
 
-	} outro {
+	} else {
 		ret = [];
 	}
 
-	if ( tag === indefinido || tag && nodeName( contexto, tag ) ) {
-		return jQuery.merge( [ contexto ], ret );
+	if ( tag === undefined || tag && nodeName( context, tag ) ) {
+		return jQuery.merge( [ context ], ret );
 	}
 
-	retorno ret;
+	return ret;
 }
 
 
-// Marca os scripts como já avaliados
-function setGlobalEval(elems, refElements) {
+// Mark scripts as having already been evaluated
+function setGlobalEval( elems, refElements ) {
 	var i = 0,
 		l = elems.length;
 
 	for ( ; i < l; i++ ) {
 		dataPriv.set(
-			elementos[ i ],
+			elems[ i ],
 			"globalEval",
-			!refElementos || dataPriv.get( refElements[ i ], "globalEval" )
+			!refElements || dataPriv.get( refElements[ i ], "globalEval" )
 		);
 	}
 }
@@ -4727,414 +4727,414 @@ function setGlobalEval(elems, refElements) {
 
 var rhtml = /<|&#?\w+;/;
 
-função buildFragment(elems, contexto, scripts, seleção, ignorados) {
-	var elem, tmp, tag, embrulhar, anexado, j,
-		fragmento = context.createDocumentFragment(),
-		nós = [],
-		eu = 0,
+function buildFragment( elems, context, scripts, selection, ignored ) {
+	var elem, tmp, tag, wrap, attached, j,
+		fragment = context.createDocumentFragment(),
+		nodes = [],
+		i = 0,
 		l = elems.length;
 
 	for ( ; i < l; i++ ) {
-		elem = elems[i];
+		elem = elems[ i ];
 
-		if (elem || elem === 0) {
+		if ( elem || elem === 0 ) {
 
-			// Adiciona nós diretamente
-			if (toType(elem) === "objeto" ) {
+			// Add nodes directly
+			if ( toType( elem ) === "object" ) {
 
-				// Suporte: Android <=4.0 apenas, PhantomJS 1 apenas
-				// push.apply(_, arraylike) lança no antigo WebKit
-				jQuery.merge( nós, elem.nodeType ? [ elem ] : elem );
+				// Support: Android <=4.0 only, PhantomJS 1 only
+				// push.apply(_, arraylike) throws on ancient WebKit
+				jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
-			// Converte não-html em um nó de texto
-			} else if (!rhtml.test(elem)) {
+			// Convert non-html into a text node
+			} else if ( !rhtml.test( elem ) ) {
 				nodes.push( context.createTextNode( elem ) );
 
-			// Converte html em nós DOM
-			} outro {
+			// Convert html into DOM nodes
+			} else {
 				tmp = tmp || fragment.appendChild( context.createElement( "div" ) );
 
-				// Desserializa uma representação padrão
+				// Deserialize a standard representation
 				tag = ( rtagName.exec( elem ) || [ "", "" ] )[ 1 ].toLowerCase();
-				wrap = wrapMap[ marca ] || wrapMap._default;
+				wrap = wrapMap[ tag ] || wrapMap._default;
 				tmp.innerHTML = wrap[ 1 ] + jQuery.htmlPrefilter( elem ) + wrap[ 2 ];
 
-				// Desce pelos wrappers até o conteúdo correto
-				j = embrulhar[ 0 ];
+				// Descend through wrappers to the right content
+				j = wrap[ 0 ];
 				while ( j-- ) {
 					tmp = tmp.lastChild;
 				}
 
-				// Suporte: Android <=4.0 apenas, PhantomJS 1 apenas
-				// push.apply(_, arraylike) lança no antigo WebKit
-				jQuery.merge( nós, tmp.childNodes );
+				// Support: Android <=4.0 only, PhantomJS 1 only
+				// push.apply(_, arraylike) throws on ancient WebKit
+				jQuery.merge( nodes, tmp.childNodes );
 
-				// Lembre-se do contêiner de nível superior
-				tmp = fragmento.firstChild;
+				// Remember the top-level container
+				tmp = fragment.firstChild;
 
-				// Certifique-se de que os nós criados sejam órfãos (trac-12392)
+				// Ensure the created nodes are orphaned (trac-12392)
 				tmp.textContent = "";
 			}
 		}
 	}
 
-	// Remove wrapper do fragmento
-	fragmento.textContent = "";
+	// Remove wrapper from fragment
+	fragment.textContent = "";
 
 	i = 0;
-	while ((elem = nós[i++])) {
+	while ( ( elem = nodes[ i++ ] ) ) {
 
-		// Ignora elementos já na coleção de contexto (trac-4087)
-		if (seleção && jQuery.inArray(elem, seleção) > -1) {
-			se (ignorado) {
-				ignorado.push(elem);
+		// Skip elements already in the context collection (trac-4087)
+		if ( selection && jQuery.inArray( elem, selection ) > -1 ) {
+			if ( ignored ) {
+				ignored.push( elem );
 			}
-			continuar;
+			continue;
 		}
 
-		anexado = isAttached(elem);
+		attached = isAttached( elem );
 
-		// Anexar ao fragmento
-		tmp = getAll(fragment.appendChild(elem), "script");
+		// Append to fragment
+		tmp = getAll( fragment.appendChild( elem ), "script" );
 
-		// Preserva o histórico de avaliação do script
-		if ( anexado ) {
+		// Preserve script evaluation history
+		if ( attached ) {
 			setGlobalEval( tmp );
 		}
 
-		// Captura executáveis
-		if (scripts) {
+		// Capture executables
+		if ( scripts ) {
 			j = 0;
-			while ((elem = tmp[j++])){
-				if ( rscriptType.test(elem.type || "" ) ) {
-					scripts.push(elem);
+			while ( ( elem = tmp[ j++ ] ) ) {
+				if ( rscriptType.test( elem.type || "" ) ) {
+					scripts.push( elem );
 				}
 			}
 		}
 	}
 
-	fragmento de retorno;
+	return fragment;
 }
 
 
 var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
 function returnTrue() {
-	retornar verdadeiro;
+	return true;
 }
 
 function returnFalse() {
-	retorna falso;
+	return false;
 }
 
-função on(elem, tipos, seletor, dados, fn, um) {
-	var origem, tipo;
+function on( elem, types, selector, data, fn, one ) {
+	var origFn, type;
 
-	// Os tipos podem ser um mapa de tipos/manipuladores
-	if (tipo de tipos === "objeto" ) {
+	// Types can be a map of types/handlers
+	if ( typeof types === "object" ) {
 
-		// (tipos-objeto, seletor, dados)
-		if (tipo de seletor !== "string" ) {
+		// ( types-Object, selector, data )
+		if ( typeof selector !== "string" ) {
 
-			// (tipos-objeto, dados)
-			dados = dados || seletor;
-			seletor = indefinido;
+			// ( types-Object, data )
+			data = data || selector;
+			selector = undefined;
 		}
-		for ( digite tipos ) {
-			on(elem, type, selector, data, types[ type ], one );
+		for ( type in types ) {
+			on( elem, type, selector, data, types[ type ], one );
 		}
-		elemento de retorno;
+		return elem;
 	}
 
-	if ( dados == null && fn == null ) {
+	if ( data == null && fn == null ) {
 
-		// (tipos, fn)
-		fn = seletor;
-		dados = seletor = indefinido;
-	} senão if ( fn == nulo ) {
-		if (tipo de seletor === "string" ) {
+		// ( types, fn )
+		fn = selector;
+		data = selector = undefined;
+	} else if ( fn == null ) {
+		if ( typeof selector === "string" ) {
 
-			// (tipos, seletor, fn)
-			fn = dados;
-			dados = indefinido;
-		} outro {
+			// ( types, selector, fn )
+			fn = data;
+			data = undefined;
+		} else {
 
-			// (tipos, dados, fn)
-			fn = dados;
-			dados = seletor;
-			seletor = indefinido;
+			// ( types, data, fn )
+			fn = data;
+			data = selector;
+			selector = undefined;
 		}
 	}
 	if ( fn === false ) {
 		fn = returnFalse;
-	} senão if ( !fn ) {
-		elemento de retorno;
+	} else if ( !fn ) {
+		return elem;
 	}
 
-	if ( um === 1 ) {
-		origemFn = fn;
-		fn = função( evento ) {
+	if ( one === 1 ) {
+		origFn = fn;
+		fn = function( event ) {
 
-			// Pode usar um conjunto vazio, pois o evento contém as informações
-			jQuery().off( evento );
-			return origFn.apply( isto, argumentos );
+			// Can use an empty set, since event contains the info
+			jQuery().off( event );
+			return origFn.apply( this, arguments );
 		};
 
-		// Use o mesmo guid para que o chamador possa remover usando origFn
-		fn.guid = origFn.guid || (origFn.guid = jQuery.guid++);
+		// Use same guid so caller can remove using origFn
+		fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
 	}
 	return elem.each( function() {
-		jQuery.event.add(este, tipos, fn, dados, seletor);
+		jQuery.event.add( this, types, fn, data, selector );
 	} );
 }
 
 /*
- * Funções auxiliares para gerenciamento de eventos -- não fazem parte da interface pública.
- * Adereços à biblioteca addEvent de Dean Edwards para muitas das ideias.
+ * Helper functions for managing events -- not part of the public interface.
+ * Props to Dean Edwards' addEvent library for many of the ideas.
  */
 jQuery.event = {
 
-	globais: {},
+	global: {},
 
-	add: function(elem, types, handler, data, selector) {
+	add: function( elem, types, handler, data, selector ) {
 
 		var handleObjIn, eventHandle, tmp,
-			eventos, t, handleObj,
-			especial, manipuladores, tipo, namespaces, origType,
-			elemData = dataPriv.get(elem);
+			events, t, handleObj,
+			special, handlers, type, namespaces, origType,
+			elemData = dataPriv.get( elem );
 
-		// Apenas anexa eventos a objetos que aceitam dados
-		if (!acceptData(elem)) {
-			retornar;
+		// Only attach events to objects that accept data
+		if ( !acceptData( elem ) ) {
+			return;
 		}
 
-		// O chamador pode passar um objeto de dados personalizados no lugar do manipulador
-		if (manipulador.manipulador) {
-			handleObjIn = manipulador;
-			manipulador = handleObjIn.handler;
-			seletor = handleObjIn.seletor;
+		// Caller can pass in an object of custom data in lieu of the handler
+		if ( handler.handler ) {
+			handleObjIn = handler;
+			handler = handleObjIn.handler;
+			selector = handleObjIn.selector;
 		}
 
-		// Certifique-se de que seletores inválidos lancem exceções no tempo de anexação
-		// Avalia contra documentElement no caso de elem ser um nó não-elemento (por exemplo, document)
-		if (seletor) {
+		// Ensure that invalid selectors throw exceptions at attach time
+		// Evaluate against documentElement in case elem is a non-element node (e.g., document)
+		if ( selector ) {
 			jQuery.find.matchesSelector( documentElement, selector );
 		}
 
-		// Certifique-se de que o manipulador tenha um ID exclusivo, usado para localizá-lo/removê-lo posteriormente
-		if (!handler.guid) {
+		// Make sure that the handler has a unique ID, used to find/remove it later
+		if ( !handler.guid ) {
 			handler.guid = jQuery.guid++;
 		}
 
-		// Inicia a estrutura de eventos do elemento e o manipulador principal, se este for o primeiro
-		if ( !( eventos = elemData.events ) ) {
-			eventos = elemData.events = Object.create( null );
+		// Init the element's event structure and main handler, if this is the first
+		if ( !( events = elemData.events ) ) {
+			events = elemData.events = Object.create( null );
 		}
 		if ( !( eventHandle = elemData.handle ) ) {
 			eventHandle = elemData.handle = function( e ) {
 
-				// Descarta o segundo evento de um jQuery.event.trigger() e
-				// quando um evento é chamado depois que uma página foi descarregada
-				return typeof jQuery !== "indefinido" && jQuery.event.triggered !== e.type ?
-					jQuery.event.dispatch.apply(elem, argumentos): indefinido;
+				// Discard the second event of a jQuery.event.trigger() and
+				// when an event is called after a page has unloaded
+				return typeof jQuery !== "undefined" && jQuery.event.triggered !== e.type ?
+					jQuery.event.dispatch.apply( elem, arguments ) : undefined;
 			};
 		}
 
-		// Trata vários eventos separados por um espaço
-		tipos = ( tipos || "" ).match( rnothtmlwhite ) || [ "" ];
-		t = tipos.comprimento;
-		enquanto ( t-- ) {
-			tmp = rtypenamespace.exec(tipos[t]) || [];
-			tipo = tipo de origem = tmp[ 1 ];
+		// Handle multiple events separated by a space
+		types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
+		t = types.length;
+		while ( t-- ) {
+			tmp = rtypenamespace.exec( types[ t ] ) || [];
+			type = origType = tmp[ 1 ];
 			namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
 
-			// *deve* haver um tipo, sem anexar manipuladores somente de namespace
-			if ( !tipo ) {
-				continuar;
+			// There *must* be a type, no attaching namespace-only handlers
+			if ( !type ) {
+				continue;
 			}
 
-			// Se o evento mudar de tipo, use os manipuladores de eventos especiais para o tipo alterado
-			especial = jQuery.event.special[ tipo ] || {};
+			// If event changes its type, use the special event handlers for the changed type
+			special = jQuery.event.special[ type ] || {};
 
-			// Se o seletor for definido, determina o tipo de API do evento especial, caso contrário, o tipo fornecido
-			type = ( seletor ? special.delegateType : special.bindType ) || tipo;
+			// If selector defined, determine special event api type, otherwise given type
+			type = ( selector ? special.delegateType : special.bindType ) || type;
 
-			// Atualização especial com base no novo tipo de redefinição
-			especial = jQuery.event.special[ tipo ] || {};
+			// Update special based on newly reset type
+			special = jQuery.event.special[ type ] || {};
 
-			// handleObj é passado para todos os manipuladores de eventos
+			// handleObj is passed to all event handlers
 			handleObj = jQuery.extend( {
-				tipo: tipo,
+				type: type,
 				origType: origType,
-				dados: dados,
-				manipulador: manipulador,
+				data: data,
+				handler: handler,
 				guid: handler.guid,
-				seletor: seletor,
-				needContext: selector && jQuery.expr.match.needsContext.test( selector ),
+				selector: selector,
+				needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
 				namespace: namespaces.join( "." )
-			}, handleObjIn);
+			}, handleObjIn );
 
-			// Inicia a fila do manipulador de eventos se formos os primeiros
-			if (!(manipuladores = eventos[tipo])){
-				manipuladores = eventos[tipo] = [];
-				manipuladores.delegateCount = 0;
+			// Init the event handler queue if we're the first
+			if ( !( handlers = events[ type ] ) ) {
+				handlers = events[ type ] = [];
+				handlers.delegateCount = 0;
 
-				// Só use addEventListener se o manipulador de eventos especiais retornar false
-				if (!special.setup ||
-					special.setup.call( elem, data, namespaces, eventHandle ) === F alse ) {
+				// Only use addEventListener if the special events handler returns false
+				if ( !special.setup ||
+					special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
 
-					if (elem.addEventListener) {
-						elem.addEventListener( tipo, eventHandle );
+					if ( elem.addEventListener ) {
+						elem.addEventListener( type, eventHandle );
 					}
 				}
 			}
 
-			if ( especial.add ) {
-				special.add.call(elem, handleObj);
+			if ( special.add ) {
+				special.add.call( elem, handleObj );
 
-				if (!handleObj.handler.guid) {
+				if ( !handleObj.handler.guid ) {
 					handleObj.handler.guid = handler.guid;
 				}
 			}
 
-			// Adiciona à lista de manipuladores do elemento, delegados na frente
-			if (seletor) {
+			// Add to the element's handler list, delegates in front
+			if ( selector ) {
 				handlers.splice( handlers.delegateCount++, 0, handleObj );
-			} outro {
+			} else {
 				handlers.push( handleObj );
 			}
 
-			// Acompanhe quais eventos já foram usados, para otimização de eventos
-			jQuery.event.global[tipo] = verdadeiro;
+			// Keep track of which events have ever been used, for event optimization
+			jQuery.event.global[ type ] = true;
 		}
 
 	},
 
-	// Desanexa um evento ou conjunto de eventos de um elemento
-	remover: função(elem, tipos, manipulador, seletor, mappedTypes) {
+	// Detach an event or set of events from an element
+	remove: function( elem, types, handler, selector, mappedTypes ) {
 
 		var j, origCount, tmp,
-			eventos, t, handleObj,
-			especial, manipuladores, tipo, namespaces, origType,
+			events, t, handleObj,
+			special, handlers, type, namespaces, origType,
 			elemData = dataPriv.hasData( elem ) && dataPriv.get( elem );
 
-		if ( !elemData || !( eventos = elemData.events ) ) {
-			retornar;
+		if ( !elemData || !( events = elemData.events ) ) {
+			return;
 		}
 
-		// Uma vez para cada type.namespace em tipos; tipo pode ser omitido
-		tipos = ( tipos || "" ).match( rnothtmlwhite ) || [ "" ];
-		t = tipos.comprimento;
-		enquanto ( t-- ) {
-			tmp = rtypenamespace.exec(tipos[t]) || [];
-			tipo = tipo de origem = tmp[ 1 ];
+		// Once for each type.namespace in types; type may be omitted
+		types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
+		t = types.length;
+		while ( t-- ) {
+			tmp = rtypenamespace.exec( types[ t ] ) || [];
+			type = origType = tmp[ 1 ];
 			namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
 
-			// Desvincula todos os eventos (neste namespace, se fornecido) para o elemento
-			if ( !tipo ) {
-				for ( digite eventos ) {
-					jQuery.event.remove(elem, tipo + tipos[ t ], manipulador, seletor, true );
+			// Unbind all events (on this namespace, if provided) for the element
+			if ( !type ) {
+				for ( type in events ) {
+					jQuery.event.remove( elem, type + types[ t ], handler, selector, true );
 				}
-				continuar;
+				continue;
 			}
 
-			especial = jQuery.event.special[ tipo ] || {};
-			type = ( seletor ? special.delegateType : special.bindType ) || tipo;
-			manipuladores = eventos[ tipo ] || [];
+			special = jQuery.event.special[ type ] || {};
+			type = ( selector ? special.delegateType : special.bindType ) || type;
+			handlers = events[ type ] || [];
 			tmp = tmp[ 2 ] &&
 				new RegExp( "(^|\\.)" + namespaces.join( "\\.(?:.*\\.|)" ) + "(\\.|$)" );
 
-			// Remove eventos correspondentes
-			origCount = j = manipuladores.comprimento;
+			// Remove matching events
+			origCount = j = handlers.length;
 			while ( j-- ) {
-				handleObj = manipuladores[ j ];
+				handleObj = handlers[ j ];
 
 				if ( ( mappedTypes || origType === handleObj.origType ) &&
 					( !handler || handler.guid === handleObj.guid ) &&
 					( !tmp || tmp.test( handleObj.namespace ) ) &&
-					( !seletor || seletor === handleObj.selector ||
+					( !selector || selector === handleObj.selector ||
 						selector === "**" && handleObj.selector ) ) {
 					handlers.splice( j, 1 );
 
 					if ( handleObj.selector ) {
 						handlers.delegateCount--;
 					}
-					if ( especial.remove ) {
-						special.remove.call(elem, handleObj);
+					if ( special.remove ) {
+						special.remove.call( elem, handleObj );
 					}
 				}
 			}
 
-			// Remove o manipulador de eventos genérico se removemos algo e não existem mais manipuladores
-			// (evita potencial para recursão sem fim durante a remoção de manipuladores de eventos especiais)
-			if (origCount && !handlers.length) {
-				if (!special.teardown ||
+			// Remove generic event handler if we removed something and no more handlers exist
+			// (avoids potential for endless recursion during removal of special event handlers)
+			if ( origCount && !handlers.length ) {
+				if ( !special.teardown ||
 					special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
 
-					jQuery.removeEvent(elem, type, elemData.handle);
+					jQuery.removeEvent( elem, type, elemData.handle );
 				}
 
-				excluir eventos[tipo];
+				delete events[ type ];
 			}
 		}
 
-		// Remove os dados e o expando se não for mais usado
-		if (jQuery.isEmptyObject(eventos)) {
-			dataPriv.remove( elem, "manipular eventos" );
+		// Remove data and the expando if it's no longer used
+		if ( jQuery.isEmptyObject( events ) ) {
+			dataPriv.remove( elem, "handle events" );
 		}
 	},
 
-	dispatch: function(nativeEvent) {
+	dispatch: function( nativeEvent ) {
 
 		var i, j, ret, matched, handleObj, handlerQueue,
-			args = new Array(argumentos.comprimento),
+			args = new Array( arguments.length ),
 
-			// Cria um jQuery.Event gravável a partir do objeto de evento nativo
-			evento = jQuery.event.fix(nativeEvent),
+			// Make a writable jQuery.Event from the native event object
+			event = jQuery.event.fix( nativeEvent ),
 
-			manipuladores = (
-				dataPriv.get( this, "eventos" ) || Object.create( null )
+			handlers = (
+				dataPriv.get( this, "events" ) || Object.create( null )
 			)[ event.type ] || [],
-			especial = jQuery.event.special[ event.type ] || {};
+			special = jQuery.event.special[ event.type ] || {};
 
-		// Use o jQuery.Event corrigido em vez do evento nativo (somente leitura)
-		args[ 0 ] = evento;
+		// Use the fix-ed jQuery.Event rather than the (read-only) native event
+		args[ 0 ] = event;
 
-		for ( i = 1; i < argumentos.comprimento; i++ ) {
-			args[i] = argumentos[i];
+		for ( i = 1; i < arguments.length; i++ ) {
+			args[ i ] = arguments[ i ];
 		}
 
 		event.delegateTarget = this;
 
-		// Chame o gancho preDispatch para o tipo mapeado e deixe-o sair, se desejado
+		// Call the preDispatch hook for the mapped type, and let it bail if desired
 		if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
-			retornar;
+			return;
 		}
 
-		// Determina os manipuladores
+		// Determine handlers
 		handlerQueue = jQuery.event.handlers.call( this, event, handlers );
 
-		// Executa os delegados primeiro; eles podem querer parar a propagação abaixo de nós
+		// Run delegates first; they may want to stop propagation beneath us
 		i = 0;
-		while ( (matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
+		while ( ( matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
 			event.currentTarget = matched.elem;
 
 			j = 0;
 			while ( ( handleObj = matched.handlers[ j++ ] ) &&
 				!event.isImmediatePropagationStopped() ) {
 
-				// Se o evento tiver namespace, cada manipulador só será invocado se for
-				// especialmente universal ou seus namespaces são um superconjunto do evento.
-				if (!event.rnamespace || handleObj.namespace === false ||
+				// If the event is namespaced, then each handler is only invoked if it is
+				// specially universal or its namespaces are a superset of the event's.
+				if ( !event.rnamespace || handleObj.namespace === false ||
 					event.rnamespace.test( handleObj.namespace ) ) {
 
 					event.handleObj = handleObj;
 					event.data = handleObj.data;
 
 					ret = ( ( jQuery.event.special[ handleObj.origType ] || {} ).handle ||
-						handleObj.handler ).apply(matched.elem, args );
+						handleObj.handler ).apply( matched.elem, args );
 
-					if ( ret !== indefinido ) {
+					if ( ret !== undefined ) {
 						if ( ( event.result = ret ) === false ) {
 							event.preventDefault();
 							event.stopPropagation();
@@ -5144,165 +5144,165 @@ jQuery.event = {
 			}
 		}
 
-		// Chama o gancho postDispatch para o tipo mapeado
-		if ( especial.postDispatch ) {
+		// Call the postDispatch hook for the mapped type
+		if ( special.postDispatch ) {
 			special.postDispatch.call( this, event );
 		}
 
-		return evento.resultado;
+		return event.result;
 	},
 
-	manipuladores: função (evento, manipuladores) {
+	handlers: function( event, handlers ) {
 		var i, handleObj, sel, matchedHandlers, matchedSelectors,
 			handlerQueue = [],
-			delegadoCount = manipuladores.delegateCount,
-			cur = evento.destino;
+			delegateCount = handlers.delegateCount,
+			cur = event.target;
 
-		// Encontra manipuladores delegados
-		if ( delegadoCount &&
+		// Find delegate handlers
+		if ( delegateCount &&
 
-			// Suporte: IE <=9
-			// Árvores de instância SVG <use> de buraco negro (trac-13180)
+			// Support: IE <=9
+			// Black-hole SVG <use> instance trees (trac-13180)
 			cur.nodeType &&
 
-			// Suporte: Firefox <=42
-			// Suprime cliques que violam especificações indicando um botão de ponteiro não primário (trac-3861)
+			// Support: Firefox <=42
+			// Suppress spec-violating clicks indicating a non-primary pointer button (trac-3861)
 			// https://www.w3.org/TR/DOM-Level-3-Events/#event-type-click
-			// Suporte: somente IE 11
-			// ...mas não os "cliques" das teclas de seta das entradas de rádio, que podem ter `button` -1 (gh-2343)
-			!( event.type === "clique" && event.button >= 1 ) ) {
+			// Support: IE 11 only
+			// ...but not arrow key "clicks" of radio inputs, which can have `button` -1 (gh-2343)
+			!( event.type === "click" && event.button >= 1 ) ) {
 
 			for ( ; cur !== this; cur = cur.parentNode || this ) {
 
-				// Não verifica não-elementos (trac-13208)
-				// Não processar cliques em elementos desabilitados (trac-6911, trac-8165, trac-11382, trac-11764)
+				// Don't check non-elements (trac-13208)
+				// Don't process clicks on disabled elements (trac-6911, trac-8165, trac-11382, trac-11764)
 				if ( cur.nodeType === 1 && !( event.type === "click" && cur.disabled === true ) ) {
 					matchedHandlers = [];
 					matchedSelectors = {};
-					for ( i = 0; i < delegadoCount; i++ ) {
-						handleObj = manipuladores[i];
+					for ( i = 0; i < delegateCount; i++ ) {
+						handleObj = handlers[ i ];
 
-						// Não entra em conflito com as propriedades Object.prototype (trac-13203)
+						// Don't conflict with Object.prototype properties (trac-13203)
 						sel = handleObj.selector + " ";
 
-						if (matchedSelectors[sel] === indefinido) {
-							matchedSelectors[sel] = handleObj.needsContext ?
-								jQuery(sel, this).index(cur) > -1:
-								jQuery.find(sel, this, null, [ cur ] ).length;
+						if ( matchedSelectors[ sel ] === undefined ) {
+							matchedSelectors[ sel ] = handleObj.needsContext ?
+								jQuery( sel, this ).index( cur ) > -1 :
+								jQuery.find( sel, this, null, [ cur ] ).length;
 						}
-						if (matchedSelectors[sel]) {
+						if ( matchedSelectors[ sel ] ) {
 							matchedHandlers.push( handleObj );
 						}
 					}
-					if (matchedHandlers.length) {
+					if ( matchedHandlers.length ) {
 						handlerQueue.push( { elem: cur, handlers: matchedHandlers } );
 					}
 				}
 			}
 		}
 
-		// Adiciona os manipuladores restantes (ligados diretamente)
-		cur = este;
-		if ( delegadoCount < manipuladores.comprimento ) {
+		// Add the remaining (directly-bound) handlers
+		cur = this;
+		if ( delegateCount < handlers.length ) {
 			handlerQueue.push( { elem: cur, handlers: handlers.slice( delegateCount ) } );
 		}
 
 		return handlerQueue;
 	},
 
-	addProp: function(nome, gancho) {
-		Object.defineProperty( jQuery.Event.prototype, nome, {
-			enumerável: verdadeiro,
-			configurável: verdadeiro,
+	addProp: function( name, hook ) {
+		Object.defineProperty( jQuery.Event.prototype, name, {
+			enumerable: true,
+			configurable: true,
 
-			get: isFunction(gancho) ?
-				função() {
+			get: isFunction( hook ) ?
+				function() {
 					if ( this.originalEvent ) {
 						return hook( this.originalEvent );
 					}
 				} :
-				função() {
+				function() {
 					if ( this.originalEvent ) {
-						return this.originalEvent[ nome ];
+						return this.originalEvent[ name ];
 					}
 				},
 
-			definir: função( valor ) {
+			set: function( value ) {
 				Object.defineProperty( this, name, {
-					enumerável: verdadeiro,
-					configurável: verdadeiro,
-					gravável: verdadeiro,
-					valor: valor
+					enumerable: true,
+					configurable: true,
+					writable: true,
+					value: value
 				} );
 			}
 		} );
 	},
 
-	fix: function(originalEvent) {
+	fix: function( originalEvent ) {
 		return originalEvent[ jQuery.expando ] ?
-			evento original:
-			novo jQuery.Event(originalEvent);
+			originalEvent :
+			new jQuery.Event( originalEvent );
 	},
 
-	especial: {
-		carregar: {
+	special: {
+		load: {
 
-			// Evita que eventos image.load acionados borbulhem para window.load
+			// Prevent triggered image.load events from bubbling to window.load
 			noBubble: true
 		},
-		clique: {
+		click: {
 
-			// Utilize o evento nativo para garantir o estado correto para entradas verificáveis
-			configuração: function( dados ) {
+			// Utilize native event to ensure correct state for checkable inputs
+			setup: function( data ) {
 
-				// Para compressibilidade mútua com _default, substitua o acesso `this` por uma variável local.
-				// `|| data` é um código morto destinado apenas a preservar a variável por meio da minificação.
-				var el = this || dados;
+				// For mutual compressibility with _default, replace `this` access with a local var.
+				// `|| data` is dead code meant only to preserve the variable through minification.
+				var el = this || data;
 
-				// Reivindica o primeiro manipulador
+				// Claim the first handler
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "entrada") ) {
+					el.click && nodeName( el, "input" ) ) {
 
-					// dataPriv.set( el, "clique", ... )
-					alavancagemNative(el, "clique", true );
+					// dataPriv.set( el, "click", ... )
+					leverageNative( el, "click", true );
 				}
 
-				// Retorna false para permitir o processamento normal no chamador
-				retorna falso;
+				// Return false to allow normal processing in the caller
+				return false;
 			},
-			gatilho: function( dados ) {
+			trigger: function( data ) {
 
-				// Para compressibilidade mútua com _default, substitua o acesso `this` por uma variável local.
-				// `|| data` é um código morto destinado apenas a preservar a variável por meio da minificação.
-				var el = this || dados;
+				// For mutual compressibility with _default, replace `this` access with a local var.
+				// `|| data` is dead code meant only to preserve the variable through minification.
+				var el = this || data;
 
-				// Força a configuração antes de disparar um clique
+				// Force setup before triggering a click
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "entrada") ) {
+					el.click && nodeName( el, "input" ) ) {
 
-					alavancagemNative(el, "clique");
+					leverageNative( el, "click" );
 				}
 
-				// Retorna não falso para permitir a propagação normal do caminho do evento
-				retornar verdadeiro;
+				// Return non-false to allow normal event-path propagation
+				return true;
 			},
 
-			// Para consistência entre navegadores, suprima .click() nativo nos links
-			// Também evita isso se estivermos dentro de uma pilha de evento nativo alavancado
-			_padrão: função( evento ) {
-				var destino = evento.destino;
+			// For cross-browser consistency, suppress native .click() on links
+			// Also prevent it if we're currently inside a leveraged native-event stack
+			_default: function( event ) {
+				var target = event.target;
 				return rcheckableType.test( target.type ) &&
 					target.click && nodeName( target, "input" ) &&
-					dataPriv.get(alvo, "clique" ) ||
-					node(destino, "a");
+					dataPriv.get( target, "click" ) ||
+					nodeName( target, "a" );
 			}
 		},
 
-		antes de descarregar: {
-			postDispatch: function(evento) {
+		beforeunload: {
+			postDispatch: function( event ) {
 
-				// Suporte: Firefox 20+
-				// O Firefox não alerta se o campo returnValue não estiver definido.
+				// Support: Firefox 20+
+				// Firefox doesn't alert if the returnValue field is not set.
 				if ( event.result !== undefined && event.originalEvent ) {
 					event.originalEvent.returnValue = event.result;
 				}
@@ -5311,82 +5311,82 @@ jQuery.event = {
 	}
 };
 
-// Assegure a presença de um ouvinte de evento que lida com eventos acionados manualmente
-// eventos sintéticos interrompendo o progresso até serem invocados novamente em resposta a
-// Eventos *nativos* que disparam diretamente, garantindo que as mudanças de estado tenham
-// já ocorreu antes de outros ouvintes serem invocados.
-função alavancagemNative( el, tipo, isSetup ) {
+// Ensure the presence of an event listener that handles manually-triggered
+// synthetic events by interrupting progress until reinvoked in response to
+// *native* events that it fires directly, ensuring that state changes have
+// already occurred before other listeners are invoked.
+function leverageNative( el, type, isSetup ) {
 
-	// `isSetup` ausente indica uma chamada de gatilho, que deve forçar a configuração por meio de jQuery.event.add
-	if (!isSetup) {
-		if (dataPriv.get(el, type) === indefinido) {
-			jQuery.event.add(el, tipo, returnTrue);
+	// Missing `isSetup` indicates a trigger call, which must force setup through jQuery.event.add
+	if ( !isSetup ) {
+		if ( dataPriv.get( el, type ) === undefined ) {
+			jQuery.event.add( el, type, returnTrue );
 		}
-		retornar;
+		return;
 	}
 
-	// Registra o controlador como um manipulador universal especial para todos os namespaces de evento
-	dataPriv.set(el, tipo, false);
-	jQuery.event.add( el, tipo, {
-		espaço de nomes: falso,
-		manipulador: função (evento) {
-			var resultado,
-				salvo = dataPriv.get( this, type );
+	// Register the controller as a special universal handler for all event namespaces
+	dataPriv.set( el, type, false );
+	jQuery.event.add( el, type, {
+		namespace: false,
+		handler: function( event ) {
+			var result,
+				saved = dataPriv.get( this, type );
 
 			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
 
-				// Interrompe o processamento do evento .trigger()ed sintético externo
-				if (!salvo) {
+				// Interrupt processing of the outer synthetic .trigger()ed event
+				if ( !saved ) {
 
-					// Armazena argumentos para uso ao manipular o evento nativo interno
-					// Sempre haverá pelo menos um argumento (um objeto de evento), então este array
-					// não será confundido com um objeto de captura restante.
-					salvo = slice.call(argumentos);
-					dataPriv.set(este, tipo, salvo);
+					// Store arguments for use when handling the inner native event
+					// There will always be at least one argument (an event object), so this array
+					// will not be confused with a leftover capture object.
+					saved = slice.call( arguments );
+					dataPriv.set( this, type, saved );
 
-					// Aciona o evento nativo e captura seu resultado
-					esse tipo ]();
-					resultado = dataPriv.get( this, type );
+					// Trigger the native event and capture its result
+					this[ type ]();
+					result = dataPriv.get( this, type );
 					dataPriv.set( this, type, false );
 
-					if ( salvo !== resultado ) {
+					if ( saved !== result ) {
 
-						// Cancela o evento sintético externo
+						// Cancel the outer synthetic event
 						event.stopImmediatePropagation();
 						event.preventDefault();
 
-						resultado de retorno;
+						return result;
 					}
 
-				// Se este for um evento sintético interno para um evento com um substituto borbulhante
-				// (foco ou desfoque), assume que o substituto já se propagou do acionamento
-				// o evento nativo e evitar que isso aconteça novamente aqui.
-				// Isso tecnicamente leva a ordem errada para `.trigger()` (no qual o
-				// substituto borbulhante se propaga *depois* da base não borbulhante), mas isso parece
-				// menos ruim que a duplicação.
-				} else if ( ( jQuery.event.special[ tipo ] || {} ).delegateType ) {
+				// If this is an inner synthetic event for an event with a bubbling surrogate
+				// (focus or blur), assume that the surrogate already propagated from triggering
+				// the native event and prevent that from happening again here.
+				// This technically gets the ordering wrong w.r.t. to `.trigger()` (in which the
+				// bubbling surrogate propagates *after* the non-bubbling base), but that seems
+				// less bad than duplication.
+				} else if ( ( jQuery.event.special[ type ] || {} ).delegateType ) {
 					event.stopPropagation();
 				}
 
-			// Se este for um evento nativo disparado acima, tudo está em ordem
-			// Dispara um evento sintético interno com os argumentos originais
-			} else if ( salvo ) {
+			// If this is a native event triggered above, everything is now in order
+			// Fire an inner synthetic event with the original arguments
+			} else if ( saved ) {
 
-				// ...e captura o resultado
+				// ...and capture the result
 				dataPriv.set( this, type, jQuery.event.trigger(
-					salvo [ 0 ],
-					fatia.salvo( 1 ),
-					esse
+					saved[ 0 ],
+					saved.slice( 1 ),
+					this
 				) );
 
-				// Aborta o tratamento do evento nativo por todos os manipuladores jQuery enquanto permite
-				// manipuladores nativos no mesmo elemento para executar. No alvo, isso é alcançado
-				// parando a propagação imediata apenas no evento jQuery. No entanto,
-				// o evento nativo é reempacotado por um jQuery em cada nível do
-				// propagação então a única maneira de pará-lo para jQuery é pará-lo para
-				// todos via `stopPropagation()` nativo. Isso não é um problema para
-				// foco/desfoque que não borbulha, mas também para de clicar nas caixas de seleção
-				// e rádios. Aceitamos esta limitação.
+				// Abort handling of the native event by all jQuery handlers while allowing
+				// native handlers on the same element to run. On target, this is achieved
+				// by stopping immediate propagation just on the jQuery event. However,
+				// the native event is re-wrapped by a jQuery one on each level of the
+				// propagation so the only way to stop it for jQuery is to stop it for
+				// everyone via native `stopPropagation()`. This is not a problem for
+				// focus/blur which don't bubble, but it does also stop click on checkboxes
+				// and radios. We accept this limitation.
 				event.stopPropagation();
 				event.isImmediatePropagationStopped = returnTrue;
 			}
@@ -5394,39 +5394,39 @@ função alavancagemNative( el, tipo, isSetup ) {
 	} );
 }
 
-jQuery.removeEvent = function(elem, type, handle) {
+jQuery.removeEvent = function( elem, type, handle ) {
 
-	// Este "if" é necessário para objetos simples
-	if (elem.removeEventListener) {
-		elem.removeEventListener(tipo, identificador);
+	// This "if" is needed for plain objects
+	if ( elem.removeEventListener ) {
+		elem.removeEventListener( type, handle );
 	}
 };
 
 jQuery.Event = function( src, props ) {
 
-	// Permitir instanciação sem a palavra-chave 'new'
-	if ( !( esta instância de jQuery.Event ) ) {
-		retornar novo jQuery.Event( src, props );
+	// Allow instantiation without the 'new' keyword
+	if ( !( this instanceof jQuery.Event ) ) {
+		return new jQuery.Event( src, props );
 	}
 
-	// Objeto de evento
+	// Event object
 	if ( src && src.type ) {
-		this.originalEvent = origem;
+		this.originalEvent = src;
 		this.type = src.type;
 
-		// Eventos borbulhando no documento podem ter sido marcados como evitados
-		// por um manipulador mais abaixo na árvore; refletir o valor correto.
+		// Events bubbling up the document may have been marked as prevented
+		// by a handler lower down the tree; reflect the correct value.
 		this.isDefaultPrevented = src.defaultPrevented ||
-				src.defaultPrevented === indefinido &&
+				src.defaultPrevented === undefined &&
 
-				// Suporte: Android <=2.3 somente
+				// Support: Android <=2.3 only
 				src.returnValue === false ?
-			returnVerdadeiro:
-			retorna falso;
+			returnTrue :
+			returnFalse;
 
-		// Cria propriedades de destino
-		// Suporte: Safari <=6 - 7 somente
-		// O destino não deve ser um nó de texto (trac-504, trac-13143)
+		// Create target properties
+		// Support: Safari <=6 - 7 only
+		// Target should not be a text node (trac-504, trac-13143)
 		this.target = ( src.target && src.target.nodeType === 3 ) ?
 			src.target.parentNode :
 			src.target;
@@ -5434,31 +5434,31 @@ jQuery.Event = function( src, props ) {
 		this.currentTarget = src.currentTarget;
 		this.relatedTarget = src.relatedTarget;
 
-	// Tipo de evento
-	} outro {
+	// Event type
+	} else {
 		this.type = src;
 	}
 
-	// Coloca propriedades fornecidas explicitamente no objeto de evento
-	if (adereços) {
+	// Put explicitly provided properties onto the event object
+	if ( props ) {
 		jQuery.extend( this, props );
 	}
 
-	// Cria um carimbo de data/hora se o evento recebido não tiver um
-	this.timeStamp = src && src.timeStamp || Data.agora();
+	// Create a timestamp if incoming event doesn't have one
+	this.timeStamp = src && src.timeStamp || Date.now();
 
-	// Marca como fixo
-	this[ jQuery.expandindo ] = true;
+	// Mark it as fixed
+	this[ jQuery.expando ] = true;
 };
 
-// jQuery.Event é baseado em DOM3 Events conforme especificado pela ECMAScript Language Binding
+// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
 // https://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
 jQuery.Event.prototype = {
-	construtor: jQuery.Event,
+	constructor: jQuery.Event,
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
-	isSimulado: falso,
+	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
@@ -5491,277 +5491,277 @@ jQuery.Event.prototype = {
 	}
 };
 
-// Inclui todos os props de eventos comuns, incluindo props específicos KeyEvent e MouseEvent
+// Includes all common event props including KeyEvent and MouseEvent specific props
 jQuery.each( {
-	altKey: verdadeiro,
-	bolhas: verdade,
-	cancelável: verdadeiro,
-	toques alterados: verdadeiro,
-	ctrlKey: verdadeiro,
-	detalhe: verdade,
-	Fase do evento: verdadeiro,
-	metaKey: verdadeiro,
-	páginaX: verdadeiro,
-	páginaY: verdadeiro,
-	shiftKey: verdadeiro,
-	visão: verdadeiro,
-	"char": verdadeiro,
-	código: verdadeiro,
-	charCode: verdadeiro,
-	chave: verdadeiro,
-	keyCode: verdadeiro,
-	botão: verdadeiro,
-	botões: verdadeiro,
-	clienteX: verdadeiro,
-	clienteY: verdadeiro,
-	offsetX: verdadeiro,
-	offsetY: verdadeiro,
-	ponteiroId: verdadeiro,
-	tipo de ponteiro: verdadeiro,
-	telaX: verdadeiro,
-	telaY: verdadeiro,
-	targetTouches: verdadeiro,
-	toElement: verdadeiro,
-	toques: verdadeiro,
-	qual: verdadeiro
+	altKey: true,
+	bubbles: true,
+	cancelable: true,
+	changedTouches: true,
+	ctrlKey: true,
+	detail: true,
+	eventPhase: true,
+	metaKey: true,
+	pageX: true,
+	pageY: true,
+	shiftKey: true,
+	view: true,
+	"char": true,
+	code: true,
+	charCode: true,
+	key: true,
+	keyCode: true,
+	button: true,
+	buttons: true,
+	clientX: true,
+	clientY: true,
+	offsetX: true,
+	offsetY: true,
+	pointerId: true,
+	pointerType: true,
+	screenX: true,
+	screenY: true,
+	targetTouches: true,
+	toElement: true,
+	touches: true,
+	which: true
 }, jQuery.event.addProp );
 
 jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateType ) {
 
-	function focusMappedHandler(nativeEvent) {
-		if (document.documentMode) {
+	function focusMappedHandler( nativeEvent ) {
+		if ( document.documentMode ) {
 
-			// Suporte: IE 11+
-			// Anexa um único manipulador de foco/foco no documento enquanto alguém deseja
-			// foco/desfoque. Isso ocorre porque os primeiros são síncronos no IE, enquanto os últimos
-			// são assíncronos. Em outros navegadores, todos esses manipuladores são invocados de forma síncrona.
+			// Support: IE 11+
+			// Attach a single focusin/focusout handler on the document while someone wants
+			// focus/blur. This is because the former are synchronous in IE while the latter
+			// are async. In other browsers, all those handlers are invoked synchronously.
 
-			// `handle` de dados privados já envolveria o evento, mas precisamos
-			// para alterar o `type` aqui.
+			// `handle` from private data would already wrap the event, but we need
+			// to change the `type` here.
 			var handle = dataPriv.get( this, "handle" ),
-				evento = jQuery.event.fix(nativeEvent);
-			event.type = nativeEvent.type === "focusin" ? "foco" : "desfoque";
+				event = jQuery.event.fix( nativeEvent );
+			event.type = nativeEvent.type === "focusin" ? "focus" : "blur";
 			event.isSimulated = true;
 
-			// Primeiro, manuseie o foco/foco fora
-			handle(nativeEvent);
+			// First, handle focusin/focusout
+			handle( nativeEvent );
 
-			// ...então, manuseie o foco/desfoque
+			// ...then, handle focus/blur
 			//
-			// foco/desfoque não borbulha enquanto foco dentro/foco fora sim; simular o primeiro por apenas
-			// invocando o manipulador no nível inferior.
+			// focus/blur don't bubble while focusin/focusout do; simulate the former by only
+			// invoking the handler at the lower level.
 			if ( event.target === event.currentTarget ) {
 
-				// A parte de configuração chama `leverageNative`, que, por sua vez, chama
-				// `jQuery.event.add`, então o identificador de evento já terá sido definido
-				// neste ponto.
-				handle(evento);
+				// The setup part calls `leverageNative`, which, in turn, calls
+				// `jQuery.event.add`, so event handle will already have been set
+				// by this point.
+				handle( event );
 			}
-		} outro {
+		} else {
 
-			// Para navegadores não-IE, anexe um único manipulador de captura no documento
-			// enquanto alguém quer focar/sair do foco.
-			jQuery.event.simulate( delegadoType, nativeEvent.target,
-				jQuery.event.fix(nativeEvent));
+			// For non-IE browsers, attach a single capturing handler on the document
+			// while someone wants focusin/focusout.
+			jQuery.event.simulate( delegateType, nativeEvent.target,
+				jQuery.event.fix( nativeEvent ) );
 		}
 	}
 
-	jQuery.event.special[ tipo ] = {
+	jQuery.event.special[ type ] = {
 
-		// Utilize o evento nativo, se possível, para que a sequência de desfoque/foco esteja correta
-		configuração: function() {
+		// Utilize native event if possible so blur/focus sequence is correct
+		setup: function() {
 
-			var anexa;
+			var attaches;
 
-			// Reivindica o primeiro manipulador
-			// dataPriv.set( this, "foco", ... )
+			// Claim the first handler
+			// dataPriv.set( this, "focus", ... )
 			// dataPriv.set( this, "blur", ... )
-			alavancagemNative( this, type, true );
+			leverageNative( this, type, true );
 
-			if (document.documentMode) {
+			if ( document.documentMode ) {
 
-				// Suporte: IE 9 - 11+
-				// Usamos o mesmo manipulador nativo para foco e foco (e foco e desfoque)
-				// então precisamos coordenar as partes de configuração e desmontagem entre esses eventos.
-				// Use `delegateType` como a chave, pois `type` já é usado por `leverageNative`.
+				// Support: IE 9 - 11+
+				// We use the same native handler for focusin & focus (and focusout & blur)
+				// so we need to coordinate setup & teardown parts between those events.
+				// Use `delegateType` as the key as `type` is already used by `leverageNative`.
 				attaches = dataPriv.get( this, delegateType );
-				if (!anexe) {
+				if ( !attaches ) {
 					this.addEventListener( delegateType, focusMappedHandler );
 				}
 				dataPriv.set( this, delegateType, ( attaches || 0 ) + 1 );
-			} outro {
+			} else {
 
-				// Retorna false para permitir o processamento normal no chamador
-				retorna falso;
+				// Return false to allow normal processing in the caller
+				return false;
 			}
 		},
-		gatilho: function() {
+		trigger: function() {
 
-			// Força a configuração antes do gatilho
-			alavancagemNative( this, type );
+			// Force setup before trigger
+			leverageNative( this, type );
 
-			// Retorna não falso para permitir a propagação normal do caminho do evento
-			retornar verdadeiro;
+			// Return non-false to allow normal event-path propagation
+			return true;
 		},
 
-		desmontagem: function () {
-			var anexa;
+		teardown: function() {
+			var attaches;
 
-			if (document.documentMode) {
-				anexa = dataPriv.get( this, delegateType ) - 1;
-				if (!anexe) {
+			if ( document.documentMode ) {
+				attaches = dataPriv.get( this, delegateType ) - 1;
+				if ( !attaches ) {
 					this.removeEventListener( delegateType, focusMappedHandler );
 					dataPriv.remove( this, delegateType );
-				} outro {
+				} else {
 					dataPriv.set( this, delegateType, attaches );
 				}
-			} outro {
+			} else {
 
-				// Retorna false para indicar que a desmontagem padrão deve ser aplicada
-				retorna falso;
+				// Return false to indicate standard teardown should be applied
+				return false;
 			}
 		},
 
-		// Suprime foco nativo ou desfoque se estivermos dentro
-		// uma pilha de evento nativo alavancada
-		_padrão: função( evento ) {
+		// Suppress native focus or blur if we're currently inside
+		// a leveraged native-event stack
+		_default: function( event ) {
 			return dataPriv.get( event.target, type );
 		},
 
-		delegadoTipo: delegadoTipo
+		delegateType: delegateType
 	};
 
-	// Suporte: Firefox <=44
-	// Firefox não tem eventos focus(in | out)
-	// Ingresso relacionado - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
+	// Support: Firefox <=44
+	// Firefox doesn't have focus(in | out) events
+	// Related ticket - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
 	//
-	// Suporte: Chrome <=48 - 49, Safari <=9.0 - 9.1
-	// eventos de foco (entrada | saída) disparam após os eventos de foco e desfoque,
-	// que é violação de especificação - http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent-event-order
-	// Ticket relacionado - https://bugs.chromium.org/p/chromium/issues/detail?id=449857
+	// Support: Chrome <=48 - 49, Safari <=9.0 - 9.1
+	// focus(in | out) events fire after focus & blur events,
+	// which is spec violation - http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent-event-order
+	// Related ticket - https://bugs.chromium.org/p/chromium/issues/detail?id=449857
 	//
-	// Suporte: IE 9 - 11+
-	// Para preservar a ordem relativa do evento de foco/foco e foco/desfoque garantida na ramificação 3.x,
-	// anexa um único manipulador para ambos os eventos no IE.
-	jQuery.event.special[ delegadoType ] = {
-		configuração: function() {
+	// Support: IE 9 - 11+
+	// To preserve relative focusin/focus & focusout/blur event order guaranteed on the 3.x branch,
+	// attach a single handler for both events in IE.
+	jQuery.event.special[ delegateType ] = {
+		setup: function() {
 
-			// Handle: nós regulares (através de `this.ownerDocument`), janela
+			// Handle: regular nodes (via `this.ownerDocument`), window
 			// (via `this.document`) & document (via `this`).
-			var doc = this.ownerDocument || este.documento || esse,
-				dataHolder = document.documentMode ? isto: doc,
-				anexa = dataPriv.get( dataHolder, delegateType );
+			var doc = this.ownerDocument || this.document || this,
+				dataHolder = document.documentMode ? this : doc,
+				attaches = dataPriv.get( dataHolder, delegateType );
 
-			// Suporte: IE 9 - 11+
-			// Usamos o mesmo manipulador nativo para foco e foco (e foco e desfoque)
-			// então precisamos coordenar as partes de configuração e desmontagem entre esses eventos.
-			// Use `delegateType` como a chave, pois `type` já é usado por `leverageNative`.
-			if (!anexe) {
-				if (document.documentMode) {
+			// Support: IE 9 - 11+
+			// We use the same native handler for focusin & focus (and focusout & blur)
+			// so we need to coordinate setup & teardown parts between those events.
+			// Use `delegateType` as the key as `type` is already used by `leverageNative`.
+			if ( !attaches ) {
+				if ( document.documentMode ) {
 					this.addEventListener( delegateType, focusMappedHandler );
-				} outro {
-					doc.addEventListener( tipo, focusMappedHandler, true );
+				} else {
+					doc.addEventListener( type, focusMappedHandler, true );
 				}
 			}
 			dataPriv.set( dataHolder, delegateType, ( attaches || 0 ) + 1 );
 		},
-		desmontagem: function () {
-			var doc = this.ownerDocument || este.documento || esse,
-				dataHolder = document.documentMode ? isto: doc,
-				anexa = dataPriv.get( dataHolder, delegateType ) - 1;
+		teardown: function() {
+			var doc = this.ownerDocument || this.document || this,
+				dataHolder = document.documentMode ? this : doc,
+				attaches = dataPriv.get( dataHolder, delegateType ) - 1;
 
-			if (!anexe) {
-				if (document.documentMode) {
+			if ( !attaches ) {
+				if ( document.documentMode ) {
 					this.removeEventListener( delegateType, focusMappedHandler );
-				} outro {
-					doc.removeEventListener( tipo, focusMappedHandler, true );
+				} else {
+					doc.removeEventListener( type, focusMappedHandler, true );
 				}
 				dataPriv.remove( dataHolder, delegateType );
-			} outro {
+			} else {
 				dataPriv.set( dataHolder, delegateType, attaches );
 			}
 		}
 	};
 } );
 
-// Cria eventos mouseenter/leave usando mouseover/out e verificações de tempo de evento
-// para que a delegação de eventos funcione em jQuery.
-// Faça o mesmo para pointerenter/pointerleave e pointerover/pointerout
+// Create mouseenter/leave events using mouseover/out and event-time checks
+// so that event delegation works in jQuery.
+// Do the same for pointerenter/pointerleave and pointerover/pointerout
 //
-// Suporte: apenas Safari 7
-// Safari envia mouseenter com muita frequência; ver:
+// Support: Safari 7 only
+// Safari sends mouseenter too often; see:
 // https://bugs.chromium.org/p/chromium/issues/detail?id=470258
-// para a descrição do bug (existia também em versões mais antigas do Chrome).
+// for the description of the bug (it existed in older Chrome versions as well).
 jQuery.each( {
-	mouseenter: "passar o mouse",
+	mouseenter: "mouseover",
 	mouseleave: "mouseout",
-	ponteiroenter: "ponteiro",
+	pointerenter: "pointerover",
 	pointerleave: "pointerout"
-}, function(origem, correção) {
-	jQuery.event.special[ origem ] = {
-		delegadoType: corrigir,
-		tipo de ligação: corrigir,
+}, function( orig, fix ) {
+	jQuery.event.special[ orig ] = {
+		delegateType: fix,
+		bindType: fix,
 
-		identificador: função (evento) {
+		handle: function( event ) {
 			var ret,
-				alvo = este,
-				relacionado = evento.relacionadoTarget,
+				target = this,
+				related = event.relatedTarget,
 				handleObj = event.handleObj;
 
-			// Para mouseenter/leave, chame o manipulador se relacionado estiver fora do destino.
-			// NB: Não relatedTarget se o mouse saiu/entrou na janela do navegador
-			if ( !relacionado || ( relacionado !== alvo && !jQuery.contains( alvo, relacionado ) ) ) {
+			// For mouseenter/leave call the handler if related is outside the target.
+			// NB: No relatedTarget if the mouse left/entered the browser window
+			if ( !related || ( related !== target && !jQuery.contains( target, related ) ) ) {
 				event.type = handleObj.origType;
-				ret = handleObj.handler.apply( isto, argumentos );
-				event.type = correção;
+				ret = handleObj.handler.apply( this, arguments );
+				event.type = fix;
 			}
-			retorno ret;
+			return ret;
 		}
 	};
 } );
 
 jQuery.fn.extend( {
 
-	on: function(tipos, seletor, dados, fn) {
-		return on(este, tipos, seletor, dados, fn);
+	on: function( types, selector, data, fn ) {
+		return on( this, types, selector, data, fn );
 	},
-	one: function(tipos, seletor, dados, fn) {
-		return on( this, type, selector, data, fn, 1 );
+	one: function( types, selector, data, fn ) {
+		return on( this, types, selector, data, fn, 1 );
 	},
-	off: function(tipos, seletor, fn) {
-		var handleObj, tipo;
-		if ( tipos && tipos.preventDefault && tipos.handleObj ) {
+	off: function( types, selector, fn ) {
+		var handleObj, type;
+		if ( types && types.preventDefault && types.handleObj ) {
 
-			// (evento) enviado jQuery.Event
-			handleObj = tipos.handleObj;
-			jQuery(types.delegateTarget).off(
+			// ( event )  dispatched jQuery.Event
+			handleObj = types.handleObj;
+			jQuery( types.delegateTarget ).off(
 				handleObj.namespace ?
 					handleObj.origType + "." + handleObj.namespace :
 					handleObj.origType,
 				handleObj.selector,
 				handleObj.handler
 			);
-			devolva isto;
+			return this;
 		}
-		if (tipo de tipos === "objeto" ) {
+		if ( typeof types === "object" ) {
 
-			// (tipos-objeto [, seletor])
-			for ( digite tipos ) {
-				this.off(tipo, seletor, tipos[tipo]);
+			// ( types-object [, selector] )
+			for ( type in types ) {
+				this.off( type, selector, types[ type ] );
 			}
-			devolva isto;
+			return this;
 		}
-		if ( seletor === false || tipo de seletor === "função" ) {
+		if ( selector === false || typeof selector === "function" ) {
 
-			// ( tipos [, fn] )
-			fn = seletor;
-			seletor = indefinido;
+			// ( types [, fn] )
+			fn = selector;
+			selector = undefined;
 		}
 		if ( fn === false ) {
 			fn = returnFalse;
 		}
 		return this.each( function() {
-			jQuery.event.remove(este, tipos, fn, seletor);
+			jQuery.event.remove( this, types, fn, selector );
 		} );
 	}
 } );
@@ -5769,176 +5769,176 @@ jQuery.fn.extend( {
 
 var
 
-	// Suporte: IE <=10 - 11, apenas Edge 12 - 13
-	// No IE/Edge, usar grupos regex aqui causa lentidão severa.
-	// Consulte https://connect.microsoft.com/IE/feedback/details/1736512/
-	rnoInnerhtml = /<script|<estilo|<link/i,
+	// Support: IE <=10 - 11, Edge 12 - 13 only
+	// In IE/Edge using regex groups here causes severe slowdowns.
+	// See https://connect.microsoft.com/IE/feedback/details/1736512/
+	rnoInnerhtml = /<script|<style|<link/i,
 
-	// verificado="checked" ou verificado
+	// checked="checked" or checked
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
 
 	rcleanScript = /^\s*<!\[CDATA\[|\]\]>\s*$/g;
 
-// Preferir um tbody sobre sua tabela pai para conter novas linhas
-função manipulaçãoAlvo(elem, conteúdo) {
-	if ( nodeName(elem, "tabela") &&
+// Prefer a tbody over its parent table for containing new rows
+function manipulationTarget( elem, content ) {
+	if ( nodeName( elem, "table" ) &&
 		nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ) {
 
-		return jQuery( elem ).children( "tbody" )[ 0 ] || elemento;
+		return jQuery( elem ).children( "tbody" )[ 0 ] || elem;
 	}
 
-	elemento de retorno;
+	return elem;
 }
 
-// Substituir/restaurar o atributo type dos elementos do script para manipulação segura do DOM
-function disableScript(elem) {
-	elem.type = ( elem.getAttribute( "type") !== null ) + "/" + elem.type;
-	elemento de retorno;
+// Replace/restore the type attribute of script elements for safe DOM manipulation
+function disableScript( elem ) {
+	elem.type = ( elem.getAttribute( "type" ) !== null ) + "/" + elem.type;
+	return elem;
 }
-function restoreScript(elem) {
-	if ( (elem.type || "" ).slice( 0, 5 ) === "true/" ) {
+function restoreScript( elem ) {
+	if ( ( elem.type || "" ).slice( 0, 5 ) === "true/" ) {
 		elem.type = elem.type.slice( 5 );
-	} outro {
-		elem.removeAttribute("tipo");
+	} else {
+		elem.removeAttribute( "type" );
 	}
 
-	elemento de retorno;
+	return elem;
 }
 
-função cloneCopyEvent( origem, destino ) {
-	var i, l, tipo, pdataOld, udataOld, udataCur, eventos;
+function cloneCopyEvent( src, dest ) {
+	var i, l, type, pdataOld, udataOld, udataCur, events;
 
 	if ( dest.nodeType !== 1 ) {
-		retornar;
+		return;
 	}
 
-	// 1. Copie dados privados: eventos, manipuladores, etc.
-	if (dataPriv.hasData(src)) {
+	// 1. Copy private data: events, handlers, etc.
+	if ( dataPriv.hasData( src ) ) {
 		pdataOld = dataPriv.get( src );
-		eventos = pdataOld.events;
+		events = pdataOld.events;
 
-		if ( eventos ) {
-			dataPriv.remove( dest, "manipular eventos" );
+		if ( events ) {
+			dataPriv.remove( dest, "handle events" );
 
-			for ( digite eventos ) {
-				for ( i = 0, l = eventos[ tipo ].comprimento; i < l; i++ ) {
+			for ( type in events ) {
+				for ( i = 0, l = events[ type ].length; i < l; i++ ) {
 					jQuery.event.add( dest, type, events[ type ][ i ] );
 				}
 			}
 		}
 	}
 
-	// 2. Copie os dados do usuário
-	if (dataUser.hasData(src)) {
+	// 2. Copy user data
+	if ( dataUser.hasData( src ) ) {
 		udataOld = dataUser.access( src );
 		udataCur = jQuery.extend( {}, udataOld );
 
-		dataUser.set(dest, udataCur);
+		dataUser.set( dest, udataCur );
 	}
 }
 
-// Corrige bugs do IE, veja testes de suporte
-function fixInput( origem, destino ) {
+// Fix IE bugs, see support tests
+function fixInput( src, dest ) {
 	var nodeName = dest.nodeName.toLowerCase();
 
-	// Falha ao persistir o estado marcado de uma caixa de seleção ou botão de opção clonado.
+	// Fails to persist the checked state of a cloned checkbox or radio button.
 	if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
 		dest.checked = src.checked;
 
-	// Falha ao retornar a opção selecionada ao estado selecionado padrão ao clonar opções
-	} else if ( nodeName === "entrada" || nodeName === "textarea" ) {
+	// Fails to return the selected option to the default selected state when cloning options
+	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
 }
 
-function domManip(coleção, args, retorno de chamada, ignorado) {
+function domManip( collection, args, callback, ignored ) {
 
-	// Achata quaisquer arrays aninhados
+	// Flatten any nested arrays
 	args = flat( args );
 
-	fragmento var, primeiro, scripts, hasScripts, nó, doc,
-		eu = 0,
-		l = coleção.comprimento,
+	var fragment, first, scripts, hasScripts, node, doc,
+		i = 0,
+		l = collection.length,
 		iNoClone = l - 1,
-		valor = args[ 0 ],
+		value = args[ 0 ],
 		valueIsFunction = isFunction( value );
 
-	// Não podemos clonar fragmentos Node que contenham verificados, no WebKit
+	// We can't cloneNode fragments that contain checked, in WebKit
 	if ( valueIsFunction ||
-			( l > 1 && tipo de valor === "string" &&
-				!support.checkClone && rchecked.test( valor ) ) ) {
-		return coleção.each( função( índice ) {
-			var self = coleção.eq( index );
-			if ( valorIsFunction ) {
+			( l > 1 && typeof value === "string" &&
+				!support.checkClone && rchecked.test( value ) ) ) {
+		return collection.each( function( index ) {
+			var self = collection.eq( index );
+			if ( valueIsFunction ) {
 				args[ 0 ] = value.call( this, index, self.html() );
 			}
-			domManip(self, args, retorno de chamada, ignorado);
+			domManip( self, args, callback, ignored );
 		} );
 	}
 
-	se ( l ) {
-		fragment = buildFragment( args, coleção[ 0 ].ownerDocument, false, coleção, ignorado );
-		primeiro = fragmento.primeiroFilho;
+	if ( l ) {
+		fragment = buildFragment( args, collection[ 0 ].ownerDocument, false, collection, ignored );
+		first = fragment.firstChild;
 
 		if ( fragment.childNodes.length === 1 ) {
-			fragmento = primeiro;
+			fragment = first;
 		}
 
-		// Requer um novo conteúdo ou um interesse em elementos ignorados para invocar o callback
-		if ( primeiro || ignorado ) {
-			scripts = jQuery.map( getAll(fragment, "script" ), disableScript );
-			hasScripts = scripts.comprimento;
+		// Require either new content or an interest in ignored elements to invoke the callback
+		if ( first || ignored ) {
+			scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
+			hasScripts = scripts.length;
 
-			// Usa o fragmento original para o último item
-			// ao invés do primeiro porque pode acabar
-			// sendo esvaziado incorretamente em determinadas situações (trac-8070).
+			// Use the original fragment for the last item
+			// instead of the first because it can end up
+			// being emptied incorrectly in certain situations (trac-8070).
 			for ( ; i < l; i++ ) {
-				nó = fragmento;
+				node = fragment;
 
 				if ( i !== iNoClone ) {
 					node = jQuery.clone( node, true, true );
 
-					// Manter referências a scripts clonados para posterior restauração
-					if (hasScripts) {
+					// Keep references to cloned scripts for later restoration
+					if ( hasScripts ) {
 
-						// Suporte: Android <=4.0 apenas, PhantomJS 1 apenas
-						// push.apply(_, arraylike) lança no antigo WebKit
+						// Support: Android <=4.0 only, PhantomJS 1 only
+						// push.apply(_, arraylike) throws on ancient WebKit
 						jQuery.merge( scripts, getAll( node, "script" ) );
 					}
 				}
 
-				callback.call(coleção[ i ], nó, i );
+				callback.call( collection[ i ], node, i );
 			}
 
-			if (hasScripts) {
+			if ( hasScripts ) {
 				doc = scripts[ scripts.length - 1 ].ownerDocument;
 
-				// Reativa os scripts
+				// Reenable scripts
 				jQuery.map( scripts, restoreScript );
 
-				// Avalia scripts executáveis ​​na inserção do primeiro documento
+				// Evaluate executable scripts on first document insertion
 				for ( i = 0; i < hasScripts; i++ ) {
-					nó = scripts[i];
+					node = scripts[ i ];
 					if ( rscriptType.test( node.type || "" ) &&
 						!dataPriv.access( node, "globalEval" ) &&
-						jQuery.contains(doc, node)) {
+						jQuery.contains( doc, node ) ) {
 
-						if ( node.src && ( node.type || "" ).toLowerCase() !== "module" ) {
+						if ( node.src && ( node.type || "" ).toLowerCase()  !== "module" ) {
 
-							// Dependência AJAX opcional, mas não executará scripts se não estiver presente
+							// Optional AJAX dependency, but won't run scripts if not present
 							if ( jQuery._evalUrl && !node.noModule ) {
 								jQuery._evalUrl( node.src, {
 									nonce: node.nonce || node.getAttribute( "nonce" )
-								}, documento);
+								}, doc );
 							}
-						} outro {
+						} else {
 
-							// Desembrulha uma seção CDATA contendo o conteúdo do script. isso não deveria ser
-							// necessário como em documentos XML eles já não são visíveis quando
-							// inspecionando o conteúdo dos elementos e em documentos HTML eles não têm
-							// significado, mas estamos preservando essa lógica para compatibilidade com versões anteriores.
-							// Isso será removido completamente na versão 4.0. Veja gh-4904.
-							DOMEval( node.textContent.replace(rcleanScript, "" ), node, doc );
+							// Unwrap a CDATA section containing script contents. This shouldn't be
+							// needed as in XML documents they're already not visible when
+							// inspecting element contents and in HTML documents they have no
+							// meaning but we're preserving that logic for backwards compatibility.
+							// This will be removed completely in 4.0. See gh-4904.
+							DOMEval( node.textContent.replace( rcleanScript, "" ), node, doc );
 						}
 					}
 				}
@@ -5946,17 +5946,17 @@ function domManip(coleção, args, retorno de chamada, ignorado) {
 		}
 	}
 
-	cobrança de devolução;
+	return collection;
 }
 
-function remove(elem, selector, keepData) {
-	nó var,
-		nós = seletor ? jQuery.filter( seletor, elem ): elem,
+function remove( elem, selector, keepData ) {
+	var node,
+		nodes = selector ? jQuery.filter( selector, elem ) : elem,
 		i = 0;
 
 	for ( ; ( node = nodes[ i ] ) != null; i++ ) {
-		if (!keepData && node.nodeType === 1) {
-			jQuery.cleanData( getAll( nó ) );
+		if ( !keepData && node.nodeType === 1 ) {
+			jQuery.cleanData( getAll( node ) );
 		}
 
 		if ( node.parentNode ) {
@@ -5967,86 +5967,86 @@ function remove(elem, selector, keepData) {
 		}
 	}
 
-	elemento de retorno;
+	return elem;
 }
 
 jQuery.extend( {
-	htmlPrefilter: function( html) {
-		retornar html;
+	htmlPrefilter: function( html ) {
+		return html;
 	},
 
-	clone: ​​function(elem, dataAndEvents, deepDataAndEvents) {
+	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 		var i, l, srcElements, destElements,
 			clone = elem.cloneNode( true ),
-			inPage = isAttached(elem);
+			inPage = isAttached( elem );
 
-		// Corrige problemas de clonagem do IE
+		// Fix IE cloning issues
 		if ( !support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
 				!jQuery.isXMLDoc( elem ) ) {
 
-			// Evitamos jQuery#find aqui por motivos de desempenho:
+			// We eschew jQuery#find here for performance reasons:
 			// https://jsperf.com/getall-vs-sizzle/2
 			destElements = getAll( clone );
-			srcElements = getAll(elem);
+			srcElements = getAll( elem );
 
 			for ( i = 0, l = srcElements.length; i < l; i++ ) {
-				fixInput( srcElements[i], destElements[i]);
+				fixInput( srcElements[ i ], destElements[ i ] );
 			}
 		}
 
-		// Copia os eventos do original para o clone
-		if (dadosEEventos) {
-			if (deepDataAndEvents) {
-				srcElements = srcElements || getAll(elem);
-				destElements = destElements || getAll(clone);
+		// Copy the events from the original to the clone
+		if ( dataAndEvents ) {
+			if ( deepDataAndEvents ) {
+				srcElements = srcElements || getAll( elem );
+				destElements = destElements || getAll( clone );
 
 				for ( i = 0, l = srcElements.length; i < l; i++ ) {
-					cloneCopyEvent( srcElements[i], destElements[i]);
+					cloneCopyEvent( srcElements[ i ], destElements[ i ] );
 				}
-			} outro {
-				cloneCopyEvent(elem, clone);
+			} else {
+				cloneCopyEvent( elem, clone );
 			}
 		}
 
-		// Preserva o histórico de avaliação do script
-		destElements = getAll(clone, "script");
+		// Preserve script evaluation history
+		destElements = getAll( clone, "script" );
 		if ( destElements.length > 0 ) {
 			setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
 		}
 
-		// Retorna o conjunto clonado
-		retornar clone;
+		// Return the cloned set
+		return clone;
 	},
 
-	cleanData: function(elems) {
-		var dados, elemento, tipo,
-			especial = jQuery.event.special,
+	cleanData: function( elems ) {
+		var data, elem, type,
+			special = jQuery.event.special,
 			i = 0;
 
-		for ( ; ( elem = elems[ i ] ) !== indefinido; i++ ) {
-			if (aceitarDados(elem)) {
-				if ((dados = elem[dadosPriv.expandindo])) {
-					if ( data.eventos ) {
-						for ( digite data.eventos ) {
-							if (especial[tipo]) {
-								jQuery.event.remove(elem, tipo);
+		for ( ; ( elem = elems[ i ] ) !== undefined; i++ ) {
+			if ( acceptData( elem ) ) {
+				if ( ( data = elem[ dataPriv.expando ] ) ) {
+					if ( data.events ) {
+						for ( type in data.events ) {
+							if ( special[ type ] ) {
+								jQuery.event.remove( elem, type );
 
-							// Este é um atalho para evitar sobrecarga do jQuery.event.remove
-							} outro {
-								jQuery.removeEvent(elem, type, data.handle);
+							// This is a shortcut to avoid jQuery.event.remove's overhead
+							} else {
+								jQuery.removeEvent( elem, type, data.handle );
 							}
 						}
 					}
 
-					// Suporte: Chrome <=35 - 45+
-					// Atribuir undefined ao invés de usar delete, ver Data#remove
-					elem[ dataPriv.expando ] = indefinido;
+					// Support: Chrome <=35 - 45+
+					// Assign undefined instead of using delete, see Data#remove
+					elem[ dataPriv.expando ] = undefined;
 				}
-				if (elem[dataUser.expandindo]) {
+				if ( elem[ dataUser.expando ] ) {
 
-					// Suporte: Chrome <=35 - 45+
-					// Atribuir undefined ao invés de usar delete, ver Data#remove
-					elem[ dataUser.expando ] = indefinido;
+					// Support: Chrome <=35 - 45+
+					// Assign undefined instead of using delete, see Data#remove
+					elem[ dataUser.expando ] = undefined;
 				}
 			}
 		}
@@ -6054,79 +6054,79 @@ jQuery.extend( {
 } );
 
 jQuery.fn.extend( {
-	desanexar: function(seletor) {
+	detach: function( selector ) {
 		return remove( this, selector, true );
 	},
 
-	remover: function(seletor) {
+	remove: function( selector ) {
 		return remove( this, selector );
 	},
 
-	texto: função( valor ) {
+	text: function( value ) {
 		return access( this, function( value ) {
-			valor de retorno === indefinido?
-				jQuery.text(este):
+			return value === undefined ?
+				jQuery.text( this ) :
 				this.empty().each( function() {
 					if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-						this.textContent = valor;
+						this.textContent = value;
 					}
 				} );
-		}, nulo, valor, argumentos.comprimento);
+		}, null, value, arguments.length );
 	},
 
-	anexar: function () {
-		return domManip( isto, argumentos, função(elem) {
+	append: function() {
+		return domManip( this, arguments, function( elem ) {
 			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-				var alvo = alvo da manipulação( this, elem );
-				target.appendChild(elem);
+				var target = manipulationTarget( this, elem );
+				target.appendChild( elem );
 			}
 		} );
 	},
 
-	anexar: function () {
-		return domManip( isto, argumentos, função(elem) {
+	prepend: function() {
+		return domManip( this, arguments, function( elem ) {
 			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-				var alvo = alvo da manipulação( this, elem );
-				target.insertBefore(elem, target.firstChild);
+				var target = manipulationTarget( this, elem );
+				target.insertBefore( elem, target.firstChild );
 			}
 		} );
 	},
 
-	antes: função() {
-		return domManip( isto, argumentos, função(elem) {
+	before: function() {
+		return domManip( this, arguments, function( elem ) {
 			if ( this.parentNode ) {
-				this.parentNode.insertBefore(elem, this);
+				this.parentNode.insertBefore( elem, this );
 			}
 		} );
 	},
 
-	depois: function() {
-		return domManip( isto, argumentos, função(elem) {
+	after: function() {
+		return domManip( this, arguments, function( elem ) {
 			if ( this.parentNode ) {
 				this.parentNode.insertBefore( elem, this.nextSibling );
 			}
 		} );
 	},
 
-	vazio: function() {
+	empty: function() {
 		var elem,
 			i = 0;
 
-		for ( ; ( elem = this[ i ] ) != nulo; i++ ) {
-			if (elem.nodeType === 1) {
+		for ( ; ( elem = this[ i ] ) != null; i++ ) {
+			if ( elem.nodeType === 1 ) {
 
-				// Evita vazamentos de memoria
-				jQuery.cleanData(getAll(elem, false));
+				// Prevent memory leaks
+				jQuery.cleanData( getAll( elem, false ) );
 
-				// Remova todos os nós restantes
+				// Remove any remaining nodes
 				elem.textContent = "";
 			}
 		}
 
-		devolva isto;
+		return this;
 	},
 
-	clone: ​​function( dataAndEvents, deepDataAndEvents ) {
+	clone: function( dataAndEvents, deepDataAndEvents ) {
 		dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
 		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
 
@@ -6135,127 +6135,127 @@ jQuery.fn.extend( {
 		} );
 	},
 
-	html: function( valor ) {
+	html: function( value ) {
 		return access( this, function( value ) {
 			var elem = this[ 0 ] || {},
-				eu = 0,
+				i = 0,
 				l = this.length;
 
-			if ( valor === undefined && elem.nodeType === 1 ) {
+			if ( value === undefined && elem.nodeType === 1 ) {
 				return elem.innerHTML;
 			}
 
-			// Veja se podemos pegar um atalho e usar apenas innerHTML
+			// See if we can take a shortcut and just use innerHTML
 			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
-				!wrapMap[ ( rtagName.exec( valor ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
+				!wrapMap[ ( rtagName.exec( value ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
 
-				valor = jQuery.htmlPrefilter( valor );
+				value = jQuery.htmlPrefilter( value );
 
-				tentar {
+				try {
 					for ( ; i < l; i++ ) {
-						elem = this[i] || {};
+						elem = this[ i ] || {};
 
-						// Remove nós de elementos e evita vazamentos de memória
-						if (elem.nodeType === 1) {
-							jQuery.cleanData(getAll(elem, false));
-							elem.innerHTML = valor;
+						// Remove element nodes and prevent memory leaks
+						if ( elem.nodeType === 1 ) {
+							jQuery.cleanData( getAll( elem, false ) );
+							elem.innerHTML = value;
 						}
 					}
 
-					elemento = 0;
+					elem = 0;
 
-				// Se usar innerHTML lançar uma exceção, use o método de fallback
-				} pegar ( e ) {}
+				// If using innerHTML throws an exception, use the fallback method
+				} catch ( e ) {}
 			}
 
-			if (elem) {
-				this.empty().append( valor );
+			if ( elem ) {
+				this.empty().append( value );
 			}
-		}, nulo, valor, argumentos.comprimento);
+		}, null, value, arguments.length );
 	},
 
-	substituaCom: function() {
-		var ignorado = [];
+	replaceWith: function() {
+		var ignored = [];
 
-		// Faça as alterações, substituindo cada elemento de contexto não ignorado pelo novo conteúdo
-		return domManip( isto, argumentos, função(elem) {
-			var pai = this.parentNode;
+		// Make the changes, replacing each non-ignored context element with the new content
+		return domManip( this, arguments, function( elem ) {
+			var parent = this.parentNode;
 
-			if (jQuery.inArray(este, ignorado) < 0) {
+			if ( jQuery.inArray( this, ignored ) < 0 ) {
 				jQuery.cleanData( getAll( this ) );
-				if (pai) {
-					parent.replaceChild(elem, this);
+				if ( parent ) {
+					parent.replaceChild( elem, this );
 				}
 			}
 
-		// Força a invocação do retorno de chamada
-		}, ignorado);
+		// Force callback invocation
+		}, ignored );
 	}
 } );
 
 jQuery.each( {
-	appendTo: "acrescentar",
-	prependTo: "anterior",
-	inserirAntes: "antes",
-	inserirDepois: "depois",
-	replaceAll: "substituirCom"
-}, função(nome, original) {
-	jQuery.fn[ nome ] = função( seletor ) {
-		var elementos,
+	appendTo: "append",
+	prependTo: "prepend",
+	insertBefore: "before",
+	insertAfter: "after",
+	replaceAll: "replaceWith"
+}, function( name, original ) {
+	jQuery.fn[ name ] = function( selector ) {
+		var elems,
 			ret = [],
-			inserir = jQuery(seletor),
-			último = inserir.comprimento - 1,
+			insert = jQuery( selector ),
+			last = insert.length - 1,
 			i = 0;
 
-		for ( ; i <= último; i++ ) {
-			elems = i === último? this : this.clone( true );
-			jQuery(inserir[i])[original](elems);
+		for ( ; i <= last; i++ ) {
+			elems = i === last ? this : this.clone( true );
+			jQuery( insert[ i ] )[ original ]( elems );
 
-			// Suporte: Android <=4.0 apenas, PhantomJS 1 apenas
-			// .get() porque push.apply(_, arraylike) lança no antigo WebKit
-			push.apply(ret, elems.get());
+			// Support: Android <=4.0 only, PhantomJS 1 only
+			// .get() because push.apply(_, arraylike) throws on ancient WebKit
+			push.apply( ret, elems.get() );
 		}
 
 		return this.pushStack( ret );
 	};
 } );
-var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[az%]+$", "i" );
+var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
 
 var rcustomProp = /^--/;
 
 
-var getStyles = function(elem) {
+var getStyles = function( elem ) {
 
-		// Suporte: IE <=11 somente, Firefox <=30 (trac-15098, trac-14150)
-		// IE joga em elementos criados em pop-ups
-		// Enquanto isso, o FF lança os elementos do quadro por meio de "defaultView.getComputedStyle"
+		// Support: IE <=11 only, Firefox <=30 (trac-15098, trac-14150)
+		// IE throws on elements created in popups
+		// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
 		var view = elem.ownerDocument.defaultView;
 
 		if ( !view || !view.opener ) {
-			ver = janela;
+			view = window;
 		}
 
-		return view.getComputedStyle(elem);
+		return view.getComputedStyle( elem );
 	};
 
-var swap = function(elem, opções, callback) {
-	var ret, nome,
-		antigo = {};
+var swap = function( elem, options, callback ) {
+	var ret, name,
+		old = {};
 
-	// Lembre-se dos valores antigos e insira os novos
-	for (nome nas opções) {
-		antigo[ nome ] = elem.style[ nome ];
-		elem.style[ nome ] = opções[ nome ];
+	// Remember the old values, and insert the new ones
+	for ( name in options ) {
+		old[ name ] = elem.style[ name ];
+		elem.style[ name ] = options[ name ];
 	}
 
-	ret = callback.call(elem);
+	ret = callback.call( elem );
 
-	// Reverte os valores antigos
-	for (nome nas opções) {
-		elem.style[ nome ] = antigo [ nome ];
+	// Revert the old values
+	for ( name in options ) {
+		elem.style[ name ] = old[ name ];
 	}
 
-	retorno ret;
+	return ret;
 };
 
 
@@ -6263,451 +6263,451 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 
 
 
-( função() {
+( function() {
 
-	// A execução dos testes pixelPosition e boxSizingReliable requer apenas um layout
-	// então eles são executados ao mesmo tempo para salvar o segundo cálculo.
-	function computaEstiloTests() {
+	// Executing both pixelPosition & boxSizingReliable tests require only one layout
+	// so they're executed at the same time to save the second computation.
+	function computeStyleTests() {
 
-		// Este é um singleton, precisamos executá-lo apenas uma vez
+		// This is a singleton, we need to execute it only once
 		if ( !div ) {
-			retornar;
+			return;
 		}
 
-		container.style.cssText = "posição:absoluto;esquerda:-11111px;largura:60px;" +
-			"margem superior:1px;preenchimento:0;borda:0";
+		container.style.cssText = "position:absolute;left:-11111px;width:60px;" +
+			"margin-top:1px;padding:0;border:0";
 		div.style.cssText =
 			"position:relative;display:block;box-sizing:border-box;overflow:scroll;" +
-			"margem:auto;borda:1px;preenchimento:1px;" +
-			"largura:60%;superior:1%";
-		documentElement.appendChild( recipiente ).appendChild( div );
+			"margin:auto;border:1px;padding:1px;" +
+			"width:60%;top:1%";
+		documentElement.appendChild( container ).appendChild( div );
 
 		var divStyle = window.getComputedStyle( div );
 		pixelPositionVal = divStyle.top !== "1%";
 
-		// Suporte: Android 4.0 - 4.3 apenas, Firefox <=3 - 44
-		confiávelMarginLeftVal = roundPixelMeasures(divStyle.marginLeft) === 12;
+		// Support: Android 4.0 - 4.3 only, Firefox <=3 - 44
+		reliableMarginLeftVal = roundPixelMeasures( divStyle.marginLeft ) === 12;
 
-		// Suporte: apenas Android 4.0 - 4.3, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
-		// Alguns estilos voltam com valores percentuais, mesmo que não devessem
+		// Support: Android 4.0 - 4.3 only, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
+		// Some styles come back with percentage values, even though they shouldn't
 		div.style.right = "60%";
-		pixelBoxStylesVal = roundPixelMeasures(divStyle.right) === 36;
+		pixelBoxStylesVal = roundPixelMeasures( divStyle.right ) === 36;
 
-		// Suporte: IE 9 - 11 apenas
-		// Detecta relatórios incorretos de dimensões de conteúdo para elementos box-sizing:border-box
-		boxSizingReliableVal = roundPixelMeasures(divStyle.width) === 36;
+		// Support: IE 9 - 11 only
+		// Detect misreporting of content dimensions for box-sizing:border-box elements
+		boxSizingReliableVal = roundPixelMeasures( divStyle.width ) === 36;
 
-		// Suporte: somente IE 9
-		// Detecta estouro: rolagem maluca (gh-3699)
-		// Suporte: Chrome <=64
-		// Não seja enganado quando o zoom afetar offsetWidth (gh-4029)
-		div.style.position = "absoluto";
+		// Support: IE 9 only
+		// Detect overflow:scroll screwiness (gh-3699)
+		// Support: Chrome <=64
+		// Don't get tricked when zoom affects offsetWidth (gh-4029)
+		div.style.position = "absolute";
 		scrollboxSizeVal = roundPixelMeasures( div.offsetWidth / 3 ) === 12;
 
-		documentElement.removeChild( recipiente );
+		documentElement.removeChild( container );
 
-		// Anula o div para que não seja armazenado na memória e
-		// também será um sinal de que verificações já realizadas
-		div = nulo;
+		// Nullify the div so it wouldn't be stored in the memory and
+		// it will also be a sign that checks already performed
+		div = null;
 	}
 
-	function roundPixelMeasures(medida) {
-		return Math.round(parseFloat(medida));
+	function roundPixelMeasures( measure ) {
+		return Math.round( parseFloat( measure ) );
 	}
 
 	var pixelPositionVal, boxSizingReliableVal, scrollboxSizeVal, pixelBoxStylesVal,
-		confiávelTrDimensionsVal, confiávelMarginLeftVal,
+		reliableTrDimensionsVal, reliableMarginLeftVal,
 		container = document.createElement( "div" ),
 		div = document.createElement( "div" );
 
-	// Termine cedo em ambientes limitados (sem navegador)
-	if (!div.estilo) {
-		retornar;
+	// Finish early in limited (non-browser) environments
+	if ( !div.style ) {
+		return;
 	}
 
-	// Suporte: IE <=9 - 11 somente
-	// O estilo do elemento clonado afeta o elemento de origem clonado (trac-8908)
-	div.style.backgroundClip = "caixa de conteúdo";
+	// Support: IE <=9 - 11 only
+	// Style of cloned element affects source element cloned (trac-8908)
+	div.style.backgroundClip = "content-box";
 	div.cloneNode( true ).style.backgroundClip = "";
-	support.clearCloneStyle = div.style.backgroundClip === "caixa de conteúdo";
+	support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
-	jQuery.extend( suporte, {
+	jQuery.extend( support, {
 		boxSizingReliable: function() {
-			computaEstiloTests();
+			computeStyleTests();
 			return boxSizingReliableVal;
 		},
 		pixelBoxStyles: function() {
-			computaEstiloTests();
+			computeStyleTests();
 			return pixelBoxStylesVal;
 		},
-		posição do pixel: function () {
-			computaEstiloTests();
+		pixelPosition: function() {
+			computeStyleTests();
 			return pixelPositionVal;
 		},
-		confiávelMargemEsquerda: function() {
-			computaEstiloTests();
-			retornar confiávelMarginLeftVal;
+		reliableMarginLeft: function() {
+			computeStyleTests();
+			return reliableMarginLeftVal;
 		},
-		tamanho da caixa de rolagem: function() {
-			computaEstiloTests();
+		scrollboxSize: function() {
+			computeStyleTests();
 			return scrollboxSizeVal;
 		},
 
-		// Suporte: IE 9 - 11+, Edge 15 - 18+
-		// IE/Edge relata erroneamente `getComputedStyle` das linhas da tabela com largura/altura
-		// definido em CSS enquanto as propriedades `offset*` relatam valores corretos.
-		// O comportamento no IE 9 é mais sutil do que nas versões mais recentes e passa
-		// algumas versões deste teste; certifique-se de não fazê-lo passar por aí!
+		// Support: IE 9 - 11+, Edge 15 - 18+
+		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// set in CSS while `offset*` properties report correct values.
+		// Behavior in IE 9 is more subtle than in newer versions & it passes
+		// some versions of this test; make sure not to make it pass there!
 		//
-		// Suporte: Firefox 70+
-		// Somente o Firefox inclui larguras de borda
-		// em dimensões calculadas. (gh-4529)
-		confiávelTrDimensions: function() {
-			var tabela, tr, trCriança, trEstilo;
-			if (confiávelTrDimensionsVal == nulo) {
-				tabela = document.createElement( "tabela" );
+		// Support: Firefox 70+
+		// Only Firefox includes border widths
+		// in computed dimensions. (gh-4529)
+		reliableTrDimensions: function() {
+			var table, tr, trChild, trStyle;
+			if ( reliableTrDimensionsVal == null ) {
+				table = document.createElement( "table" );
 				tr = document.createElement( "tr" );
 				trChild = document.createElement( "div" );
 
 				table.style.cssText = "position:absolute;left:-11111px;border-collapse:separate";
-				tr.style.cssText = "borda:1px sólido";
+				tr.style.cssText = "border:1px solid";
 
-				// Suporte: Chrome 86+
-				// A altura definida por cssText não é aplicada.
-				// Altura computada então retorna como 0.
+				// Support: Chrome 86+
+				// Height set through cssText does not get applied.
+				// Computed height then comes back as 0.
 				tr.style.height = "1px";
 				trChild.style.height = "9px";
 
-				// Suporte: Android 8 Chrome 86+
-				// Em nosso iframe bodyBackground.html,
-				// a exibição de todos os elementos div é definida como "inline",
-				// que causa problema apenas no Android 8 Chrome 86.
-				// Garantindo que o div seja exibido: bloco
-				// contorna esse problema.
-				trChild.style.display = "bloquear";
+				// Support: Android 8 Chrome 86+
+				// In our bodyBackground.html iframe,
+				// display for all div elements is set to "inline",
+				// which causes a problem only in Android 8 Chrome 86.
+				// Ensuring the div is display: block
+				// gets around this issue.
+				trChild.style.display = "block";
 
 				documentElement
-					.appendChild( tabela )
-					.appendFilho( tr )
+					.appendChild( table )
+					.appendChild( tr )
 					.appendChild( trChild );
 
 				trStyle = window.getComputedStyle( tr );
-				confiávelTrDimensionsVal = ( parseInt( trStyle.height, 10 ) +
+				reliableTrDimensionsVal = ( parseInt( trStyle.height, 10 ) +
 					parseInt( trStyle.borderTopWidth, 10 ) +
-					parseInt( trStyle.borderBottomWidth, 10 ) === tr.offsetHeight;
+					parseInt( trStyle.borderBottomWidth, 10 ) ) === tr.offsetHeight;
 
-				documentElement.removeChild( tabela );
+				documentElement.removeChild( table );
 			}
-			return confiávelTrDimensionsVal;
+			return reliableTrDimensionsVal;
 		}
 	} );
 } )();
 
 
-função curCSS(elem, nome, calculado) {
-	var largura, minWidth, maxWidth, ret,
-		isCustomProp = rcustomProp.test( nome ),
+function curCSS( elem, name, computed ) {
+	var width, minWidth, maxWidth, ret,
+		isCustomProp = rcustomProp.test( name ),
 
-		// Suporte: Firefox 51+
-		// Recuperando o estilo antes de computado de alguma forma
-		// corrige um problema com a obtenção de valores errados
-		// em elementos desanexados
-		estilo = estilo do elemento;
+		// Support: Firefox 51+
+		// Retrieving style before computed somehow
+		// fixes an issue with getting wrong values
+		// on detached elements
+		style = elem.style;
 
-	calculado = calculado || getStyles(elem);
+	computed = computed || getStyles( elem );
 
-	// getPropertyValue é necessário para:
-	// .css('filter') (somente IE 9, trac-12537)
-	// .css('--customProperty) (gh-3144)
-	if ( calculado ) {
+	// getPropertyValue is needed for:
+	//   .css('filter') (IE 9 only, trac-12537)
+	//   .css('--customProperty) (gh-3144)
+	if ( computed ) {
 
-		// Suporte: IE <=9 - 11+
-		// IE suporta apenas `"float"` em `getPropertyValue`; em estilos computados
-		// está disponível apenas como `"cssFloat"`. Não modificamos mais as propriedades
-		// enviado para `.css()` além de camelCasing, então precisamos verificar ambos.
-		// Normalmente, isso criaria uma diferença de comportamento: if
-		// `getPropertyValue` retorna uma string vazia, o valor retornado
-		// por `.css()` seria `undefined`. Este é geralmente o caso para
-		// elementos desconectados. Porém, no IE mesmo elementos desconectados
-		// sem estilos retorna `"none"` para `getPropertyValue( "float" )`
-		ret = computered.getPropertyValue( nome ) || computado[nome];
+		// Support: IE <=9 - 11+
+		// IE only supports `"float"` in `getPropertyValue`; in computed styles
+		// it's only available as `"cssFloat"`. We no longer modify properties
+		// sent to `.css()` apart from camelCasing, so we need to check both.
+		// Normally, this would create difference in behavior: if
+		// `getPropertyValue` returns an empty string, the value returned
+		// by `.css()` would be `undefined`. This is usually the case for
+		// disconnected elements. However, in IE even disconnected elements
+		// with no styles return `"none"` for `getPropertyValue( "float" )`
+		ret = computed.getPropertyValue( name ) || computed[ name ];
 
 		if ( isCustomProp && ret ) {
 
-			// Suporte: Firefox 105+, Chrome <=105+
-			// A especificação requer o corte de espaço em branco para propriedades personalizadas (gh-4926).
-			// O Firefox apenas apara os espaços em branco à esquerda. Chrome simplesmente colapsa
-			// espaço em branco inicial e final para um único espaço.
+			// Support: Firefox 105+, Chrome <=105+
+			// Spec requires trimming whitespace for custom properties (gh-4926).
+			// Firefox only trims leading whitespace. Chrome just collapses
+			// both leading & trailing whitespace to a single space.
 			//
-			// Volta para `indefinido` se uma string vazia for retornada.
-			// Isso recolhe uma definição ausente com a propriedade definida
-			// e definido como uma string vazia, mas não há API padrão
-			// nos permitindo diferenciá-los sem penalizar o desempenho
-			// e retornando `undefined` se alinha com jQuery mais antigo.
+			// Fall back to `undefined` if empty string returned.
+			// This collapses a missing definition with property defined
+			// and set to an empty string but there's no standard API
+			// allowing us to differentiate them without a performance penalty
+			// and returning `undefined` aligns with older jQuery.
 			//
-			// rtrimCSS trata U+000D CARRIAGE RETURN e U+000C FORM FEED
-			// como espaço em branco enquanto CSS não, mas isso não é um problema
-			// porque o pré-processamento CSS os substitui por U+000A LINE FEED
-			// (que *é* espaço em branco CSS)
+			// rtrimCSS treats U+000D CARRIAGE RETURN and U+000C FORM FEED
+			// as whitespace while CSS does not, but this is not a problem
+			// because CSS preprocessing replaces them with U+000A LINE FEED
+			// (which *is* CSS whitespace)
 			// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
-			ret = ret.replace(rtrimCSS, "$1" ) || indefinido;
+			ret = ret.replace( rtrimCSS, "$1" ) || undefined;
 		}
 
-		if ( ret === "" && ! isAttached( elem ) ) {
-			ret = jQuery.style(elem, nome);
+		if ( ret === "" && !isAttached( elem ) ) {
+			ret = jQuery.style( elem, name );
 		}
 
-		// Uma homenagem ao "incrível hack de Dean Edwards"
-		// Navegador Android retorna porcentagem para alguns valores,
-		// mas a largura parece ser confiável em pixels.
-		// Isso é contra a especificação de rascunho do CSSOM:
+		// A tribute to the "awesome hack by Dean Edwards"
+		// Android Browser returns percentage for some values,
+		// but width seems to be reliably pixels.
+		// This is against the CSSOM draft spec:
 		// https://drafts.csswg.org/cssom/#resolved-values
-		if ( !support.pixelBoxStyles() && rnumnonpx.test( ret ) && rboxStyle.test( nome ) ) {
+		if ( !support.pixelBoxStyles() && rnumnonpx.test( ret ) && rboxStyle.test( name ) ) {
 
-			// Lembra dos valores originais
-			largura = estilo.largura;
-			minWidth = estilo.minWidth;
-			maxWidth = estilo.maxWidth;
+			// Remember the original values
+			width = style.width;
+			minWidth = style.minWidth;
+			maxWidth = style.maxWidth;
 
-			// Coloque os novos valores para obter um valor calculado
+			// Put in the new values to get a computed value out
 			style.minWidth = style.maxWidth = style.width = ret;
-			ret = computado.largura;
+			ret = computed.width;
 
-			// Reverte os valores alterados
-			estilo.largura = largura;
-			estilo.minWidth = minWidth;
-			estilo.maxWidth = maxWidth;
+			// Revert the changed values
+			style.width = width;
+			style.minWidth = minWidth;
+			style.maxWidth = maxWidth;
 		}
 	}
 
-	return ret !== indefinido ?
+	return ret !== undefined ?
 
-		// Suporte: IE <=9 - 11 somente
-		// IE retorna o valor zIndex como um inteiro.
+		// Support: IE <=9 - 11 only
+		// IE returns zIndex value as an integer.
 		ret + "" :
 		ret;
 }
 
 
-função addGetHookIf( condiçãoFn, ganchoFn ) {
+function addGetHookIf( conditionFn, hookFn ) {
 
-	// Defina o gancho, verificaremos na primeira execução se é realmente necessário.
-	retornar {
-		obter: function () {
-			if (condiçãoFn()) {
+	// Define the hook, we'll check on the first run if it's really needed.
+	return {
+		get: function() {
+			if ( conditionFn() ) {
 
-				// Gancho não é necessário (ou não é possível usá-lo devido
-				// para a dependência ausente), remova-a.
-				exclua isso.get;
-				retornar;
+				// Hook not needed (or it's not possible to use it due
+				// to missing dependency), remove it.
+				delete this.get;
+				return;
 			}
 
-			// Gancho necessário; redefina-o para que o teste de suporte não seja executado novamente.
-			return ( this.get = hookFn ).apply( this, argumentos );
+			// Hook needed; redefine it so that the support test is not executed again.
+			return ( this.get = hookFn ).apply( this, arguments );
 		}
 	};
 }
 
 
 var cssPrefixes = [ "Webkit", "Moz", "ms" ],
-	estilovazio = document.createElement( "div" ).estilo,
-	fornecedorProps = {};
+	emptyStyle = document.createElement( "div" ).style,
+	vendorProps = {};
 
-// Retorna uma propriedade prefixada pelo fornecedor ou indefinida
-function vendorPropName( nome ) {
+// Return a vendor-prefixed property or undefined
+function vendorPropName( name ) {
 
-	// Verifica os nomes prefixados do fornecedor
-	var capName = nome[ 0 ].toUpperCase() + nome.slice( 1 ),
+	// Check for vendor prefixed names
+	var capName = name[ 0 ].toUpperCase() + name.slice( 1 ),
 		i = cssPrefixes.length;
 
-	enquanto eu-- ) {
-		nome = cssPrefixes[ i ] + capName;
-		if (nome em estilovazio) {
-			nome de retorno;
+	while ( i-- ) {
+		name = cssPrefixes[ i ] + capName;
+		if ( name in emptyStyle ) {
+			return name;
 		}
 	}
 }
 
-// Retorna um jQuery.cssProps potencialmente mapeado ou propriedade prefixada do fornecedor
-function finalPropName(nome) {
-	var final = jQuery.cssProps[ nome ] || vendedorProps[nome];
+// Return a potentially-mapped jQuery.cssProps or vendor prefixed property
+function finalPropName( name ) {
+	var final = jQuery.cssProps[ name ] || vendorProps[ name ];
 
-	se ( final ) {
-		retorno final;
+	if ( final ) {
+		return final;
 	}
-	if (nome em estilovazio) {
-		nome de retorno;
+	if ( name in emptyStyle ) {
+		return name;
 	}
-	return vendorProps[ nome ] = vendorPropName( nome ) || nome;
+	return vendorProps[ name ] = vendorPropName( name ) || name;
 }
 
 
 var
 
-	// Trocável se display for nenhum ou começar com tabela
-	// exceto "table", "table-cell" ou "table-caption"
-	// Veja aqui os valores de exibição: https://developer.mozilla.org/en-US/docs/CSS/display
-	rdisplayswap = /^(nenhum|tabela(?!-c[ea]).+)/,
-	cssShow = { posição: "absoluto", visibilidade: "oculto", exibição: "bloco" },
+	// Swappable if display is none or starts with table
+	// except "table", "table-cell", or "table-caption"
+	// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
+	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
+	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
 	cssNormalTransform = {
-		Espaçamento entre letras: "0",
-		peso da fonte: "400"
+		letterSpacing: "0",
+		fontWeight: "400"
 	};
 
-função setPositiveNumber(_elem, valor, subtrair) {
+function setPositiveNumber( _elem, value, subtract ) {
 
-	// Quaisquer valores relativos (+/-) já foram
-	// normalizado neste ponto
-	var correspondências = rcssNum.exec( valor );
-	retornar partidas?
+	// Any relative (+/-) values have already been
+	// normalized at this point
+	var matches = rcssNum.exec( value );
+	return matches ?
 
-		// Protege contra "subtrair" indefinido, por exemplo, quando usado como em cssHooks
-		Math.max( 0, correspondências[ 2 ] - ( subtrair || 0 ) ) + ( correspondências[ 3 ] || "px" ):
-		valor;
+		// Guard against undefined "subtract", e.g., when used as in cssHooks
+		Math.max( 0, matches[ 2 ] - ( subtract || 0 ) ) + ( matches[ 3 ] || "px" ) :
+		value;
 }
 
-function boxModelAdjustment(elem, dimension, box, isBorderBox, styles, computedVal) {
-	var i = dimensão === "largura" ? 1: 0,
-		adicionais = 0,
+function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computedVal ) {
+	var i = dimension === "width" ? 1 : 0,
+		extra = 0,
 		delta = 0,
-		margemDelta = 0;
+		marginDelta = 0;
 
-	// Ajuste pode não ser necessário
-	if (caixa === ( isBorderBox ? "borda": "conteúdo")) {
-		retornar 0;
+	// Adjustment may not be necessary
+	if ( box === ( isBorderBox ? "border" : "content" ) ) {
+		return 0;
 	}
 
 	for ( ; i < 4; i += 2 ) {
 
-		// Ambos os modelos de caixa excluem margem
-		// Contar o delta da margem separadamente para adicioná-lo apenas após o ajuste da medianiz de rolagem.
-		// Isso é necessário para fazer margens negativas funcionarem com `outerHeight( true )` (gh-3982).
-		if (caixa === "margem" ) {
-			marginDelta += jQuery.css(elem, box + cssExpand[i], true, estilos);
+		// Both box models exclude margin
+		// Count margin delta separately to only add it after scroll gutter adjustment.
+		// This is needed to make negative margins work with `outerHeight( true )` (gh-3982).
+		if ( box === "margin" ) {
+			marginDelta += jQuery.css( elem, box + cssExpand[ i ], true, styles );
 		}
 
-		// Se chegarmos aqui com uma caixa de conteúdo, estamos procurando "padding" ou "border" ou "margin"
-		if (! isBorderBox) {
+		// If we get here with a content-box, we're seeking "padding" or "border" or "margin"
+		if ( !isBorderBox ) {
 
-			// Adicionar preenchimento
-			delta += jQuery.css( elem, "preenchimento" + cssExpand[ i ], verdadeiro, estilos );
+			// Add padding
+			delta += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 
-			// Para "borda" ou "margem", adicione borda
-			if ( caixa !== "preenchimento" ) {
-				delta += jQuery.css( elem, "borda" + cssExpand[ i ] + "Largura", verdadeiro, estilos );
+			// For "border" or "margin", add border
+			if ( box !== "padding" ) {
+				delta += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 
-			// Mas ainda rastreá-lo de outra forma
-			} outro {
-				extra += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", verdadeiro, estilos );
+			// But still keep track of it otherwise
+			} else {
+				extra += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 
-		// Se chegarmos aqui com uma caixa de borda (conteúdo + preenchimento + borda), estamos procurando "conteúdo" ou
-		// "preenchimento" ou "margem"
-		} outro {
+		// If we get here with a border-box (content + padding + border), we're seeking "content" or
+		// "padding" or "margin"
+		} else {
 
-			// Para "conteúdo", subtraia o preenchimento
-			if (caixa === "conteúdo" ) {
-				delta -= jQuery.css( elem, "preenchimento" + cssExpand[ i ], verdadeiro, estilos );
+			// For "content", subtract padding
+			if ( box === "content" ) {
+				delta -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 			}
 
-			// Para "conteúdo" ou "preenchimento", subtrair borda
-			if (caixa!== "margem") {
-				delta -= jQuery.css( elem, "borda" + cssExpand[ i ] + "Largura", verdadeiro, estilos );
+			// For "content" or "padding", subtract border
+			if ( box !== "margin" ) {
+				delta -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		}
 	}
 
-	// Leva em consideração a medianiz de rolagem da caixa de conteúdo positiva quando solicitado fornecendo um valor computado
-	if (!isBorderBox && computeredVal >= 0) {
+	// Account for positive content-box scroll gutter when requested by providing computedVal
+	if ( !isBorderBox && computedVal >= 0 ) {
 
-		// offsetWidth/offsetHeight é uma soma arredondada de conteúdo, padding, medianiz de rolagem e borda
-		// Assumindo a calha de rolagem inteira, subtraia o restante e arredonde para baixo
+		// offsetWidth/offsetHeight is a rounded sum of content, padding, scroll gutter, and border
+		// Assuming integer scroll gutter, subtract the rest and round down
 		delta += Math.max( 0, Math.ceil(
-			elem[ "deslocamento" + dimensão[ 0 ].toUpperCase() + dimensão.slice( 1 ) ] -
-			valor calculado -
+			elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
+			computedVal -
 			delta -
-			extras -
-			0,5
+			extra -
+			0.5
 
-		// Se offsetWidth/offsetHeight for desconhecido, não podemos determinar a calha de rolagem da caixa de conteúdo
-		// Use um zero explícito para evitar NaN (gh-3964)
+		// If offsetWidth/offsetHeight is unknown, then we can't determine content-box scroll gutter
+		// Use an explicit zero to avoid NaN (gh-3964)
 		) ) || 0;
 	}
 
-	return delta + margemDelta;
+	return delta + marginDelta;
 }
 
-function getWidthOrHeight(elem, dimension, extra) {
+function getWidthOrHeight( elem, dimension, extra ) {
 
-	// Inicia com estilo computado
-	var estilos = getEstilos(elem),
+	// Start with computed style
+	var styles = getStyles( elem ),
 
-		// Para evitar forçar um reflow, apenas busca boxSizing se precisarmos (gh-4322).
-		// Caixa de conteúdo falsa até sabermos que é necessário saber o valor verdadeiro.
+		// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-4322).
+		// Fake content-box until we know it's needed to know the true value.
 		boxSizingNeeded = !support.boxSizingReliable() || extra,
 		isBorderBox = boxSizingNeeded &&
-			jQuery.css(elem, "boxSizing", false, styles) === "border-box",
-		valorIsBorderBox = isBorderBox,
+			jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+		valueIsBorderBox = isBorderBox,
 
-		val = curCSS(elem, dimensão, estilos),
-		offsetProp = "offset" + dimensão[ 0 ].toUpperCase() + dimensão.slice( 1 );
+		val = curCSS( elem, dimension, styles ),
+		offsetProp = "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 );
 
-	// Suporte: Firefox <=54
-	// Retorna um valor não pixel confuso ou finge ignorância, conforme apropriado.
-	if (rnumnonpx.test(val)){
-		if ( ! extra ) {
-			valor de retorno;
+	// Support: Firefox <=54
+	// Return a confounding non-pixel value or feign ignorance, as appropriate.
+	if ( rnumnonpx.test( val ) ) {
+		if ( !extra ) {
+			return val;
 		}
 		val = "auto";
 	}
 
 
-	// Suporte: IE 9 - 11 apenas
-	// Use offsetWidth/offsetHeight para quando o tamanho da caixa não for confiável.
-	// Nesses casos, pode-se confiar que o valor calculado seja border-box.
+	// Support: IE 9 - 11 only
+	// Use offsetWidth/offsetHeight for when box sizing is unreliable.
+	// In those cases, the computed value can be trusted to be border-box.
 	if ( ( !support.boxSizingReliable() && isBorderBox ||
 
-		// Suporte: IE 10 - 11+, Edge 15 - 18+
-		// IE/Edge relata erroneamente `getComputedStyle` das linhas da tabela com largura/altura
-		// definido em CSS enquanto as propriedades `offset*` relatam valores corretos.
-		// Curiosamente, em alguns casos o IE 9 não sofre desse problema.
+		// Support: IE 10 - 11+, Edge 15 - 18+
+		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// set in CSS while `offset*` properties report correct values.
+		// Interestingly, in some cases IE 9 doesn't suffer from this issue.
 		!support.reliableTrDimensions() && nodeName( elem, "tr" ) ||
 
-		// Volta para offsetWidth/offsetHeight quando o valor é "auto"
-		// Isso acontece para elementos inline sem configuração explícita (gh-3571)
-		val === "automático" ||
+		// Fall back to offsetWidth/offsetHeight when value is "auto"
+		// This happens for inline elements with no explicit setting (gh-3571)
+		val === "auto" ||
 
-		// Suporte: Android <=4.1 - 4.3 apenas
-		// Use também offsetWidth/offsetHeight para dimensões inline reportadas incorretamente (gh-3602)
+		// Support: Android <=4.1 - 4.3 only
+		// Also use offsetWidth/offsetHeight for misreported inline dimensions (gh-3602)
 		!parseFloat( val ) && jQuery.css( elem, "display", false, styles ) === "inline" ) &&
 
-		// Certifique-se de que o elemento está visível e conectado
+		// Make sure the element is visible & connected
 		elem.getClientRects().length ) {
 
-		isBorderBox = jQuery.css(elem, "boxSizing", false, styles ) === "border-box";
+		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
 
-		// Quando disponível, offsetWidth/offsetHeight aproxima as dimensões da caixa de borda.
-		// Onde não estiver disponível (por exemplo, SVG), assuma um dimensionamento de caixa não confiável e interprete o
-		// valor recuperado como uma dimensão de caixa de conteúdo.
-		valueIsBorderBox = offsetProp em elem;
-		if (valorIsBorderBox) {
-			val = elem[offsetProp];
+		// Where available, offsetWidth/offsetHeight approximate border box dimensions.
+		// Where not available (e.g., SVG), assume unreliable box-sizing and interpret the
+		// retrieved value as a content box dimension.
+		valueIsBorderBox = offsetProp in elem;
+		if ( valueIsBorderBox ) {
+			val = elem[ offsetProp ];
 		}
 	}
 
-	// Normaliza "" e auto
-	val = parseFloat(val) || 0;
+	// Normalize "" and auto
+	val = parseFloat( val ) || 0;
 
-	// Ajuste para o modelo de caixa do elemento
-	retornar (valor +
+	// Adjust for the element's box model
+	return ( val +
 		boxModelAdjustment(
 			elem,
-			dimensão,
-			extra || ( isBorderBox ? "borda" : "conteúdo" ),
-			valorIsBorderBox,
-			estilos,
+			dimension,
+			extra || ( isBorderBox ? "border" : "content" ),
+			valueIsBorderBox,
+			styles,
 
-			// Fornece o tamanho computado atual para solicitar o cálculo da medianiz de rolagem (gh-3589)
+			// Provide the current computed size to request scroll gutter calculation (gh-3589)
 			val
 		)
 	) + "px";
@@ -6715,252 +6715,252 @@ function getWidthOrHeight(elem, dimension, extra) {
 
 jQuery.extend( {
 
-	// Adicionar ganchos de propriedade de estilo para substituir o padrão
-	// comportamento de obtenção e configuração de uma propriedade de estilo
+	// Add in style property hooks for overriding the default
+	// behavior of getting and setting a style property
 	cssHooks: {
-		opacidade: {
-			get: function(elem, calculado) {
-				if ( calculado ) {
+		opacity: {
+			get: function( elem, computed ) {
+				if ( computed ) {
 
-					// Devemos sempre obter um número de volta da opacidade
-					var ret = curCSS(elem, "opacidade" );
+					// We should always get a number back from opacity
+					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
 				}
 			}
 		}
 	},
 
-	// Não adicione "px" automaticamente a essas propriedades possivelmente sem unidade
-	cssNúmero: {
-		animationIterationCount: verdadeiro,
-		aspectRatio: verdadeiro,
-		borderImageSlice: verdadeiro,
-		colunaContagem: verdadeiro,
-		flexGrow: verdadeiro,
-		flexShrink: verdadeiro,
-		peso da fonte: verdadeiro,
-		gridArea: verdadeiro,
-		gridColumn: verdadeiro,
-		gridColumnEnd: verdadeiro,
-		gridColumnStart: verdadeiro,
-		gridRow: verdadeiro,
-		gridRowEnd: verdadeiro,
-		gridRowStart: verdadeiro,
-		altura da linha: verdadeiro,
-		opacidade: verdadeiro,
-		ordem: verdadeiro,
-		órfãos: verdade,
-		escala: verdadeiro,
-		viúvas: verdade,
-		zÍndice: verdadeiro,
-		zoom: verdadeiro,
+	// Don't automatically add "px" to these possibly-unitless properties
+	cssNumber: {
+		animationIterationCount: true,
+		aspectRatio: true,
+		borderImageSlice: true,
+		columnCount: true,
+		flexGrow: true,
+		flexShrink: true,
+		fontWeight: true,
+		gridArea: true,
+		gridColumn: true,
+		gridColumnEnd: true,
+		gridColumnStart: true,
+		gridRow: true,
+		gridRowEnd: true,
+		gridRowStart: true,
+		lineHeight: true,
+		opacity: true,
+		order: true,
+		orphans: true,
+		scale: true,
+		widows: true,
+		zIndex: true,
+		zoom: true,
 
-		// relacionado a SVG
-		fillOpacity: verdadeiro,
-		floodOpacity: verdadeiro,
-		stopOpacity: verdadeiro,
-		cursoMiterlimit: verdadeiro,
-		StrokeOpacity: verdadeiro
+		// SVG-related
+		fillOpacity: true,
+		floodOpacity: true,
+		stopOpacity: true,
+		strokeMiterlimit: true,
+		strokeOpacity: true
 	},
 
-	// Adicione as propriedades cujos nomes você deseja corrigir antes
-	// definindo ou obtendo o valor
+	// Add in properties whose names you wish to fix before
+	// setting or getting the value
 	cssProps: {},
 
-	// Obtém e define a propriedade de estilo em um nó DOM
-	estilo: função(elem, nome, valor, extra) {
+	// Get and set the style property on a DOM Node
+	style: function( elem, name, value, extra ) {
 
-		// Não defina estilos em nós de texto e comentários
+		// Don't set styles on text and comment nodes
 		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
-			retornar;
+			return;
 		}
 
-		// Certifique-se de que estamos trabalhando com o nome correto
-		var ret, tipo, ganchos,
-			origName = camelCase(nome),
-			isCustomProp = rcustomProp.test( nome ),
-			estilo = estilo do elemento;
+		// Make sure that we're working with the right name
+		var ret, type, hooks,
+			origName = camelCase( name ),
+			isCustomProp = rcustomProp.test( name ),
+			style = elem.style;
 
-		// Certifique-se de que estamos trabalhando com o nome correto. nós não
-		// deseja consultar o valor se for uma propriedade personalizada CSS
-		// já que são definidos pelo usuário.
-		if (! isCustomProp) {
-			nome = finalPropName(origName);
+		// Make sure that we're working with the right name. We don't
+		// want to query the value if it is a CSS custom property
+		// since they are user-defined.
+		if ( !isCustomProp ) {
+			name = finalPropName( origName );
 		}
 
-		// Obtém gancho para a versão com prefixo e, em seguida, para a versão sem prefixo
-		ganchos = jQuery.cssHooks[ nome ] || jQuery.cssHooks[origName];
+		// Gets hook for the prefixed version, then unprefixed version
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Verifica se estamos definindo um valor
-		if ( valor !== indefinido ) {
-			tipo = tipo de valor;
+		// Check if we're setting a value
+		if ( value !== undefined ) {
+			type = typeof value;
 
-			// Converte "+=" ou "-=" para números relativos (trac-7345)
-			if ( digite === "string" && ( ret = rcssNum.exec( valor ) ) && ret[ 1 ] ) {
-				valor = ajusteCSS(elem, nome, ret);
+			// Convert "+=" or "-=" to relative numbers (trac-7345)
+			if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
+				value = adjustCSS( elem, name, ret );
 
-				// Corrige bug trac-9237
-				tipo = "número";
+				// Fixes bug trac-9237
+				type = "number";
 			}
 
-			// Certifique-se de que os valores null e NaN não estejam definidos (trac-7116)
-			if ( valor == nulo || valor !== valor ) {
-				retornar;
+			// Make sure that null and NaN values aren't set (trac-7116)
+			if ( value == null || value !== value ) {
+				return;
 			}
 
-			// Se um número foi passado, adicione a unidade (exceto para certas propriedades CSS)
-			// A verificação isCustomProp pode ser removida no jQuery 4.0 quando apenas anexamos automaticamente
-			// "px" para alguns valores codificados.
-			if ( digite === "número" && !isCustomProp ) {
-				valor += ret && ret[ 3 ] || ( jQuery.cssNumber[origName] ? "" : "px" );
+			// If a number was passed in, add the unit (except for certain CSS properties)
+			// The isCustomProp check can be removed in jQuery 4.0 when we only auto-append
+			// "px" to a few hardcoded values.
+			if ( type === "number" && !isCustomProp ) {
+				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
 			}
 
-			// props background-* afetam os valores do clone original
+			// background-* props affect original clone's values
 			if ( !support.clearCloneStyle && value === "" && name.indexOf( "background" ) === 0 ) {
-				estilo[nome] = "herdar";
+				style[ name ] = "inherit";
 			}
 
-			// Se um gancho foi fornecido, use esse valor, caso contrário, apenas defina o valor especificado
-			if ( !hooks || !( "set" em hooks ) ||
-				(valor = ganchos.set(elem, valor, extra))!== indefinido) {
+			// If a hook was provided, use that value, otherwise just set the specified value
+			if ( !hooks || !( "set" in hooks ) ||
+				( value = hooks.set( elem, value, extra ) ) !== undefined ) {
 
-				if (isCustomProp) {
-					style.setProperty( nome, valor );
-				} outro {
-					estilo[nome] = valor;
+				if ( isCustomProp ) {
+					style.setProperty( name, value );
+				} else {
+					style[ name ] = value;
 				}
 			}
 
-		} outro {
+		} else {
 
-			// Se um gancho foi fornecido obtém o valor não calculado de lá
-			if ( ganchos && "pegar" em ganchos &&
-				( ret = hooks.get(elem, false, extra ) ) !== indefinido ) {
+			// If a hook was provided get the non-computed value from there
+			if ( hooks && "get" in hooks &&
+				( ret = hooks.get( elem, false, extra ) ) !== undefined ) {
 
-				retorno ret;
+				return ret;
 			}
 
-			// Caso contrário, apenas obtenha o valor do objeto de estilo
-			estilo de retorno[nome];
+			// Otherwise just get the value from the style object
+			return style[ name ];
 		}
 	},
 
-	css: function(elem, nome, extra, estilos) {
-		var val, num, ganchos,
-			origName = camelCase(nome),
-			isCustomProp = rcustomProp.test( nome );
+	css: function( elem, name, extra, styles ) {
+		var val, num, hooks,
+			origName = camelCase( name ),
+			isCustomProp = rcustomProp.test( name );
 
-		// Certifique-se de que estamos trabalhando com o nome correto. nós não
-		// deseja modificar o valor se for uma propriedade personalizada CSS
-		// já que são definidos pelo usuário.
-		if (! isCustomProp) {
-			nome = finalPropName(origName);
+		// Make sure that we're working with the right name. We don't
+		// want to modify the value if it is a CSS custom property
+		// since they are user-defined.
+		if ( !isCustomProp ) {
+			name = finalPropName( origName );
 		}
 
-		// Tente o nome prefixado seguido do nome não prefixado
-		ganchos = jQuery.cssHooks[ nome ] || jQuery.cssHooks[origName];
+		// Try prefixed name followed by the unprefixed name
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Se um gancho foi fornecido obtém o valor calculado a partir dele
-		if (ganchos && "obter" em ganchos) {
-			val = hooks.get(elem, true, extra);
+		// If a hook was provided get the computed value from there
+		if ( hooks && "get" in hooks ) {
+			val = hooks.get( elem, true, extra );
 		}
 
-		// Caso contrário, se existir uma maneira de obter o valor calculado, use-o
-		if (val === indefinido) {
-			val = curCSS(elem, nome, estilos);
+		// Otherwise, if a way to get the computed value exists, use that
+		if ( val === undefined ) {
+			val = curCSS( elem, name, styles );
 		}
 
-		// Converte "normal" para valor calculado
-		if ( val === "normal" && nome em cssNormalTransform ) {
-			val = cssNormalTransform[nome];
+		// Convert "normal" to computed value
+		if ( val === "normal" && name in cssNormalTransform ) {
+			val = cssNormalTransform[ name ];
 		}
 
-		// Torne numérico se forçado ou um qualificador foi fornecido e val parece numérico
+		// Make numeric if forced or a qualifier was provided and val looks numeric
 		if ( extra === "" || extra ) {
-			num = parseFloat(val);
-			retornar extra === verdadeiro || éFinito(num) ? num || 0 : valor;
+			num = parseFloat( val );
+			return extra === true || isFinite( num ) ? num || 0 : val;
 		}
 
-		valor de retorno;
+		return val;
 	}
 } );
 
-jQuery.each( [ "altura", "largura" ], função( _i, dimensão ) {
-	jQuery.cssHooks[ dimensão ] = {
-		get: function(elem, computado, extra) {
-			if ( calculado ) {
+jQuery.each( [ "height", "width" ], function( _i, dimension ) {
+	jQuery.cssHooks[ dimension ] = {
+		get: function( elem, computed, extra ) {
+			if ( computed ) {
 
-				// Certos elementos podem ter informações de dimensão se os mostrarmos de forma invisível
-				// mas deve ter um estilo de exibição atual que se beneficie
-				return rdisplayswap.test( jQuery.css(elem, "display") ) &&
+				// Certain elements can have dimension info if we invisibly show them
+				// but it must have a current display style that would benefit
+				return rdisplayswap.test( jQuery.css( elem, "display" ) ) &&
 
-					// Suporte: Safari 8+
-					// As colunas da tabela no Safari têm offsetWidth e zero diferentes de zero
-					// getBoundingClientRect().width a menos que a exibição seja alterada.
-					// Suporte: IE <=11 somente
-					// Executando getBoundingClientRect em um nó desconectado
-					// no IE gera um erro.
+					// Support: Safari 8+
+					// Table columns in Safari have non-zero offsetWidth & zero
+					// getBoundingClientRect().width unless display is changed.
+					// Support: IE <=11 only
+					// Running getBoundingClientRect on a disconnected node
+					// in IE throws an error.
 					( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ?
-					swap(elem, cssShow, function() {
-						return getWidthOrHeight(elem, dimension, extra);
-					} ):
-					getWidthOrHeight(elem, dimension, extra);
+					swap( elem, cssShow, function() {
+						return getWidthOrHeight( elem, dimension, extra );
+					} ) :
+					getWidthOrHeight( elem, dimension, extra );
 			}
 		},
 
-		set: function(elem, value, extra) {
-			correspondências var,
-				estilos = getEstilos(elem),
+		set: function( elem, value, extra ) {
+			var matches,
+				styles = getStyles( elem ),
 
-				// Só lê styles.position se o teste tiver chance de falhar
-				// para evitar forçar um refluxo.
+				// Only read styles.position if the test has a chance to fail
+				// to avoid forcing a reflow.
 				scrollboxSizeBuggy = !support.scrollboxSize() &&
-					estilos.posição === "absoluto",
+					styles.position === "absolute",
 
-				// Para evitar forçar um reflow, apenas busca boxSizing se precisarmos (gh-3991)
+				// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-3991)
 				boxSizingNeeded = scrollboxSizeBuggy || extra,
 				isBorderBox = boxSizingNeeded &&
-					jQuery.css(elem, "boxSizing", false, styles) === "border-box",
-				subtrair = extra ?
+					jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+				subtract = extra ?
 					boxModelAdjustment(
 						elem,
-						dimensão,
+						dimension,
 						extra,
 						isBorderBox,
-						estilos
-					):
+						styles
+					) :
 					0;
 
-			// Leva em consideração as dimensões não confiáveis ​​da caixa de borda comparando o deslocamento* com o calculado e
-			// simulando uma caixa de conteúdo para obter borda e preenchimento (gh-3699)
+			// Account for unreliable border-box dimensions by comparing offset* to computed and
+			// faking a content-box to get border and padding (gh-3699)
 			if ( isBorderBox && scrollboxSizeBuggy ) {
-				subtrair -= Math.ceil(
-					elem[ "deslocamento" + dimensão[ 0 ].toUpperCase() + dimensão.slice( 1 ) ] -
-					parseFloat(estilos[dimensão]) -
-					boxModelAdjustment(elem, dimension, "border", false, styles) -
-					0,5
+				subtract -= Math.ceil(
+					elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
+					parseFloat( styles[ dimension ] ) -
+					boxModelAdjustment( elem, dimension, "border", false, styles ) -
+					0.5
 				);
 			}
 
-			// Converter para pixels se for necessário ajuste de valor
-			if (subtrair && (correspondências = rcssNum.exec(valor)) &&
-				( corresponde a[ 3 ] || "px" ) !== "px" ) {
+			// Convert to pixels if value adjustment is needed
+			if ( subtract && ( matches = rcssNum.exec( value ) ) &&
+				( matches[ 3 ] || "px" ) !== "px" ) {
 
-				estilo do elemento[ dimensão ] = valor;
-				valor = jQuery.css(elem, dimensão);
+				elem.style[ dimension ] = value;
+				value = jQuery.css( elem, dimension );
 			}
 
-			return setPositiveNumber(elem, value, subtract);
+			return setPositiveNumber( elem, value, subtract );
 		}
 	};
 } );
 
 jQuery.cssHooks.marginLeft = addGetHookIf( support.reliableMarginLeft,
-	function(elem, calculado) {
-		if ( calculado ) {
-			return (parseFloat(curCSS(elem, "marginLeft")) ||
+	function( elem, computed ) {
+		if ( computed ) {
+			return ( parseFloat( curCSS( elem, "marginLeft" ) ) ||
 				elem.getBoundingClientRect().left -
-					swap(elem, { marginLeft: 0 }, function() {
+					swap( elem, { marginLeft: 0 }, function() {
 						return elem.getBoundingClientRect().left;
 					} )
 			) + "px";
@@ -6968,154 +6968,154 @@ jQuery.cssHooks.marginLeft = addGetHookIf( support.reliableMarginLeft,
 	}
 );
 
-// Esses ganchos são usados ​​pelo animate para expandir as propriedades
+// These hooks are used by animate to expand properties
 jQuery.each( {
-	margem: "",
-	preenchimento: "",
-	borda: "Largura"
-}, função (prefixo, sufixo) {
-	jQuery.cssHooks[prefixo + sufixo] = {
-		expanda: function( valor ) {
+	margin: "",
+	padding: "",
+	border: "Width"
+}, function( prefix, suffix ) {
+	jQuery.cssHooks[ prefix + suffix ] = {
+		expand: function( value ) {
 			var i = 0,
-				expandido = {},
+				expanded = {},
 
-				// Assume um único número se não for uma string
-				partes = tipo de valor === "string" ? valor.split( " " ): [ valor ];
+				// Assumes a single number if not a string
+				parts = typeof value === "string" ? value.split( " " ) : [ value ];
 
 			for ( ; i < 4; i++ ) {
-				expandido[prefixo + cssExpand[i] + sufixo] =
-					partes[i] || partes[ i - 2 ] || partes[ 0 ];
+				expanded[ prefix + cssExpand[ i ] + suffix ] =
+					parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
 			}
 
-			retorno expandido;
+			return expanded;
 		}
 	};
 
-	if (prefixo!== "margem") {
-		jQuery.cssHooks[ prefixo + sufixo ].set = setPositiveNumber;
+	if ( prefix !== "margin" ) {
+		jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
 	}
 } );
 
 jQuery.fn.extend( {
-	css: function(nome, valor) {
+	css: function( name, value ) {
 		return access( this, function( elem, name, value ) {
-			estilos var, len,
-				mapa = {},
+			var styles, len,
+				map = {},
 				i = 0;
 
-			if (Array.isArray(nome)) {
-				estilos = getEstilos(elem);
-				len = nome.comprimento;
+			if ( Array.isArray( name ) ) {
+				styles = getStyles( elem );
+				len = name.length;
 
 				for ( ; i < len; i++ ) {
-					map[ nome[i]] = jQuery.css(elem, nome[i], false, estilos);
+					map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
 				}
 
-				mapa de retorno;
+				return map;
 			}
 
-			valor de retorno !== indefinido ?
-				jQuery.style(elem, nome, valor):
-				jQuery.css(elem, nome);
-		}, nome, valor, argumentos.comprimento > 1);
+			return value !== undefined ?
+				jQuery.style( elem, name, value ) :
+				jQuery.css( elem, name );
+		}, name, value, arguments.length > 1 );
 	}
 } );
 
 
-function Tween(elem, options, prop, end, easing) {
-	return new Tween.prototype.init(elem, options, prop, end, easing);
+function Tween( elem, options, prop, end, easing ) {
+	return new Tween.prototype.init( elem, options, prop, end, easing );
 }
-jQuery.Tween = Interpolação;
+jQuery.Tween = Tween;
 
 Tween.prototype = {
-	construtor: Tween,
-	init: function(elem, options, prop, end, easing, unit) {
-		este.elem = elem;
+	constructor: Tween,
+	init: function( elem, options, prop, end, easing, unit ) {
+		this.elem = elem;
 		this.prop = prop;
-		this.easing = atenuando || jQuery.easing._default;
-		this.options = opções;
+		this.easing = easing || jQuery.easing._default;
+		this.options = options;
 		this.start = this.now = this.cur();
 		this.end = end;
-		esta.unidade = unidade || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
 	},
-	cur: função() {
+	cur: function() {
 		var hooks = Tween.propHooks[ this.prop ];
 
 		return hooks && hooks.get ?
-			hooks.get( this ):
+			hooks.get( this ) :
 			Tween.propHooks._default.get( this );
 	},
-	executar: função (porcentagem) {
-		var aliviou,
-			ganchos = Tween.propHooks[ this.prop ];
+	run: function( percent ) {
+		var eased,
+			hooks = Tween.propHooks[ this.prop ];
 
 		if ( this.options.duration ) {
-			this.pos = facilitado = jQuery.easing[ this.easing ](
-				porcentagem, esta.opções.duração * porcentagem, 0, 1, esta.opções.duração
+			this.pos = eased = jQuery.easing[ this.easing ](
+				percent, this.options.duration * percent, 0, 1, this.options.duration
 			);
-		} outro {
-			this.pos = facilitado = por cento;
+		} else {
+			this.pos = eased = percent;
 		}
-		this.now = ( this.end - this.start ) * facilitado + this.start;
+		this.now = ( this.end - this.start ) * eased + this.start;
 
 		if ( this.options.step ) {
 			this.options.step.call( this.elem, this.now, this );
 		}
 
-		if (ganchos && ganchos.set) {
-			ganchos.set( this );
-		} outro {
+		if ( hooks && hooks.set ) {
+			hooks.set( this );
+		} else {
 			Tween.propHooks._default.set( this );
 		}
-		devolva isto;
+		return this;
 	}
 };
 
 Tween.prototype.init.prototype = Tween.prototype;
 
 Tween.propHooks = {
-	_padrão: {
-		obter: function( tween ) {
-			var resultado;
+	_default: {
+		get: function( tween ) {
+			var result;
 
-			// Use uma propriedade no elemento diretamente quando não for um elemento DOM,
-			// ou quando não houver nenhuma propriedade de estilo correspondente.
+			// Use a property on the element directly when it is not a DOM element,
+			// or when there is no matching style property that exists.
 			if ( tween.elem.nodeType !== 1 ||
 				tween.elem[ tween.prop ] != null && tween.elem.style[ tween.prop ] == null ) {
 				return tween.elem[ tween.prop ];
 			}
 
-			// Passar uma string vazia como um terceiro parâmetro para .css automaticamente
-			// tenta um parseFloat e retorna para uma string se a análise falhar.
-			// Valores simples como "10px" são analisados ​​para Float;
-			// valores complexos como "rotate(1rad)" são retornados como estão.
-			resultado = jQuery.css( tween.elem, tween.prop, "" );
+			// Passing an empty string as a 3rd parameter to .css will automatically
+			// attempt a parseFloat and fallback to a string if the parse fails.
+			// Simple values such as "10px" are parsed to Float;
+			// complex values such as "rotate(1rad)" are returned as-is.
+			result = jQuery.css( tween.elem, tween.prop, "" );
 
-			// Strings vazias, nulas, indefinidas e "auto" são convertidas para 0.
-			retornar !resultado || resultado === "automático" ? 0 : resultado;
+			// Empty strings, null, undefined and "auto" are converted to 0.
+			return !result || result === "auto" ? 0 : result;
 		},
-		definir: function( tween ) {
+		set: function( tween ) {
 
-			// Use o gancho de passo para compatibilidade com as costas.
-			// Use cssHook se estiver lá.
-			// Use .style se disponível e use propriedades simples quando disponíveis.
+			// Use step hook for back compat.
+			// Use cssHook if its there.
+			// Use .style if available and use plain properties where available.
 			if ( jQuery.fx.step[ tween.prop ] ) {
 				jQuery.fx.step[ tween.prop ]( tween );
 			} else if ( tween.elem.nodeType === 1 && (
 				jQuery.cssHooks[ tween.prop ] ||
 					tween.elem.style[ finalPropName( tween.prop ) ] != null ) ) {
 				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
-			} outro {
+			} else {
 				tween.elem[ tween.prop ] = tween.now;
 			}
 		}
 	}
 };
 
-// Suporte: IE <=9 apenas
-// Abordagem baseada em pânico para definir coisas em nós desconectados
+// Support: IE <=9 only
+// Panic based approach to setting things on disconnected nodes
 Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
-	definir: function( tween ) {
+	set: function( tween ) {
 		if ( tween.elem.nodeType && tween.elem.parentNode ) {
 			tween.elem[ tween.prop ] = tween.now;
 		}
@@ -7124,100 +7124,100 @@ Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
 
 jQuery.easing = {
 	linear: function( p ) {
-		retornar p;
+		return p;
 	},
 	swing: function( p ) {
-		return 0,5 - Math.cos( p * Math.PI ) / 2;
+		return 0.5 - Math.cos( p * Math.PI ) / 2;
 	},
-	_padrão: "balanço"
+	_default: "swing"
 };
 
 jQuery.fx = Tween.prototype.init;
 
-// Compatibilidade traseira <1.8 ponto de extensão
+// Back compat <1.8 extension point
 jQuery.fx.step = {};
 
 
 
 
 var
-	fxAgora, em andamento,
+	fxNow, inProgress,
 	rfxtypes = /^(?:toggle|show|hide)$/,
 	rrun = /queueHooks$/;
 
-função agenda() {
-	if(emProgresso){
+function schedule() {
+	if ( inProgress ) {
 		if ( document.hidden === false && window.requestAnimationFrame ) {
-			window.requestAnimationFrame( agenda );
-		} outro {
-			window.setTimeout( agendamento, jQuery.fx.interval );
+			window.requestAnimationFrame( schedule );
+		} else {
+			window.setTimeout( schedule, jQuery.fx.interval );
 		}
 
 		jQuery.fx.tick();
 	}
 }
 
-// As animações criadas de forma síncrona serão executadas de forma síncrona
-função criarFxAgora() {
+// Animations created synchronously will run synchronously
+function createFxNow() {
 	window.setTimeout( function() {
-		fxAgora = indefinido;
+		fxNow = undefined;
 	} );
 	return ( fxNow = Date.now() );
 }
 
-// Gera parâmetros para criar uma animação padrão
-function genFx(tipo, includeWidth) {
-	var que,
-		eu = 0,
-		attrs = { altura: tipo };
+// Generate parameters to create a standard animation
+function genFx( type, includeWidth ) {
+	var which,
+		i = 0,
+		attrs = { height: type };
 
-	// Se incluirmos largura, o valor do passo é 1 para fazer todos os valores cssExpand,
-	// caso contrário, o valor do passo é 2 para pular para esquerda e direita
+	// If we include width, step value is 1 to do all cssExpand values,
+	// otherwise step value is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4; i += 2 - includeWidth ) {
-		qual = cssExpand[i];
-		attrs[ "margem" + qual ] = attrs[ "preenchimento" + qual ] = tipo;
+		which = cssExpand[ i ];
+		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
 	}
 
-	if (incluirLargura) {
-		attrs.opacity = attrs.width = tipo;
+	if ( includeWidth ) {
+		attrs.opacity = attrs.width = type;
 	}
 
-	retornar atributos;
+	return attrs;
 }
 
-function createTween(valor, propriedade, animação) {
-	var interpolação,
-		coleção = ( Animation.tweeners[ prop ] || [] ).concat( Animation.tweeners[ "*" ] ),
-		índice = 0,
-		comprimento = coleção.comprimento;
-	for ( ; índice < comprimento; índice++ ) {
-		if (( tween = coleção[ índice ].call(animação, propriedade, valor))) {
+function createTween( value, prop, animation ) {
+	var tween,
+		collection = ( Animation.tweeners[ prop ] || [] ).concat( Animation.tweeners[ "*" ] ),
+		index = 0,
+		length = collection.length;
+	for ( ; index < length; index++ ) {
+		if ( ( tween = collection[ index ].call( animation, prop, value ) ) ) {
 
-			// Terminamos com esta propriedade
-			retorno entre;
+			// We're done with this property
+			return tween;
 		}
 	}
 }
 
-function defaultPrefilter(elem, props, opts) {
+function defaultPrefilter( elem, props, opts ) {
 	var prop, value, toggle, hooks, oldfire, propTween, restoreDisplay, display,
-		isBox = "largura" em props || "altura" em adereços,
-		anim = isso,
-		origem = {},
-		estilo = estilo do elemento,
+		isBox = "width" in props || "height" in props,
+		anim = this,
+		orig = {},
+		style = elem.style,
 		hidden = elem.nodeType && isHiddenWithinTree( elem ),
 		dataShow = dataPriv.get( elem, "fxshow" );
 
-	// As animações de pular fila sequestram os ganchos fx
-	if (!opts.queue) {
-		ganchos = jQuery._queueHooks( elem, "fx" );
+	// Queue-skipping animations hijack the fx hooks
+	if ( !opts.queue ) {
+		hooks = jQuery._queueHooks( elem, "fx" );
 		if ( hooks.unqueued == null ) {
 			hooks.unqueued = 0;
 			oldfire = hooks.empty.fire;
 			hooks.empty.fire = function() {
-				if (!hooks.unqueued) {
-					fogovelho();
+				if ( !hooks.unqueued ) {
+					oldfire();
 				}
 			};
 		}
@@ -7225,122 +7225,122 @@ function defaultPrefilter(elem, props, opts) {
 
 		anim.always( function() {
 
-			// Certifique-se de que o manipulador completo seja chamado antes que isso seja concluído
+			// Ensure the complete handler is called before this completes
 			anim.always( function() {
 				hooks.unqueued--;
-				if (!jQuery.queue(elem, "fx").length) {
+				if ( !jQuery.queue( elem, "fx" ).length ) {
 					hooks.empty.fire();
 				}
 			} );
 		} );
 	}
 
-	// Detecta mostrar/ocultar animações
-	for ( prop em props ) {
-		valor = props[ prop ];
-		if ( rfxtypes.test( valor ) ) {
-			excluir props[ prop ];
-			alternar = alternar || valor === "alternar";
-			if (valor === (oculto? "ocultar": "mostrar")) {
+	// Detect show/hide animations
+	for ( prop in props ) {
+		value = props[ prop ];
+		if ( rfxtypes.test( value ) ) {
+			delete props[ prop ];
+			toggle = toggle || value === "toggle";
+			if ( value === ( hidden ? "hide" : "show" ) ) {
 
-				// Finja estar escondido se for um "show" e
-				// ainda há dados de um mostrar/ocultar parado
-				if ( valor === "mostrar" && dataShow && dataShow[ prop ] !== indefinido ) {
-					oculto = verdadeiro;
+				// Pretend to be hidden if this is a "show" and
+				// there is still data from a stopped show/hide
+				if ( value === "show" && dataShow && dataShow[ prop ] !== undefined ) {
+					hidden = true;
 
-				// Ignora todos os outros dados de mostrar/ocultar no-op
-				} outro {
-					continuar;
+				// Ignore all other no-op show/hide data
+				} else {
+					continue;
 				}
 			}
-			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style(elem, prop);
+			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
 		}
 	}
 
-	// Salte se este for um no-op como .hide().hide()
+	// Bail out if this is a no-op like .hide().hide()
 	propTween = !jQuery.isEmptyObject( props );
-	if (!propTween && jQuery.isEmptyObject(orig)) {
-		retornar;
+	if ( !propTween && jQuery.isEmptyObject( orig ) ) {
+		return;
 	}
 
-	// Restringir os estilos "overflow" e "display" durante as animações da caixa
+	// Restrict "overflow" and "display" styles during box animations
 	if ( isBox && elem.nodeType === 1 ) {
 
-		// Suporte: IE <=9 - 11, Edge 12 - 15
-		// Registra todos os 3 atributos de estouro porque o IE não infere o atalho
-		// de overflowX e overflowY de valores idênticos e Edge apenas espelha
-		// o valor overflowX lá.
-		opts.overflow = [estilo.overflow, estilo.overflowX, estilo.overflowY];
+		// Support: IE <=9 - 11, Edge 12 - 15
+		// Record all 3 overflow attributes because IE does not infer the shorthand
+		// from identically-valued overflowX and overflowY and Edge just mirrors
+		// the overflowX value there.
+		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
-		// Identifique um tipo de exibição, preferindo mostrar/ocultar dados antigos sobre a cascata CSS
+		// Identify a display type, preferring old show/hide data over the CSS cascade
 		restoreDisplay = dataShow && dataShow.display;
-		if (restoreDisplay == null) {
+		if ( restoreDisplay == null ) {
 			restoreDisplay = dataPriv.get( elem, "display" );
 		}
-		display = jQuery.css(elem, "display");
-		if (exibir === "nenhum" ) {
-			if (restoreDisplay) {
+		display = jQuery.css( elem, "display" );
+		if ( display === "none" ) {
+			if ( restoreDisplay ) {
 				display = restoreDisplay;
-			} outro {
+			} else {
 
-				// Obtém valor(es) não vazio(s) forçando temporariamente a visibilidade
-				showHide([elem], verdadeiro);
-				restoreDisplay = elem.style.display || restaurarDisplay;
-				display = jQuery.css(elem, "display");
-				showHide([elem]);
+				// Get nonempty value(s) by temporarily forcing visibility
+				showHide( [ elem ], true );
+				restoreDisplay = elem.style.display || restoreDisplay;
+				display = jQuery.css( elem, "display" );
+				showHide( [ elem ] );
 			}
 		}
 
-		// Anima elementos inline como inline-block
+		// Animate inline elements as inline-block
 		if ( display === "inline" || display === "inline-block" && restoreDisplay != null ) {
-			if (jQuery.css(elem, "float") === "nenhum" ) {
+			if ( jQuery.css( elem, "float" ) === "none" ) {
 
-				// Restaura o valor de exibição original no final das animações puras de mostrar/ocultar
-				if (!propTween) {
+				// Restore the original display value at the end of pure show/hide animations
+				if ( !propTween ) {
 					anim.done( function() {
 						style.display = restoreDisplay;
 					} );
-					if (restoreDisplay == null) {
-						exibição = estilo.display;
-						restoreDisplay = exibição === "nenhum" ? "" : mostrar;
+					if ( restoreDisplay == null ) {
+						display = style.display;
+						restoreDisplay = display === "none" ? "" : display;
 					}
 				}
-				style.display = "bloco embutido";
+				style.display = "inline-block";
 			}
 		}
 	}
 
 	if ( opts.overflow ) {
-		style.overflow = "oculto";
+		style.overflow = "hidden";
 		anim.always( function() {
-			estilo.overflow = opts.overflow[ 0 ];
-			estilo.overflowX = opções.overflow[ 1 ];
-			estilo.overflowY = opts.overflow[ 2 ];
+			style.overflow = opts.overflow[ 0 ];
+			style.overflowX = opts.overflow[ 1 ];
+			style.overflowY = opts.overflow[ 2 ];
 		} );
 	}
 
-	// Implementa mostrar/ocultar animações
-	propTween = falso;
-	for ( prop na origem ) {
+	// Implement show/hide animations
+	propTween = false;
+	for ( prop in orig ) {
 
-		// Configuração geral de mostrar/ocultar para esta animação de elemento
-		if (!propTween) {
-			if (dataShow) {
-				if ( "escondido" em dataShow ) {
-					oculto = dataShow. oculto;
+		// General show/hide setup for this element animation
+		if ( !propTween ) {
+			if ( dataShow ) {
+				if ( "hidden" in dataShow ) {
+					hidden = dataShow.hidden;
 				}
-			} outro {
+			} else {
 				dataShow = dataPriv.access( elem, "fxshow", { display: restoreDisplay } );
 			}
 
-			// Armazena escondido/visível para alternar então `.stop().toggle()` "inverte"
-			if (alternar) {
+			// Store hidden/visible for toggle so `.stop().toggle()` "reverses"
+			if ( toggle ) {
 				dataShow.hidden = !hidden;
 			}
 
-			// Mostrar elementos antes de animá-los
-			se (escondido) {
-				showHide([elem], verdadeiro);
+			// Show elements before animating them
+			if ( hidden ) {
+				showHide( [ elem ], true );
 			}
 
 			/* eslint-disable no-loop-func */
@@ -7349,22 +7349,22 @@ function defaultPrefilter(elem, props, opts) {
 
 				/* eslint-enable no-loop-func */
 
-				// A etapa final de uma animação "ocultar" é na verdade ocultar o elemento
-				if ( !oculto ) {
-					showHide([elem]);
+				// The final step of a "hide" animation is actually hiding the element
+				if ( !hidden ) {
+					showHide( [ elem ] );
 				}
-				dataPriv.remove(elem, "fxshow" );
-				for ( prop na origem ) {
-					jQuery.style(elem, prop, orig[ prop]);
+				dataPriv.remove( elem, "fxshow" );
+				for ( prop in orig ) {
+					jQuery.style( elem, prop, orig[ prop ] );
 				}
 			} );
 		}
 
-		// Configuração por propriedade
+		// Per-property setup
 		propTween = createTween( hidden ? dataShow[ prop ] : 0, prop, anim );
-		if ( !( prop em dataShow ) ) {
-			dataShow[prop] = propTween.start;
-			se (escondido) {
+		if ( !( prop in dataShow ) ) {
+			dataShow[ prop ] = propTween.start;
+			if ( hidden ) {
 				propTween.end = propTween.start;
 				propTween.start = 0;
 			}
@@ -7375,88 +7375,88 @@ function defaultPrefilter(elem, props, opts) {
 function propFilter( props, specialEasing ) {
 	var index, name, easing, value, hooks;
 
-	// camelCase, specialEasing e expand cssHook pass
-	for ( índice em props ) {
-		nome = camelCase( index );
-		easing = specialEasing[ nome ];
-		valor = props[ índice ];
-		if ( Array.isArray( valor ) ) {
-			easing = valor[ 1 ];
-			valor = props[ index ] = valor[ 0 ];
+	// camelCase, specialEasing and expand cssHook pass
+	for ( index in props ) {
+		name = camelCase( index );
+		easing = specialEasing[ name ];
+		value = props[ index ];
+		if ( Array.isArray( value ) ) {
+			easing = value[ 1 ];
+			value = props[ index ] = value[ 0 ];
 		}
 
-		if ( índice !== nome ) {
-			props[nome] = valor;
-			excluir props[índice];
+		if ( index !== name ) {
+			props[ name ] = value;
+			delete props[ index ];
 		}
 
-		ganchos = jQuery.cssHooks[ nome ];
-		if (ganchos && "expandir" em ganchos) {
-			valor = hooks.expand( valor );
-			excluir props[nome];
+		hooks = jQuery.cssHooks[ name ];
+		if ( hooks && "expand" in hooks ) {
+			value = hooks.expand( value );
+			delete props[ name ];
 
-			// Não exatamente $.extend, isso não substituirá as chaves existentes.
-			// Reutilizando 'index' porque temos o "nome" correto
-			for ( índice em valor ) {
-				if ( !( índice em props ) ) {
-					props[índice] = valor[índice];
-					specialEasing[ index ] = atenuação;
+			// Not quite $.extend, this won't overwrite existing keys.
+			// Reusing 'index' because we have the correct "name"
+			for ( index in value ) {
+				if ( !( index in props ) ) {
+					props[ index ] = value[ index ];
+					specialEasing[ index ] = easing;
 				}
 			}
-		} outro {
-			specialEasing[ nome ] = atenuação;
+		} else {
+			specialEasing[ name ] = easing;
 		}
 	}
 }
 
-função Animação(elem, propriedades, opções) {
-	var resultado,
-		parou,
-		índice = 0,
-		comprimento = Animation.prefilters.length,
-		adiado = jQuery.Deferred().always( function() {
+function Animation( elem, properties, options ) {
+	var result,
+		stopped,
+		index = 0,
+		length = Animation.prefilters.length,
+		deferred = jQuery.Deferred().always( function() {
 
-			// Não corresponde ao elemento no seletor :animated
-			excluir tick.elem;
+			// Don't match elem in the :animated selector
+			delete tick.elem;
 		} ),
-		carrapato = função() {
-			if ( parado ) {
-				retorna falso;
+		tick = function() {
+			if ( stopped ) {
+				return false;
 			}
-			var currentTime = fxNow || criarFxNow(),
-				restante = Math.max( 0, animation.startTime + animation.duration - currentTime ),
+			var currentTime = fxNow || createFxNow(),
+				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
 
-				// Suporte: apenas Android 2.3
-				// O bug de travamento arcaico não nos permite usar `1 - ( 0.5 || 0 )` (trac-12497)
-				temp = restante / animation.duration || 0,
-				por cento = 1 - temp,
-				índice = 0,
-				comprimento = animation.tweens.length;
+				// Support: Android 2.3 only
+				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (trac-12497)
+				temp = remaining / animation.duration || 0,
+				percent = 1 - temp,
+				index = 0,
+				length = animation.tweens.length;
 
-			for ( ; índice < comprimento; índice++ ) {
+			for ( ; index < length; index++ ) {
 				animation.tweens[ index ].run( percent );
 			}
 
-			deferred.notifyWith(elem, [animação, porcentagem, restante]);
+			deferred.notifyWith( elem, [ animation, percent, remaining ] );
 
-			// Se houver mais o que fazer, ceda
-			if (porcentagem < 1 && comprimento) {
-				retorno restante;
+			// If there's more to do, yield
+			if ( percent < 1 && length ) {
+				return remaining;
 			}
 
-			// Se esta foi uma animação vazia, sintetiza uma notificação de progresso final
-			if ( !comprimento ) {
-				deferred.notifyWith(elem, [animação, 1, 0]);
+			// If this was an empty animation, synthesize a final progress notification
+			if ( !length ) {
+				deferred.notifyWith( elem, [ animation, 1, 0 ] );
 			}
 
-			// Resolva a animação e relate sua conclusão
-			deferred.resolveWith(elem, [animação]);
-			retorna falso;
+			// Resolve the animation and report its conclusion
+			deferred.resolveWith( elem, [ animation ] );
+			return false;
 		},
-		animação = deferred.promise( {
+		animation = deferred.promise( {
 			elem: elem,
-			adereços: jQuery.extend( {}, propriedades ),
-			opções: jQuery.extend( true, {
+			props: jQuery.extend( {}, properties ),
+			opts: jQuery.extend( true, {
 				specialEasing: {},
 				easing: jQuery.easing._default
 			}, options ),

@@ -3,11 +3,9 @@
 
 <head>
     <title>My System</title>
-    <link rel="stylesheet" href="estilo.css" />
     <meta charset="UTF-8" />
-    <script src="estrutura/js/Jquery.js" type="text/javascript"></script>
+    <script src="./estrutura/js/Jquery.js" type="text/javascript"></script>
     <script src="estrutura/js/js_principal.js" type="text/javascript"></script>
-    <link href="estrutura/css/css_padrao.css" rel="stylesheet" type="text/css" />
     <!-- Latest compiled and minified CSS -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- Latest compiled JavaScript -->
@@ -20,43 +18,45 @@
     <link rel="stylesheet" href="./estrutura/css/estilos.css">
 </head>
 
-<body class="text-bg-dark">
+<body>
     <header>
         <?php @include_once 'menu.html'; ?>
     </header>
     </nav>
     <div>
-        <div class="linha">
-            <a href="include/view/view_consulta_Contas.php">
-                <div style="text-align: center;" class="tile tileLargo azul">
-                    <span>Consultar Contas</span><br>
-                    <img src="img/icone-planilha_lapis.png" alt="Flag" width="30%" />
+        <div class="card-area">
+            <a href="include/view/view_consulta_Contas.php" class="card-link">
+                <div class="card">
+                    <span class="card-content">
+                        <img src="./img/icons/icon-conta.svg" class="card-icon" alt="Flag" width="25%" />
+                        <span class="card-text">Consultar Contas</span><br>
+                    </span>
                 </div>
             </a>
-            <a href="#">
-                <div class="tile tileLargo azul">
+            <a href="#" class="card-link">
+                <div class="card">
                     <span>Favoritos</span>
                 </div>
             </a>
-            <a href="#">
-                <div class="tile tileLargo azul">
+            <a href="#" class="card-link">
+                <div class="card">
                     <span>Navegador</span>
                 </div>
             </a>
-            <a href="#">
-                <div class="tile tileLargo azul">
+            <a href="#" class="card-link">
+                <div class="card">
                     <span>Imagens</span>
                 </div>
             </a>
-            <a href="#">
-                <div class="tile tileLargo azul">
+            <a href="#" class="card-link">
+                <div class="card">
                     <span>Ajuda</span>
                 </div>
             </a>
         </div>
-        <div class="linha">
+        <!-- <div class="linha">
             <a href="#">
-                <div class="tile tileLargo azul">
+                <div class="card">
                     <span>Arquivos</span>
                 </div>
             </a>
@@ -76,12 +76,12 @@
                 </div>
             </a>
             <a href="#">
-                <div class="tile tileLargo azul">
+                <div class="card">
                     <span>Notas</span>
                 </div>
             </a>
         </div>
-    </div>
+    </div> -->
 </body>
 
 </html>

@@ -9,5 +9,3 @@ $dbname = "myframedb";
 $username = "root";
 $password = "";
 
-
-    

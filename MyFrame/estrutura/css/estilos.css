@@ -2,6 +2,15 @@
   font-family: Century;
   src: url("GOTHIC.ttf");
 }
+body {
+  --var-cor-fundo-1: #0d1b2a;
+  --var-cor-fundo-2: #1b263b;
+  --var-cor-fundo-3: #415a77;
+  --var-cor-fundo-4: #778da9;
+  --var-cor-fundo-5: #e0e1dd;
+  background: var(--var-cor-fundo-1);
+}
+
 .navbar {
   padding: 1rem 2rem 1rem 1rem;
 }
@@ -10,37 +19,45 @@
   --bs-offcanvas-color: #000000;
 }
 
-.linha {
-  width: auto;
-  padding: 5px;
-  height: 110px;
-  display: table;
+.card-area {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr repeat(5, 13rem 1.5rem) 1fr;
+  justify-content: center;
+  height: 22rem;
 }
-
-.tile {
-  height: 100px;
-  width: 100px;
-  float: left;
-  margin: 0 5px 0 0;
-  padding: 2px;
+.card-area .card-link {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
 }
-
-.tileLargo {
-  width: 210px;
+.card-area .card-link .card {
+  width: 100%;
+  height: 100%;
 }
-
-.amarelo {
-  background: rgb(1, 50, 105);
+.card-area .card-link .card .card-content {
+  display: grid;
+  grid-template-rows: 2fr 7rem auto 2fr;
+  justify-content: center;
+  height: 100%;
 }
-
-.vermelho {
-  background: rgb(1, 50, 105);
+.card-area .card-link .card .card-content::before {
+  content: "";
+  display: flex;
+  width: 6rem;
+  height: 5.9rem;
+  background: var(--var-cor-fundo-2);
+  border-radius: 100%;
+  margin-left: 0.9rem;
+  grid-row: 2;
 }
-
-.azul {
-  background: rgb(1, 72, 105);
+.card-area .card-link .card .card-content .card-icon {
+  position: absolute;
+  left: 4.7rem;
+  top: 6rem;
 }
-
-.verde {
-  background: rgb(4, 82, 170);
+.card-area .card-link .card .card-content .card-text {
+  grid-row: 3;
+  color: var(--var-cor-fundo-3);
+  font-weight: bold;
 }/*# sourceMappingURL=estilos.css.map */
