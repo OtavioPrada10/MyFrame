@@ -1,0 +1,46 @@
+@font-face {
+  font-family: Century;
+  src: url("GOTHIC.ttf");
+}
+.navbar {
+  padding: 1rem 2rem 1rem 1rem;
+}
+
+.offcanvas {
+  --bs-offcanvas-color: #000000;
+}
+
+.linha {
+  width: auto;
+  padding: 5px;
+  height: 110px;
+  display: table;
+}
+
+.tile {
+  height: 100px;
+  width: 100px;
+  float: left;
+  margin: 0 5px 0 0;
+  padding: 2px;
+}
+
+.tileLargo {
+  width: 210px;
+}
+
+.amarelo {
+  background: rgb(1, 50, 105);
+}
+
+.vermelho {
+  background: rgb(1, 50, 105);
+}
+
+.azul {
+  background: rgb(1, 72, 105);
+}
+
+.verde {
+  background: rgb(4, 82, 170);
+}/*# sourceMappingURL=estilos.css.map */
