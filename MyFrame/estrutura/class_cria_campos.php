@@ -6,7 +6,7 @@ namespace estrutura;
  * Classe cria campos, Responsavel por criar os campos na tela
  * Autor Otavio Vinicius Prada
  */
-class CriaCampos extends \estrutura\Campo {
+class CriaCampos {
 
     private $Nome;
     private $Tipo;

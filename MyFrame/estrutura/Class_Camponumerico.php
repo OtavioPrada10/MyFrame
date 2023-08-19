@@ -4,12 +4,14 @@ namespace estrutura;
 
 /**
  * classe de campos
+ * @author Otavio Prada
+ * @since 19/08/2023
  */
 class CampoNumerico
 {
-    private $nome;
-    private $id;
-    private $label;
+    public $nome;
+    public $id;
+    public $label;
 
     public function __construct(string $nome, string $id, string $label)
     {
