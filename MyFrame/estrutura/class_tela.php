@@ -1,0 +1,7 @@
+<?
+
+namespace estrutura;
+
+class Tela {
+    
+}
