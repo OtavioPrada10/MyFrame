@@ -28,7 +28,7 @@
             <div class="linha">
                 <a href="include/view/view_consulta_Contas.php">
                     <div style="text-align: center;" class="tile tileLargo azul">
-                        <span>Consultar Contas</span><br>
+                        <span>Consultar Contas teste</span><br>
                         <img src="img/icone-planilha_lapis.png" alt="Flag" width="30%" />
                     </div>
                 </a>
