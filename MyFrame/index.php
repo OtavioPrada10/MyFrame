@@ -14,7 +14,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/239779e4bc.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="./estrutura/css/estilos.css">
 </head>
 
@@ -23,65 +27,76 @@
         <?php @include_once 'menu.html'; ?>
     </header>
     </nav>
-    <div>
+    <section>
         <div class="card-area">
+            <span class="card-previous">
+                <span class="fa-solid fa-circle-chevron-right fa-flip-horizontal fa-4x" style="color: #ffffff;"></span>
+            </span>
             <a href="include/view/view_consulta_Contas.php" class="card-link">
                 <div class="card">
                     <span class="card-content">
-                        <img src="./img/icons/icon-conta.svg" class="card-icon" alt="Flag" width="25%" />
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-sack-dollar fa-3x" style="color: #ffffff;"></span>
+                        </span>
                         <span class="card-text">Consultar Contas</span><br>
                     </span>
                 </div>
             </a>
             <a href="#" class="card-link">
                 <div class="card">
-                    <span>Favoritos</span>
+                    <span class="card-content">
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-star fa-3x" style="color: #ffffff;"></span>
+                        </span>
+                        <span class="card-text">Favoritos</span>
+                    </span>
                 </div>
             </a>
             <a href="#" class="card-link">
                 <div class="card">
-                    <span>Navegador</span>
+                    <span class="card-content">
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-magnifying-glass-dollar fa-3x" style="color: #ffffff;"></span>
+                        </span>
+                        <span class="card-text">Navegador</span>
+                    </span>
                 </div>
             </a>
             <a href="#" class="card-link">
                 <div class="card">
-                    <span>Imagens</span>
+                    <span class="card-content">
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-image fa-3x" style="color: #ffffff;"></span>
+                        </span>
+                        <span class="card-text">Imagens</span>
+                    </span>
                 </div>
             </a>
             <a href="#" class="card-link">
                 <div class="card">
-                    <span>Ajuda</span>
+                    <span class="card-content">
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-file fa-3x" style="color: #ffffff;"></span>
+                        </span>
+                        <span class="card-text">Arquivos</span>
+                    </span>
                 </div>
             </a>
+            <a href="#" class="card-link">
+                <div class="card">
+                    <span class="card-content">
+                        <span class="card-icon-area">
+                            <span class="fa-solid fa-question fa-3x" style="color: #ffffff;"></span>
+                        </span>
+                        <span class="card-text">Ajuda</span>
+                    </span>
+                </div>
+            </a>
+            <span class="card-next">
+                <span class="fa-solid fa-circle-chevron-right fa-4x" style="color: #ffffff;"></span>
+            </span>
         </div>
-        <!-- <div class="linha">
-            <a href="#">
-                <div class="card">
-                    <span>Arquivos</span>
-                </div>
-            </a>
-            <a href="#">
-                <div class="tile azul item">
-                    <span>E-mail</span>
-                </div>
-            </a>
-            <a href="#">
-                <div class="tile azul item">
-                    <span>Camera</span>
-                </div>
-            </a>
-            <a href="#">
-                <div class="tile azul item">
-                    <span>Música</span>
-                </div>
-            </a>
-            <a href="#">
-                <div class="card">
-                    <span>Notas</span>
-                </div>
-            </a>
-        </div>
-    </div> -->
+    </section>
 </body>
 
 </html>
