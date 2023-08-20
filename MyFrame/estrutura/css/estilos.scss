@@ -1,7 +1,5 @@
-@font-face {
-  font-family: Century;
-  src: url("GOTHIC.ttf");
-}
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Playfair+Display:wght@700&display=swap');
+
 
 body {
   --var-cor-fundo-1: #0d1b2a;
@@ -11,6 +9,7 @@ body {
   --var-cor-fundo-5: #e0e1dd;
 
   background: var(--var-cor-fundo-1);
+  font-family: 'ADLaM Display';
 }
 
 .navbar {
@@ -40,11 +39,11 @@ body {
     & .card {
       width: 100%;
       height: 100%;
-      transition: .5s;
+      transition: 0.5s;
 
-      &:hover{
+      &:hover {
         transform: translateY(-10%);
-        transition: .5s;
+        transition: 0.5s;
       }
 
       & .card-content {
@@ -69,17 +68,34 @@ body {
           color: var(--var-cor-fundo-3);
           font-weight: bold;
           text-align: center;
+          text-transform: capitalize;
         }
       }
     }
   }
-
   & .card-next {
     grid-column: 8;
     text-align: center;
+
+    &:hover {
+      & .card-icon {
+        transform: scale(130%);
+        color: var(--var-cor-fundo-4);
+      }
+    }
   }
   & .card-previous {
     grid-column: 1;
     text-align: center;
+
+    &:hover {
+      & .card-icon {
+        transform: scale(130%) scaleX(-1);
+        color: var(--var-cor-fundo-4);
+      }
+    }
+  }
+  & .card-icon {
+    color: #ffffff;
   }
 }
