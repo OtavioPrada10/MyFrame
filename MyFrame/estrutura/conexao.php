@@ -1,19 +1,4 @@
 <?php
-// endereco
-// nome do BD
-// usuario
-// senha
-
-// $endereco = 'localhost';
-// $banco = 'sispet';
-// $usuario = 'postgres';
-// $senha = 'toor';
-
-// $endereco = "containers-us-west-51.railway.app";
-// $banco = "railway";
-// $usuario = "postgres";
-// $senha = "gcuXnwMXebavNlVGcsfw";
-
 $host = "containers-us-west-51.railway.app";
 $database = "railway";
 $user = "postgres";
