@@ -5,8 +5,8 @@ body {
   --var-cor-fundo-3: #415a77;
   --var-cor-fundo-4: #778da9;
   --var-cor-fundo-5: #e0e1dd;
-  background: var(--var-cor-fundo-1);
-  font-family: "ADLaM Display";
+  background: var(--var-cor-fundo-1) !important;
+  font-family: "ADLaM Display" !important;
 }
 
 .navbar {
@@ -84,4 +84,55 @@ body {
 }
 .card-area .card-icon {
   color: #ffffff;
+}
+
+.login-tela {
+  height: 98vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-tela .login-area {
+  border-radius: 2rem;
+  background: #ffffff;
+  width: 35rem;
+  height: 30rem;
+}
+.login-tela .login-form {
+  display: grid;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  grid-template-columns: 70%;
+  grid-template-rows: 11rem repeat(3, 2rem) 1fr;
+  gap: 2.5rem;
+}
+.login-tela .login-form .login-campo {
+  border-color: var(--var-cor-fundo-2);
+  border-radius: 0.3rem;
+  border-style: solid;
+  border-width: 1px;
+  color: var(--var-cor-fundo-2);
+}
+.login-tela .login-form .login-button {
+  height: 3.5rem;
+  background: var(--var-cor-fundo-2);
+  color: #ffffff;
+  transition: 0.5s;
+}
+.login-tela .login-form .login-button:hover {
+  background: #ffffff;
+  border-width: 3px;
+  color: var(--var-cor-fundo-2);
+  transition: 0.5s;
+}
+.login-tela .login-form .login-icon {
+  color: var(--var-cor-fundo-1);
+}
+.login-tela .login-form .login-icon-senha {
+  position: absolute;
+  top: 2rem;
+  right: 1.3rem;
+  cursor: pointer;
 }/*# sourceMappingURL=estilos.css.map */

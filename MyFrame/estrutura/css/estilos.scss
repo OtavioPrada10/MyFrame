@@ -1,15 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Playfair+Display:wght@700&display=swap');
-
+//Fonte principal
+@import url("https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Playfair+Display:wght@700&display=swap");
 
 body {
+  //paleta de cores do site
   --var-cor-fundo-1: #0d1b2a;
   --var-cor-fundo-2: #1b263b;
   --var-cor-fundo-3: #415a77;
   --var-cor-fundo-4: #778da9;
   --var-cor-fundo-5: #e0e1dd;
 
-  background: var(--var-cor-fundo-1);
-  font-family: 'ADLaM Display';
+  background: var(--var-cor-fundo-1) !important;
+  font-family: "ADLaM Display" !important;
 }
 
 .navbar {
@@ -17,10 +18,12 @@ body {
   margin-bottom: 1rem;
 }
 
+//Necessário para que os estilos da navbar branca não sobreescrevam a varíavel de cor do offcanvas
 .offcanvas {
   --bs-offcanvas-color: #000000;
 }
 
+//CSS para os cards do index
 .card-area {
   display: grid;
   grid-template-columns: 1fr repeat(6, 13rem) 1fr;
@@ -97,5 +100,66 @@ body {
   }
   & .card-icon {
     color: #ffffff;
+  }
+}
+
+//CSS para tela de login
+.login-tela {
+  height: 98vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & .login-area {
+    border-radius: 2rem;
+    background: #ffffff;
+    width: 35rem;
+    height: 30rem;
+  }
+
+  & .login-form {
+    display: grid;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    grid-template-columns: 70%;
+    grid-template-rows: 11rem repeat(3, 2rem) 1fr;
+    gap: 2.5rem;
+
+    & .login-campo{
+      border: {
+        color: var(--var-cor-fundo-2);
+        radius: .3rem;
+        style: solid;
+        width: 1px;
+      };
+      color: var(--var-cor-fundo-2);
+    }
+
+    & .login-button{
+      height: 3.5rem;
+      background: var(--var-cor-fundo-2);
+      color: #ffffff;
+      transition: .5s;
+
+      &:hover{
+        background: #ffffff;
+        border-width: 3px;
+        color: var(--var-cor-fundo-2);
+        transition: .5s;
+      }
+    }
+
+    & .login-icon{
+      color: var(--var-cor-fundo-1);
+    }
+
+    & .login-icon-senha{
+      position: absolute;
+      top: 2rem;
+      right: 1.3rem;
+      cursor: pointer;
+    }
   }
 }

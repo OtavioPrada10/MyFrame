@@ -7,13 +7,13 @@ include_once 'view_login.php';
 
 
 /**
- * Classe de loguin 
+ * Classe de login
  * @author Otavio Prada
  * @since 21/08/2023
  */
 class Login
 {
-    // Valida o loguin 
+    // Valida o login
     public function getValidaLogin()
     {
         session_start();
