@@ -16,11 +16,54 @@ body {
 .navbar {
   padding: 2rem 4rem;
   margin-bottom: 1rem;
+  
+  & .nav-link{
+    color: var(--var-cor-fundo-4);
+
+    &:hover{
+      color: var(--var-cor-fundo-2);
+    }
+
+    &.active{
+      color: var(--var-cor-fundo-2);
+    }
+  }
+
+  & .fa-bars{
+    cursor: pointer;
+    color: var(--var-cor-fundo-2);
+  }
 }
 
 //Necessário para que os estilos da navbar branca não sobreescrevam a varíavel de cor do offcanvas
 .offcanvas {
-  --bs-offcanvas-color: #000000;
+  --bs-offcanvas-color: var(--var-cor-fundo-2);
+  padding-top: 1rem;
+
+  & .offcanvas-header{
+    border-bottom: 1px solid var(--var-cor-fundo-1);
+
+    & .offcanvas-icon-close{
+      color: var(--var-cor-fundo-2);
+      opacity: .5;
+      cursor: pointer;
+
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+
+  & .offcanvas-list{
+    text-decoration: none;
+    list-style: none;
+    line-height: 4rem;
+    font-size: 18px;
+
+    & > li:hover{
+      color: var(--var-cor-fundo-3);
+    }
+  }
 }
 
 //CSS para os cards do index

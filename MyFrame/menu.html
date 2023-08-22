@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-sm text-bg-light">
-    <!-- <a class="navbar-brand" href="#"></a> -->
     <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
         aria-expanded="false" aria-label="Toggle navigation"></button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
@@ -20,27 +19,24 @@
         </ul>        
     </div>
     <div>
-        <span class="fa-solid fa-bars fa-xl" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="color: #000000;"></span>
+        <span class="fa-solid fa-bars fa-xl" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></span>
     </div>
 </nav>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <span class="fa-solid fa-circle-user fa-3x"></span>
+        <h5 class="offcanvas-title">Nome do Usuário</h5>
+        <span class="fa-solid fa-xmark fa-2x offcanvas-icon-close" data-bs-dismiss="offcanvas"></span>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
     </div>
     <div class="offcanvas-body">
-        <div>
-        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-        </div>
-        <div class="dropdown mt-3">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            Dropdown button
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <ul class="offcanvas-list">
+            <li>Consultar Contas</li>
+            <li>Favoritos</li>
+            <li>Navegador</li>
+            <li>Imagens</li>
+            <li>Arquivos</li>
+            <li>Ajuda</li>
         </ul>
-        </div>
     </div>
 </div>

@@ -38,7 +38,7 @@
                         <span class="card-icon-area">
                             <span class="fa-solid fa-sack-dollar fa-3x card-icon"></span>
                         </span>
-                        <span class="card-text">Consultar Contas teste</span><br>
+                        <span class="card-text">Consultar Contas</span><br>
                     </span>
                 </div>
             </a>

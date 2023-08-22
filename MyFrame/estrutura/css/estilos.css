@@ -13,9 +13,43 @@ body {
   padding: 2rem 4rem;
   margin-bottom: 1rem;
 }
+.navbar .nav-link {
+  color: var(--var-cor-fundo-4);
+}
+.navbar .nav-link:hover {
+  color: var(--var-cor-fundo-2);
+}
+.navbar .nav-link.active {
+  color: var(--var-cor-fundo-2);
+}
+.navbar .fa-bars {
+  cursor: pointer;
+  color: var(--var-cor-fundo-2);
+}
 
 .offcanvas {
-  --bs-offcanvas-color: #000000;
+  --bs-offcanvas-color: var(--var-cor-fundo-2);
+  padding-top: 1rem;
+}
+.offcanvas .offcanvas-header {
+  border-bottom: 1px solid var(--var-cor-fundo-1);
+}
+.offcanvas .offcanvas-header .offcanvas-icon-close {
+  color: var(--var-cor-fundo-2);
+  opacity: 0.5;
+  cursor: pointer;
+}
+.offcanvas .offcanvas-header .offcanvas-icon-close:hover {
+  opacity: 1;
+}
+.offcanvas .offcanvas-list {
+  text-decoration: none;
+  list-style: none;
+  line-height: 4rem;
+  font-size: 18px;
+}
+.offcanvas .offcanvas-list > li:hover {
+  color: var(--var-cor-fundo-3);
 }
 
 .card-area {
