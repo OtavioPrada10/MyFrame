@@ -54,6 +54,10 @@ body {
     }
   }
 
+  & .offcanvas-btn-deslogar{
+    background: var(--var-cor-fundo-2);
+  }
+
   & .offcanvas-list{
     text-decoration: none;
     list-style: none;
@@ -158,6 +162,7 @@ body {
     background: #ffffff;
     width: 35rem;
     height: 30rem;
+    box-shadow: 0 0 3rem .5rem var(--var-cor-fundo-3);
   }
 
   & .login-form {

@@ -27,7 +27,6 @@
         <span class="fa-solid fa-circle-user fa-3x"></span>
         <h5 class="offcanvas-title">Nome do Usuário</h5>
         <span class="fa-solid fa-xmark fa-2x offcanvas-icon-close" data-bs-dismiss="offcanvas"></span>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
     </div>
     <div class="offcanvas-body">
         <ul class="offcanvas-list">
@@ -38,5 +37,6 @@
             <li>Arquivos</li>
             <li>Ajuda</li>
         </ul>
+        <a href="?desloga=true" class="btn offcanvas-btn-deslogar">Sair</a>
     </div>
 </div>

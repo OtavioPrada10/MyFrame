@@ -42,6 +42,9 @@ body {
 .offcanvas .offcanvas-header .offcanvas-icon-close:hover {
   opacity: 1;
 }
+.offcanvas .offcanvas-btn-deslogar {
+  background: var(--var-cor-fundo-2);
+}
 .offcanvas .offcanvas-list {
   text-decoration: none;
   list-style: none;
@@ -131,6 +134,7 @@ body {
   background: #ffffff;
   width: 35rem;
   height: 30rem;
+  box-shadow: 0 0 3rem 0.5rem var(--var-cor-fundo-3);
 }
 .login-tela .login-form {
   display: grid;

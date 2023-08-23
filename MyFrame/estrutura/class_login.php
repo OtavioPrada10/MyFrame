@@ -16,6 +16,7 @@ class Login
     // Valida o login
     public function getValidaLogin()
     {
+
         session_start();
 
         if (!isset($_SESSION['login'])) {
@@ -29,7 +30,7 @@ class Login
 
                     if ($login == $sInputLogin && $senha == $sSenha) {
                         $_SESSION['login'] = true;
-                        return header('Location: ../estrutura/controller_sistema.php');
+                        $this->getValidaLogin();
                     } else {
                         echo 'Login Invalido';
                     }
@@ -38,7 +39,7 @@ class Login
             $oViewSistema = new ViewLogin();
             return $oViewSistema->getLayoutLogin();
         } else {
-            return include_once '../index.php';
+            return include_once './home.php';
         }
     }
 }
