@@ -1,5 +1,7 @@
 <?php
-    include_once "./estrutura/controller_sistema.php";
+
+include_once "./estrutura/controller_sistema.php";
+// use estrutura\ControllerSistema;
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,7 +15,7 @@
 
 <body>
     <?php
-        verificaLogin();
+        ControllerSistema::verificaLogin();
     ?>
 </body>
 <script src="./estrutura/js/Jquery.js" type="text/javascript"></script>

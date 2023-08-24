@@ -21,12 +21,6 @@ class Login
         if(session_status() !== PHP_SESSION_ACTIVE){
             session_start();
         }
-
-        if(isset($_GET['desloga']) && $_GET['desloga'] == 'true'){
-            unset($_GET);
-            session_unset();
-        }
-
         if (!isset($_SESSION['login'])) {
             if (isset($_POST['acao'])) {
                 $login = 'teste';
@@ -38,8 +32,10 @@ class Login
 
                     if ($login == $sInputLogin && $senha == $sSenha) {
                         $_SESSION['login'] = true;
+                        //Avaliar como enviar por Json {TODO}
                         return include_once './home.php';
-                    } else {
+                    } 
+                    else {
                         echo 'Login Invalido';
                     }
                 }
@@ -49,5 +45,10 @@ class Login
         } else {
             return include_once './home.php';
         }
+    }
+
+    public function finalizaSessao() {
+        session_unset();
+        $this->getValidaLogin();
     }
 }

@@ -37,6 +37,9 @@
             <li>Arquivos</li>
             <li>Ajuda</li>
         </ul>
-        <a href="?desloga=true" class="btn offcanvas-btn-deslogar">Sair</a>
+        <a onclick="finalizaSessao()" class="btn offcanvas-btn-deslogar">Sair</a>
     </div>
+    <script>
+
+    </script>
 </div>
