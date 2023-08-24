@@ -16,7 +16,7 @@ body {
 .navbar {
   padding: 2rem 4rem;
   margin-bottom: 1rem;
-  
+
   & .nav-link{
     color: var(--var-cor-fundo-4);
 
@@ -56,6 +56,15 @@ body {
 
   & .offcanvas-btn-deslogar{
     background: var(--var-cor-fundo-2);
+    color: #ffffff;
+    text-decoration: none;
+    width: 100%;
+
+    &:hover{
+      background: var(--var-cor-fundo-2);
+      color: #ffffff;
+      transform: scale(105%);
+    }
   }
 
   & .offcanvas-list{
@@ -66,6 +75,7 @@ body {
 
     & > li:hover{
       color: var(--var-cor-fundo-3);
+      cursor: pointer;
     }
   }
 }
@@ -126,6 +136,7 @@ body {
   & .card-next {
     grid-column: 8;
     text-align: center;
+    cursor: pointer;
 
     &:hover {
       & .card-icon {
@@ -137,6 +148,7 @@ body {
   & .card-previous {
     grid-column: 1;
     text-align: center;
+    cursor: pointer;
 
     &:hover {
       & .card-icon {

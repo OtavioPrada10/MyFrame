@@ -16,8 +16,16 @@ class Login
     // Valida o login
     public function getValidaLogin()
     {
+        clearstatcache();
 
-        session_start();
+        if(session_status() !== PHP_SESSION_ACTIVE){
+            session_start();
+        }
+
+        if(isset($_GET['desloga']) && $_GET['desloga'] == 'true'){
+            unset($_GET);
+            session_unset();
+        }
 
         if (!isset($_SESSION['login'])) {
             if (isset($_POST['acao'])) {
@@ -30,7 +38,7 @@ class Login
 
                     if ($login == $sInputLogin && $senha == $sSenha) {
                         $_SESSION['login'] = true;
-                        $this->getValidaLogin();
+                        return include_once './home.php';
                     } else {
                         echo 'Login Invalido';
                     }

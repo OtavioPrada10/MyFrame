@@ -44,6 +44,14 @@ body {
 }
 .offcanvas .offcanvas-btn-deslogar {
   background: var(--var-cor-fundo-2);
+  color: #ffffff;
+  text-decoration: none;
+  width: 100%;
+}
+.offcanvas .offcanvas-btn-deslogar:hover {
+  background: var(--var-cor-fundo-2);
+  color: #ffffff;
+  transform: scale(105%);
 }
 .offcanvas .offcanvas-list {
   text-decoration: none;
@@ -53,6 +61,7 @@ body {
 }
 .offcanvas .offcanvas-list > li:hover {
   color: var(--var-cor-fundo-3);
+  cursor: pointer;
 }
 
 .card-area {
@@ -106,6 +115,7 @@ body {
 .card-area .card-next {
   grid-column: 8;
   text-align: center;
+  cursor: pointer;
 }
 .card-area .card-next:hover .card-icon {
   transform: scale(130%);
@@ -114,6 +124,7 @@ body {
 .card-area .card-previous {
   grid-column: 1;
   text-align: center;
+  cursor: pointer;
 }
 .card-area .card-previous:hover .card-icon {
   transform: scale(130%) scaleX(-1);

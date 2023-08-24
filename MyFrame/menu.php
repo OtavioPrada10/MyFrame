@@ -16,7 +16,7 @@
                     <a class="dropdown-item" href="#">Action 2</a>
                 </div>
             </li>
-        </ul>        
+        </ul>
     </div>
     <div>
         <span class="fa-solid fa-bars fa-xl" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></span>
