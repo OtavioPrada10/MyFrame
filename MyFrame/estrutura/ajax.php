@@ -1,5 +1,5 @@
 <?php
-// To pensando em fazer pelo nome do arqyuivo ele ve onde ta a pasta e cria o namespace....
+// To pensando em fazer pelo nome do arquivo ele ve onde ta a pasta e cria o namespace....
 
 require_once 'controller_sistema.php';
 

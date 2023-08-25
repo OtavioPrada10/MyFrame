@@ -14,9 +14,8 @@ include_once 'view_login.php';
 class Login
 {
     // Valida o login
-    public function getValidaLogin()
+    public function getValidaLogin($bDeslogaUsuario = false)
     {
-        clearstatcache();
 
         if(session_status() !== PHP_SESSION_ACTIVE){
             session_start();
@@ -34,12 +33,13 @@ class Login
                         $_SESSION['login'] = true;
                         //Avaliar como enviar por Json {TODO}
                         return include_once './home.php';
-                    } 
+                    }
                     else {
                         echo 'Login Invalido';
                     }
                 }
             }
+
             $oViewSistema = new ViewLogin();
             return $oViewSistema->getLayoutLogin();
         } else {
@@ -48,7 +48,7 @@ class Login
     }
 
     public function finalizaSessao() {
+        session_start();
         session_unset();
-        $this->getValidaLogin();
     }
 }

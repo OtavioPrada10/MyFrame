@@ -1,4 +1,5 @@
 <?php
+
 // include_once "conexao.php";
 require_once 'class_login.php';
 
@@ -14,9 +15,9 @@ class ControllerSistema
         $oLogin->finalizaSessao();
     }
 
-    static function verificaLogin()
+    static function verificaLogin($bDeslogaUsuario = false)
     {
         $oLogin = new Login();
-        return $oLogin->getValidaLogin();
+        return $oLogin->getValidaLogin($bDeslogaUsuario);
     }
 }

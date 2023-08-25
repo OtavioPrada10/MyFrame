@@ -38,6 +38,9 @@ function loadAjax(sClasse, sFuncao) {
         // dataType: "array",       // O tipo de dado que você espera receber do servidor  Ta dando erro nessa desgraça
         data: { sClasse: sClasse, sFuncao: sFuncao}, // Passa o parâmetro "sRotina" para o servidor
         success: function(xData) {  //pega a resposta do servidor
+            //Recarrega a página para acessar o validaLogin do Controller e então chamar a tela de login
+            // não funciona por conta do $_POST manter os dados de login, analisar o que pode ser feito
+            location.reload();
             return;
         },
         error: function(xhr, status, error) {
